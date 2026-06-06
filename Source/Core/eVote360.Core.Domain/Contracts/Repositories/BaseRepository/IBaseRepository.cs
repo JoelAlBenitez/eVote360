@@ -1,4 +1,4 @@
-﻿namespace eVote360.Core.Domain.Contracts.BaseRepository
+﻿namespace eVote360.Core.Domain.Contracts.Repositories.BaseRepository
 {
     public interface IBaseRepository<TEntitie, Tkey> where TEntitie : class
     {
