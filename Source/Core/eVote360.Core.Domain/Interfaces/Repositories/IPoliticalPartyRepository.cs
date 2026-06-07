@@ -1,4 +1,4 @@
-﻿using eVote360.Core.Domain.Entities;
+﻿using eVote360.Core.Domain.Entities.PoliticalParty;
 using System;
 using System.Collections.Generic;
 using System.Linq;

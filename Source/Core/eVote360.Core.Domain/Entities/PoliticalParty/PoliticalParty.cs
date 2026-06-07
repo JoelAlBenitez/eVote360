@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace eVote360.Core.Domain.Entities
+namespace eVote360.Core.Domain.Entities.PoliticalParty
 {
     public class PoliticalParty
     {
