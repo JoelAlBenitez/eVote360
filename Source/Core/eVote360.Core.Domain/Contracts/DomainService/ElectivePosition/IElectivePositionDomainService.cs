@@ -1,6 +1,4 @@
-﻿using eVote360.Core.Domain.Entities.ElectivePosition;
-
-namespace eVote360.Core.Domain.Contracts.DomainService.ElectivePosition
+﻿namespace eVote360.Core.Domain.Contracts.DomainService.ElectivePosition
 {
     public interface IElectivePositionDomainService
     {

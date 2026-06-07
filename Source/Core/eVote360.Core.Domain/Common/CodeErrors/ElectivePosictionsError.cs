@@ -18,6 +18,8 @@ namespace eVote360.Core.Domain.Common.CodeErrors
             => new Error("Puesto electivo no puede ser activado", "Para activar este puesto no deben existir otros puestos con el mismo nombre o elecciones activas.");
         public static Error DesactiveElectivePosiction
             => new Error("Puesto electivo no puede ser desactivado", "Para desactivar este puesto no debe tener candidactos activos asignados para eleccciones o elecciones activas.");
+        public static Error DescriptionInvalid
+            => new Error("Descripción no permitida", "La descripción a intentar registrar no es valida de cumplir con solo letras.");
 
     }
 }
