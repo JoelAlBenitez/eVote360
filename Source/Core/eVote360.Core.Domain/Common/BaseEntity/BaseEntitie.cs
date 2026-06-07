@@ -4,5 +4,6 @@
     {
         public required Tkey Id { get; set; }
         public required TName Name {get ; set; }
+        
     }
 }

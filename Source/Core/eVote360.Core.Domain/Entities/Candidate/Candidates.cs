@@ -1,14 +1,17 @@
 ﻿using eVote360.Core.Domain.Commom.BaseEntity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using eVote360.Core.Domain.Entities.Candidate.ValueObjects;
+
 
 namespace eVote360.Core.Domain.Entities.Candidate
 {
-    public class Candidates : BaseEntitie<int, string>
+    public class Candidates : BaseEntitie<int, FullName>
     {
+
+
+        public CandidatePhoto PhotoUrl { get; set; }
+        public bool IsActive { get; set; }
+        public int PoliticalPartyId { get; set; }
+        public bool HasParticipatedInElection { get; set; }
 
     }
 }
