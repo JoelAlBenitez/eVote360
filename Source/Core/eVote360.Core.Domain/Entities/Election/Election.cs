@@ -1,5 +1,5 @@
 ﻿using eVote360.Core.Domain.Commom.BaseEntity;
-using eVote360.Core.Domain.Enums;
+using eVote360.Core.Domain.Common.Enums;
 using eVote360.Core.Domain.ValueObjects;
 using System;
 using System.Collections.Generic;
