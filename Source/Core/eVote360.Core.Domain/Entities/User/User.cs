@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace eVote360.Core.Domain.Entities
+namespace eVote360.Core.Domain.Entities.User
 {
     public class User
     {

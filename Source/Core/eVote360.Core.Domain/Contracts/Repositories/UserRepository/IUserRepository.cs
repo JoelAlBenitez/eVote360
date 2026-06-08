@@ -1,11 +1,11 @@
-﻿using eVote360.Core.Domain.Entities;
+﻿using eVote360.Core.Domain.Entities.User;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace eVote360.Core.Domain.Interfaces.Repository
+namespace eVote360.Core.Domain.Contracts.Repositories.UserRepository
 {
     public interface IUserRepository
     {
