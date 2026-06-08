@@ -31,8 +31,6 @@ namespace eVote360.Core.Domain.Validators.ElectivePositionValidator
             errorrs.AddRange(validations.Where(v => v != null));
             return errorrs.Any() ? ValidationResult.Failure() : ValidationResult.Success();
         }
-
-
         private  async Task<Error> ValidateNameElective(string name)
         {
             if (!string.IsNullOrWhiteSpace(name)) return ElectivePosictionsError.DataInvalid;
@@ -77,7 +75,7 @@ namespace eVote360.Core.Domain.Validators.ElectivePositionValidator
             if(electivePositionHasCandidates) return ElectivePosictionsError.ElectivePosictionHasAssociatedByCandidates;
             return null!;
         }
-
+       
 
     }
 }
