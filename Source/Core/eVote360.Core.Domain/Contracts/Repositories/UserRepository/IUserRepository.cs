@@ -1,4 +1,5 @@
-﻿using eVote360.Core.Domain.Entities.User;
+﻿using eVote360.Core.Domain.Contracts.Repositories.BaseRepository;
+using eVote360.Core.Domain.Entities.User;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,17 +8,13 @@ using System.Threading.Tasks;
 
 namespace eVote360.Core.Domain.Contracts.Repositories.UserRepository
 {
-    public interface IUserRepository
+    public interface IUserRepository : IBaseRepository<Entities.User.User, int>
     {
-        Task <User> GetEntityByIdAsync(int id);
-
-        Task<IEnumerable<User>> GetAllAsync();
-
-        Task<User> GetByUsernameAsync(string username);
-
-        Task<User> GetByEmailAsync (string email);
-
         Task<int> CountActiveAdminAsync();
+
+        Task<bool> ExistByEmailAsync(string email);
+
+        Task<bool> ExistByUsernameAsync (string username);
 
 
     }
