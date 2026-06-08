@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace eVote360.Core.Domain.Enums
+namespace eVote360.Core.Domain.Common.Enums
 {
     public enum UserRole
     {
