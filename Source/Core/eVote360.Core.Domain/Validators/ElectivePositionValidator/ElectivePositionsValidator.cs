@@ -23,8 +23,7 @@ namespace eVote360.Core.Domain.Validators.ElectivePositionValidator
             {
                 await ValidateNameElective(elective.Name),
                 ValidateDescription(elective.Description),
-                await ValidateElectivePosictionsHasEleccion(elective.Id, elective.Name),
-                await ValidteElectivePosictionHasAssociateCandidates(elective.Id, elective.Name),
+                await ValidateUpdateData(elective.Id, elective.Name),
                 await ValidateChangeStateByActive(elective.Id, elective.Name),
                 await ValidateChangeStateByDesactive(elective.Id, elective.Name)
                 
@@ -32,8 +31,11 @@ namespace eVote360.Core.Domain.Validators.ElectivePositionValidator
             errorrs.AddRange(validations.Where(v => v != null));
             return errorrs.Any() ? ValidationResult.Failure() : ValidationResult.Success();
         }
+
+
         private  async Task<Error> ValidateNameElective(string name)
         {
+            if (!string.IsNullOrWhiteSpace(name)) return ElectivePosictionsError.DataInvalid;
             if (name.Trim().Length > 30 && !Regex.IsMatch("^[a-zA-Z\\s]+$", name.Trim()))
                 return ElectivePosictionsError.DataInvalid;
             var validate = await _electivePositionDomainService.ExistElectivePositionByName(name.Trim());
@@ -42,24 +44,23 @@ namespace eVote360.Core.Domain.Validators.ElectivePositionValidator
         } 
         private Error  ValidateDescription(string description)
         {
+            if (!string.IsNullOrWhiteSpace(description)) return ElectivePosictionsError.DataInvalid;
             if (description.Trim().Length > 100 && !Regex.IsMatch("^[a-zA-Z\\s]+$", description.Trim()))
                 return ElectivePosictionsError.DescriptionInvalid;
             return null!;
         }
-        private async Task<Error> ValidateElectivePosictionsHasEleccion(int Id, string name)
+        private async Task<Error> ValidateUpdateData(int Id, string name)
         {
-            //agregar llamado al domain service de elecciones, obtener estado valido de la eleccion
+            //agregar aqui domain service o metodo del feature/elecciones para consutlar el estado de elecciones
             var validate = await _electivePositionDomainService.ElectivePositionUsedInElections(Id, name);
-            if (validate) return ElectivePosictionsError.ElectivePosictionUsedByEleccionsActive;
-            return null!;
+            if (validate) return ElectivePosictionsError.NameCannotChange;
 
-        }
-        private async Task<Error>  ValidteElectivePosictionHasAssociateCandidates(int Id, string name)
-        {
-            var validate = await _electivePositionDomainService.ElectivePositionHasAssociatedByCandidates(Id, name);
-            if (validate) return ElectivePosictionsError.ElectivePosictionHasAssociatedByCandidates;
-            return null!;
+            var validateName = await _electivePositionDomainService.ExistsAnotherElectivePositionWithName(Id, name);
+            if (validateName) return ElectivePosictionsError.ExistsAnotherElectivePositionWithName;
 
+            var exitsElectiveP = await _electivePositionDomainService.ExistElectivePositionByName(name.Trim());
+            if (!exitsElectiveP) return ElectivePosictionsError.NonExistentElectivePosition;
+            return null!;
         }
         private async Task<Error> ValidateChangeStateByActive(int Id, string name)
         {
@@ -72,6 +73,8 @@ namespace eVote360.Core.Domain.Validators.ElectivePositionValidator
 
             var validate = await _electivePositionDomainService.ExistElectivePositionByState(Id, name, false);
             if (validate) return ElectivePosictionsError.DesactiveElectivePosiction;
+            var electivePositionHasCandidates = await _electivePositionDomainService.ElectivePositionHasAssociatedByCandidates(Id, name);
+            if(electivePositionHasCandidates) return ElectivePosictionsError.ElectivePosictionHasAssociatedByCandidates;
             return null!;
         }
 
