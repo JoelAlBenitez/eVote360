@@ -1,4 +1,4 @@
-﻿
+﻿using eVote360.Core.Domain.Commom.BaseEntity;
 using eVote360.Core.Domain.Enums;
 using eVote360.Core.Domain.ValueObjects;
 using System;
@@ -7,18 +7,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace eVote360.Core.Domain.Entities
+namespace eVote360.Core.Domain.Entities.Election
 {
-    public class Election
+    public class Election : BaseEntitie<int, string>
     {
-        public int ElectionId { get; set; }
-
-        public ElectionName ElectionName { get; set; }
 
         public ElectionDate ElectionDate { get; set; }
 
-        public ElectionState ElectionState = ElectionState.Pendiente;
+        public ElectionState ElectionState { get; set; }
 
-
+        private Election() { }
     }
 }
