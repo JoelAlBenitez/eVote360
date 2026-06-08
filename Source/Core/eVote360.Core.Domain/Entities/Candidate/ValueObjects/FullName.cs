@@ -1,5 +1,6 @@
 ﻿using eVote360.Core.Domain.Common.CodeErrors;
-using System;
+
+using System.Text.RegularExpressions;
 
 namespace eVote360.Core.Domain.Entities.Candidate.ValueObjects
 {
@@ -18,6 +19,17 @@ namespace eVote360.Core.Domain.Entities.Candidate.ValueObjects
             if (string.IsNullOrWhiteSpace(lastName))
                 throw new ArgumentException(CandidatesError.LastNameInvalid.Description);
 
+            if (name.Length > 50)
+                throw new ArgumentException(CandidatesError.NameInvalid.Description);
+
+            if (!Regex.IsMatch(name, @"^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$"))
+                throw new ArgumentException(CandidatesError.NameInvalid.Description);
+
+            if (lastName.Length > 50)
+                throw new ArgumentException(CandidatesError.LastNameInvalid.Description);
+
+            if (!Regex.IsMatch(lastName, @"^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$"))
+                throw new ArgumentException(CandidatesError.LastNameInvalid.Description);
             Name = name;
             LastName = lastName;
         }

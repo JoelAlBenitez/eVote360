@@ -16,5 +16,8 @@ namespace eVote360.Core.Domain.Common.CodeErrors
         public static Error ActiveElectionExists => new Error("Elección activa", "No se pueden realizar operaciones de mantenimiento mientras exista una elección en curso.");
 
         public static Error CandidateAssignedToPosition => new Error("Candidato con Puesto Asignado.", "No se puede desactivar el candidato porque ya tiene un puesto electivo vinculado.");
+
+        public static Error PoliticalPartyNotActive
+                 => new Error("Partido inactivo", "No se pueden gestionar candidatos porque el partido político no se encuentra activo.");
     }
 }
