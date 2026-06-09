@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\eVote360.Core.Domain\eVote360.Core.Domain.csproj" />
+  </ItemGroup>
+
 </Project>
