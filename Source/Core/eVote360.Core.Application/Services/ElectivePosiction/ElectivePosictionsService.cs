@@ -49,7 +49,7 @@ namespace eVote360.Core.Application.Services.ElectivePosiction
                     State = dto.state  
                 };
 
-                var validate = await _electivePositionsValidator.ValidateElectivePositios(electiveEn);
+                var validate = await _electivePositionsValidator.ValidateElectivePositions(electiveEn);
                 if (!validate.IsValid) return validate;
 
                 var alterState = await _electivePosictionRepository.DesactiveEntitie(electiveEn.Id, electiveEn.State);
@@ -85,7 +85,7 @@ namespace eVote360.Core.Application.Services.ElectivePosiction
 
                 //agregar aqui llamada del elemento de  autorization
 
-                var validate  = await _electivePositionsValidator.ValidateElectivePositios(electiveP);
+                var validate  = await _electivePositionsValidator.ValidateElectivePositions(electiveP);
                 if (!validate.IsValid) return validate;
 
                 var create = await _electivePosictionRepository.CreateEntiteAsync(electiveP);
@@ -188,11 +188,11 @@ namespace eVote360.Core.Application.Services.ElectivePosiction
 
                 return ValidationResult<ElectivePosictionsDto>.Success(dto);
             }
-            catch (Exception) {
-                return null!;
+            catch (Exception ex) {
+                _errors.Add(new Error(""))
+                return ValidationResult<ElectivePosictionsDto>.Failure();
             }
-            
-               
+                   
         }
 
         public async Task<IReadOnlyCollection<ElectivePosictionsDto>> GetElectivePosictionsByDate(DateTimeOffset dateStart, DateTimeOffset dateEnd)
@@ -234,7 +234,7 @@ namespace eVote360.Core.Application.Services.ElectivePosiction
                     UpdateAt = DateTimeOffset.Now
                 };
                 
-                var validate =  await _electivePositionsValidator.ValidateElectivePositios(eleccion);
+                var validate =  await _electivePositionsValidator.ValidateElectivePositions(eleccion);
                 if (!validate.IsValid) return validate;
 
                 var update = await _electivePosictionRepository.UpdateEntitieAsync(eleccion);
