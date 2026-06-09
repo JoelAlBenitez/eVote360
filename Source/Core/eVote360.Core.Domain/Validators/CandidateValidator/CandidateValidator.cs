@@ -22,63 +22,65 @@ namespace eVote360.Core.Domain.Validators.CandidateValidator
         {
 
 
-            var errors = new List<Error>();
+          
 
             var hasElectionActive = await _CandidateDomainService.IsElectionProcessActive();
 
             if (hasElectionActive)
             {
-                errors.Add(CandidatesError.ActiveElectionExists);
+                return ValidationResult.Failure(CandidatesError.ActiveElectionExists);
             }
 
             var HasPositionAssigned = await _CandidateDomainService.CandidateHasPositionAssigned(candidate.Id);
 
             if (HasPositionAssigned)
             {
-                errors.Add(CandidatesError.CandidateAssignedToPosition);
+                return ValidationResult.Failure(CandidatesError.CandidateAssignedToPosition);
             }
 
-            return errors.Any() ? ValidationResult.Failure(errors.ToArray()) : ValidationResult.Success();
+            return ValidationResult.Success();
         }
 
         public async Task<ValidationResult> ValidateCreateAsync(Candidates candidate)
         {
-            var errors = new List<Error>();
+            
             var hasElection = await _CandidateDomainService.IsElectionProcessActive();
 
             if (hasElection)
             {
-                errors.Add(CandidatesError.ActiveElectionExists);
+                return ValidationResult.Failure(CandidatesError.ActiveElectionExists);
             }
 
             var PoliticalPartyIsActive = await _CandidateDomainService.IsPoliticalPartyActive(candidate.PoliticalPartyId);
 
             if (!PoliticalPartyIsActive)
             {
-                errors.Add(CandidatesError.PoliticalPartyNotActive);
+                return ValidationResult.Failure(CandidatesError.PoliticalPartyNotActive); 
             }
-            return errors.Any() ? ValidationResult.Failure(errors.ToArray()) : ValidationResult.Success();
+            return ValidationResult.Success();
 
         }
 
         public async Task<ValidationResult> ValidateUpdateAsync(Candidates candidate)
         {
-            var errors = new List<Error>();
+     
             var HasElectionActive = await _CandidateDomainService.IsElectionProcessActive();
 
             if (HasElectionActive == true)
             {
-                errors.Add(CandidatesError.ActiveElectionExists);
+                return ValidationResult.Failure(CandidatesError.ActiveElectionExists);
             }
 
 
             if (candidate.HasParticipatedInElection)
             {
-                errors.Add(CandidatesError.CandidateHasParticipatedElection);
+                return ValidationResult.Failure(CandidatesError.CandidateHasParticipatedElection);
 
             }
 
-            return errors.Any() ? ValidationResult.Failure(errors.ToArray()) : ValidationResult.Success();
+            return ValidationResult.Success();
+
+
         }
     }
 }
