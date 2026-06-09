@@ -1,9 +1,5 @@
 ﻿using eVote360.Core.Domain.ValueObjects;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using eVote360.Core.Domain.Common.Enums;
 
 namespace eVote360.Core.Domain.Contracts.DomainService.Election
 {
@@ -14,5 +10,6 @@ namespace eVote360.Core.Domain.Contracts.DomainService.Election
         Task<bool> ElectionHasEnoughParties (int idElection);
         Task<bool> ExistActiveElection();
         Task<bool> ValidElectionDate(ElectionDate electionDate);
+        Task<bool> ValidateElectionState(int electionId, ElectionState expectedState);
     }
 }
