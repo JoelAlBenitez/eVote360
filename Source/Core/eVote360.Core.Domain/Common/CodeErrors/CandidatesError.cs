@@ -1,7 +1,7 @@
 ﻿using eVote360.Core.Domain.Common.Errors;
 namespace eVote360.Core.Domain.Common.CodeErrors
 {
-     public static class CandidatesError
+    public static class CandidatesError
     {
         public static Error NameInvalid
              => new Error("Nombre inválido", "El nombre del candidato no puede estar vacío y solo debe contener letras.");
@@ -19,5 +19,8 @@ namespace eVote360.Core.Domain.Common.CodeErrors
 
         public static Error PoliticalPartyNotActive
                  => new Error("Partido inactivo", "No se pueden gestionar candidatos porque el partido político no se encuentra activo.");
+
+        public static Error DataInvalid
+    => new Error("Datos no válidos", "Se han introducido datos no válidos en el intento operacional.");
     }
 }

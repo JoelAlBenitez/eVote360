@@ -18,7 +18,7 @@ namespace eVote360.Core.Domain.Validators.CandidateValidator
 
 
         }
-        public async Task<ValidationResult> ValidateChangeStateAsync(Candidates candidate)
+        public async Task<ValidationResult> ValidateChangeStateAsync(Candidate candidate)
         {
 
 
@@ -41,7 +41,7 @@ namespace eVote360.Core.Domain.Validators.CandidateValidator
             return ValidationResult.Success();
         }
 
-        public async Task<ValidationResult> ValidateCreateAsync(Candidates candidate)
+        public async Task<ValidationResult> ValidateCreateAsync(Candidate candidate)
         {
             
             var hasElection = await _CandidateDomainService.IsElectionProcessActive();
@@ -61,7 +61,7 @@ namespace eVote360.Core.Domain.Validators.CandidateValidator
 
         }
 
-        public async Task<ValidationResult> ValidateUpdateAsync(Candidates candidate)
+        public async Task<ValidationResult> ValidateUpdateAsync(Candidate candidate)
         {
      
             var HasElectionActive = await _CandidateDomainService.IsElectionProcessActive();

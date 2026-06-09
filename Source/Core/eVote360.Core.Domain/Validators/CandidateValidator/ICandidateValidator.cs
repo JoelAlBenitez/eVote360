@@ -11,8 +11,8 @@ namespace eVote360.Core.Domain.Validators.CandidateValidator
     public interface ICandidateValidator
     {
 
-        Task<ValidationResult> ValidateCreateAsync(Candidates candidate);
-        Task<ValidationResult> ValidateUpdateAsync(Candidates candidate);
-        Task<ValidationResult> ValidateChangeStateAsync(Candidates candidate);
+        Task<ValidationResult> ValidateCreateAsync(Candidate candidate);
+        Task<ValidationResult> ValidateUpdateAsync(Candidate candidate);
+        Task<ValidationResult> ValidateChangeStateAsync(Candidate candidate);
     }
 }

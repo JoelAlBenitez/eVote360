@@ -4,10 +4,8 @@ using eVote360.Core.Domain.Entities.Candidate.ValueObjects;
 
 namespace eVote360.Core.Domain.Entities.Candidate
 {
-    public class Candidates : BaseEntitie<int, FullName>
+    public class Candidate : BaseEntitie<int, FullName>
     {
-
-
         public CandidatePhoto PhotoUrl { get; set; }
         public bool IsActive { get; set; }
         public int PoliticalPartyId { get; set; }
