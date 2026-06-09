@@ -7,8 +7,8 @@ namespace eVote360.Core.Domain.Validators.ElectivePositionValidator
     {
             Task<ValidationResult> ValidateCreateElectivePositions(ElectivePositions electivePositions);
             Task<ValidationResult> ValidateUpdateElectivePosition(ElectivePositions electivePositions);
-            Task<ValidationResult> ValidateActiveElectivePostions(ElectivePositions electivePositions);
-            Task<ValidationResult> ValidateDesactiveElectivePositions(ElectivePositions electivePositions);
+            Task<ValidationResult> ValidateActiveElectivePostions(int Id, string name);
+            Task<ValidationResult> ValidateDesactiveElectivePositions(int Id, string name);
             
     }
 }

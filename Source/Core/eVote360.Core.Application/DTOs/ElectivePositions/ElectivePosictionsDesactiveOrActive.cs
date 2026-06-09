@@ -1,5 +1,5 @@
 ﻿namespace eVote360.Core.Application.DTOs.ElectivePositions
 {
-    public record ElectivePosictionsDesactiveOrActive(int IdElectivePosition, bool state);
+    public record ElectivePosictionsDesactiveOrActive(int IdElectivePosition);
     
 }

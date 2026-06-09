@@ -84,24 +84,25 @@ namespace eVote360.Core.Domain.Validators.ElectivePositionValidator
             return errrors.Any() ? ValidationResult.Failure(errrors) : ValidationResult.Success();
         }
 
-        public async Task<ValidationResult> ValidateActiveElectivePostions(ElectivePositions electivePositions)
+        public async Task<ValidationResult> ValidateActiveElectivePostions(int Id, string name)
         {
-            if (electivePositions == null) errrors.Add(ElectivePosictionsError.DataInvalid);
-            
-            var validate = await _electivePositionDomainService.ExistElectivePositionByState(electivePositions!.Id, electivePositions.Name, true);
+
+            var exitsElectiveP = await _electivePositionDomainService.ExistElectivePositionByName(name.Trim());
+            if (!exitsElectiveP) errrors.Add(ElectivePosictionsError.NonExistentElectivePosition);
+
+            var validate = await _electivePositionDomainService.ExistElectivePositionByState(Id, name, true);
             if (validate) errrors.Add(ElectivePosictionsError.ActivedElectivePosiction);
 
             return errrors.Any() ? ValidationResult.Failure(errrors) : ValidationResult.Success();
         }   
 
-        public async Task<ValidationResult> ValidateDesactiveElectivePositions(ElectivePositions electivePositions)
+        public async Task<ValidationResult> ValidateDesactiveElectivePositions(int Id, string name)
         {
-            if (electivePositions == null) errrors.Add(ElectivePosictionsError.DataInvalid);
-
-            var validate = await _electivePositionDomainService.ExistElectivePositionByState(electivePositions!.Id, electivePositions.Name, false);
+           
+            var validate = await _electivePositionDomainService.ExistElectivePositionByState(Id, name, false);
             if (validate) errrors.Add(ElectivePosictionsError.DesactiveElectivePosiction);
 
-            var electivePositionHasCandidates = await _electivePositionDomainService.ElectivePositionHasAssociatedByCandidates(electivePositions.Id, electivePositions.Name);
+            var electivePositionHasCandidates = await _electivePositionDomainService.ElectivePositionHasAssociatedByCandidates(Id, name);
             if (electivePositionHasCandidates) errrors.Add(ElectivePosictionsError.ElectivePosictionHasAssociatedByCandidates);
       
             return errrors.Any() ? ValidationResult.Failure(errrors) : ValidationResult.Success();

@@ -1,0 +1,11 @@
+﻿using eVote360.Core.Application.DTOs.ElectivePositions;
+using eVote360.Core.Domain.Common.ValidationResult;
+
+namespace eVote360.Core.Application.Contracts.ElectivePosictions.QueryServices
+{
+    public interface IElectivePosictionsGetByIdQuery
+    {
+        Task<ValidationResult<ElectivePosictionsDto>> GetAllById(int Id);
+
+    }
+}
