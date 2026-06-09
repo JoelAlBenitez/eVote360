@@ -5,6 +5,6 @@
         Task<bool> CreateEntiteAsync(TEntitie entitie);
         Task<bool> UpdateEntitieAsync (TEntitie entitie);
         Task<TEntitie> GetByIdEntitie(Tkey tkey);
-        Task<bool> DesactiveEntitie(Tkey tkey);
+        Task<bool> DesactiveEntitie(Tkey tkey, bool state);
     }
 }
