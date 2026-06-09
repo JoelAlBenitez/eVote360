@@ -22,5 +22,8 @@ namespace eVote360.Core.Domain.Common.CodeErrors
 
         public static Error DataInvalid
     => new Error("Datos no válidos", "Se han introducido datos no válidos en el intento operacional.");
+
+        public static Error NameAlreadyExists
+    => new Error("Nombre duplicado", "Ya existe un candidato con ese nombre y apellido en el partido.");
     }
 }

@@ -41,11 +41,39 @@ namespace eVote360.Core.Application.Services.Candidates
                     CreateUserId = 0 // vendrá de la cookieee
                 };
 
-                var validation = await _candidateValidator.ValidateCreateAsync(candidate);
+                var validation = await _candidateValidator.ValidateCreateAsync(PartyId);
                 if (!validation.IsValid) return validation;
 
                 var create = await _candidateRepository.CreateEntiteAsync(candidate);
                 if (!create) return ValidationResult.Failure(CandidatesError.DataInvalid);
+
+                return ValidationResult.Success();
+            }
+            catch (Exception ex)
+            {
+                return ValidationResult.Failure(new Domain.Common.Errors.Error("Error inesperado", ex.Message));
+            }
+        }
+
+        public async Task<ValidationResult> UpdateCandidateAsync(UpdateCandidateDto dto, int PartyId)
+        {
+            try
+            {
+                if (dto == null) return ValidationResult.Failure(CandidatesError.DataInvalid);
+
+                var CandidateById = await _candidateRepository.GetByIdEntitie(dto.Id);
+                if (CandidateById == null)
+                    return ValidationResult.Failure(CandidatesError.DataInvalid);
+
+                var validation = await _candidateValidator.ValidateUpdateAsync(dto.Id, dto.Name, dto.LastName, PartyId);
+                if (!validation.IsValid) return validation;
+
+                CandidateById.Name = new FullName(dto.Name, dto.LastName);
+                CandidateById.UpdateAt = DateTimeOffset.Now;
+                CandidateById.UpdateUserId = 0;
+
+                var update = await _candidateRepository.UpdateEntitieAsync(CandidateById);
+                if (!update) return ValidationResult.Failure(CandidatesError.DataInvalid);
 
                 return ValidationResult.Success();
             }
@@ -71,9 +99,6 @@ namespace eVote360.Core.Application.Services.Candidates
             throw new NotImplementedException();
         }
 
-        public Task<ValidationResult> UpdateCandidateAsync(UpdateCandidateDto dto, int PartyId)
-        {
-            throw new NotImplementedException();
-        }
+     
     }
 }

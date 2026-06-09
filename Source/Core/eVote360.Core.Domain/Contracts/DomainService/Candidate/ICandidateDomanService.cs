@@ -11,6 +11,6 @@ namespace eVote360.Core.Domain.Contracts.DomainService.Canditate
     Task<bool> CandidateHasPositionAssigned(int candidateId);
     Task<bool> CandidateBelongsToParty(int candidateId, int partyId);
 
-
+        Task<bool> CandidateNameExistsInParty(string name, string lastName, int partyId, int excludeId);
     }
 }
