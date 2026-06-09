@@ -10,4 +10,11 @@
     <ProjectReference Include="..\eVote360.Core.Domain\eVote360.Core.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Contracts\PoliticalParty\" />
+    <Folder Include="DTOs\PoliticalParty\" />
+    <Folder Include="Services\PoliticalParty\" />
+    <Folder Include="ViewModels\PoliticalParty\" />
+  </ItemGroup>
+
 </Project>
