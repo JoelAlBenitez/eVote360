@@ -127,14 +127,14 @@ namespace eVote360.Presentation.EVote360.Controllers.ElectivePosictions
             return PartialView("_ViewElectivPosiction", vm);
         }
 
-        public async Task <IActionResult> Create()
+        public Task <IActionResult> Create()
         {
-            return View("Save", new ElectivePosictionsViewModelCreate
+            return Task.FromResult<IActionResult>(View("Save", new ElectivePosictionsViewModelCreate
             {
                 Name = "",
                 Description = "",
                 State = true
-            });
+            }));
                     
                
         }
@@ -181,6 +181,13 @@ namespace eVote360.Presentation.EVote360.Controllers.ElectivePosictions
         [HttpPost]
         public async Task<IActionResult> Create(ElectivePosictionsViewModelCreate electiveVM)
         {
+
+            if (!ModelState.IsValid)
+            {
+                ModelState.AddModelError("", "Error en la creación y carga del formulario ");
+                return RedirectToAction(nameof(Create));
+            }
+
             var dto = new ElectivePosictionsDto
             {
                 Name = electiveVM.Name,
@@ -201,13 +208,18 @@ namespace eVote360.Presentation.EVote360.Controllers.ElectivePosictions
             }
 
             TempData["Message"] = "Posición electiva creada exitosamente";
-            TempData["TypeAlert"] = "success";
             return RedirectToAction(nameof(Index));
         }
 
         [HttpPost]
         public async Task<IActionResult> Edit(ElectivePosictionsViewModelEdit electiveVM)
         {
+
+            if (!ModelState.IsValid)
+            {
+                ModelState.AddModelError("", "Error en la creación y carga del formulario ");
+                return RedirectToAction(nameof(Edit));
+            }
             var dto = new ElectivePosictionsDto
             {
                 Name = electiveVM.Name,
@@ -229,13 +241,18 @@ namespace eVote360.Presentation.EVote360.Controllers.ElectivePosictions
 
             }
             TempData["Message"] = "Posición electiva editada exitosamente";
-            TempData["TypeAlert"] = "success";
             return RedirectToAction(nameof(Index));
         }
 
         [HttpPost]
         public async Task<IActionResult> AlterState(ElectivePosictionsDesactiveOrActive electiveVM)
         {
+            if (!ModelState.IsValid)
+            {
+                ModelState.AddModelError("", "Error en la selección del registro y carga del elemento");
+                return RedirectToAction(nameof(Index));
+            }
+
             var dto = new ElectivePosictionsDesactiveOrActive(electiveVM.IdElectivePosition);
             var alter = await _electivePosictionsAlterState.AlterState(dto);
             if (!alter.IsValid)
@@ -251,8 +268,8 @@ namespace eVote360.Presentation.EVote360.Controllers.ElectivePosictions
                 return RedirectToAction(nameof(AlterState));
             }
 
+            
             TempData["Message"] = "Se modifico el estado de la posición exitosamente";
-            TempData["TypeAlert"] = "success";
             return RedirectToAction(nameof(Index));
         }
 

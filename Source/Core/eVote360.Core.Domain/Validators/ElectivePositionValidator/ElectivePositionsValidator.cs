@@ -9,12 +9,12 @@ namespace eVote360.Core.Domain.Validators.ElectivePositionValidator
 {
     public class ElectivePositionsValidator : IElectivePositionsValidator
     {
-        private readonly IElectivePositionDomainService _electivePositionDomainService;
+        private readonly IElectivePositionValidate _electivePositionDomainService;
         private List<Error> errrors = new List<Error>();
         
         //agregar llamanda de domain service de elecciones 
 
-        public ElectivePositionsValidator(IElectivePositionDomainService electivePositionDomainService)
+        public ElectivePositionsValidator(IElectivePositionValidate electivePositionDomainService)
         {
             _electivePositionDomainService = electivePositionDomainService;
         }
