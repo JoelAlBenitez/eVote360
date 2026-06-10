@@ -5,6 +5,6 @@ namespace eVote360.Core.Domain.Entities.ElectivePosition
     {
         public required string Description { get; set; }
         public required bool State {  get; set; }
-        public required DateTimeOffset CreateAt {  get; set; }
+      
     }
 }
