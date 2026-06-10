@@ -22,7 +22,7 @@ namespace eVote360.Core.Domain.Validators.PoliticalPartyValidator
             var exists = await _service.GetByIdEntitie(partyId);
             if (exists == null) {
                 errors.Add(new Error("Partido Politico", "El partido politico no existe"));
-                return ValidationResult.Failure(errors.ToArray());
+                return ValidationResult.Failure(errors);
             }
 
           /*  var isElectionActive = await _electionService.ExistActiveElecion();
@@ -34,7 +34,7 @@ namespace eVote360.Core.Domain.Validators.PoliticalPartyValidator
           */
 
 
-            return errors.Any() ? ValidationResult.Failure(errors.ToArray()) : ValidationResult.Success();
+            return errors.Any() ? ValidationResult.Failure(errors) : ValidationResult.Success();
         }
 
         public async Task<ValidationResult> ValidateCreate(Entities.PoliticalParty.PoliticalParty party)
@@ -55,7 +55,7 @@ namespace eVote360.Core.Domain.Validators.PoliticalPartyValidator
             if (string.IsNullOrWhiteSpace(party.PoliticalPartyLogo))
                 errors.Add(PoliticalPartyError.PoliticalPartyLogoIsRequired);
 
-                return errors.Any() ? ValidationResult.Failure(errors.ToArray()) : ValidationResult.Success();
+                return errors.Any() ? ValidationResult.Failure(errors) : ValidationResult.Success();
         }
 
 
@@ -73,7 +73,7 @@ namespace eVote360.Core.Domain.Validators.PoliticalPartyValidator
                     errors.Add(PoliticalPartyError.PoliticalPartyAlreadyParticipated);
             }
 
-            return errors.Any() ? ValidationResult.Failure(errors.ToArray()) : ValidationResult.Success();
+            return errors.Any() ? ValidationResult.Failure(errors) : ValidationResult.Success();
         }
         
 
