@@ -1,0 +1,20 @@
+﻿using eVote360.Core.Domain.Validators.ElectivePositionValidator;
+using Microsoft.Extensions.DependencyInjection;
+
+namespace eVote360.IOC.Dependencies
+{
+    public static class DomainDependencies
+    {
+
+        public static IServiceCollection AddDomainDependencies(this IServiceCollection services)
+        {
+
+            //Elective Poisitions
+            services.AddScoped<IElectivePositionsValidator, ElectivePositionsValidator>();
+
+            //.....
+
+            return services;
+        }
+    }
+}
