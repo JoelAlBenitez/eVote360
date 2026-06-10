@@ -7,6 +7,7 @@ using eVote360.Core.Domain.Entities.Candidate;
 using eVote360.Core.Domain.Entities.Candidate.ValueObjects;
 using eVote360.Core.Domain.Validators.CandidateValidator;
 
+
 namespace eVote360.Core.Application.Services.Candidates
 {
 
@@ -82,22 +83,90 @@ namespace eVote360.Core.Application.Services.Candidates
                 return ValidationResult.Failure(new Domain.Common.Errors.Error("Error inesperado", ex.Message));
             }
         }
-        public Task<ValidationResult> ChangeStateAsync(int candidateId, int PartyId)
+        public async Task<ValidationResult> ChangeStateAsync(int candidateId, int PartyId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var candidateById = await _candidateRepository.GetByIdEntitie(candidateId);
+                if (candidateById == null)
+                    return ValidationResult.Failure(CandidatesError.DataInvalid);
+
+                if (candidateById.PoliticalPartyId != PartyId)
+                    return ValidationResult.Failure(CandidatesError.CandidateNotBelongsToParty);
+
+                var validation = await _candidateValidator.ValidateChangeStateAsync(candidateId);
+                if (!validation.IsValid) return validation;
+
+                var change = await _candidateRepository.DesactiveEntitie(candidateId);
+                if (!change) return ValidationResult.Failure(CandidatesError.DataInvalid);
+
+                return ValidationResult.Success();
+            }
+            catch (Exception ex)
+            {
+                return ValidationResult.Failure(new Domain.Common.Errors.Error("Error inesperado", ex.Message));
+            }
+
         }
 
-      
-
-        public Task<IEnumerable<CandidateDTO>> GetAllPartyAsync(int PartyId)
+        public async Task<CandidateDTO> GetByIdAsync(int candidateId, int partyId)
         {
-            throw new NotImplementedException();
+
+            var candidateById = await _candidateRepository.GetByIdEntitie(candidateId);
+
+            if (candidateById == null)
+            {
+                return null;
+            }
+
+            if (candidateById.PoliticalPartyId != partyId) return null;
+
+            var DtoCandidate = new CandidateDTO
+
+            {
+     
+                Name = candidateById.Name.Name,
+                LastName = candidateById.Name.LastName,
+                PhotoUrl = candidateById.PhotoUrl?.PhotoUrl,
+                State = candidateById.IsActive,
+                PoliticalPartyId = candidateById.PoliticalPartyId,
+                HasParticipatedInElection = candidateById.HasParticipatedInElection,
+                CreateAt = candidateById.CreateAt,
+                CreateUserId = candidateById.CreateUserId
+
+
+
+            };
+
+            return DtoCandidate;
         }
 
-        public Task<CandidateDTO> GetByIdAsync(int candidateId, int partyId)
+        public async Task<IEnumerable<CandidateDTO>> GetAllPartyAsync(int PartyId)
         {
-            throw new NotImplementedException();
+            var AllGetCandidateParty = await _candidateRepository.GetAllByPartyIdAsync(PartyId);
+
+            var candidateList = new List<CandidateDTO>();
+
+            foreach (var item in AllGetCandidateParty)
+            {
+                var candidateDTO = new CandidateDTO
+                {
+                    Name = item.Name.Name,
+                    LastName = item.Name.LastName,
+                    PhotoUrl = item.PhotoUrl?.PhotoUrl,
+                    State = item.IsActive,
+                    PoliticalPartyId = item.PoliticalPartyId,
+                    HasParticipatedInElection = item.HasParticipatedInElection,
+                    CreateAt = item.CreateAt,
+                    CreateUserId = item.CreateUserId
+
+                };
+                candidateList.Add(candidateDTO);
+            }
+            return candidateList;
         }
+
+       
 
      
     }

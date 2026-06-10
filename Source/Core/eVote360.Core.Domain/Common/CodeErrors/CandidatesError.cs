@@ -4,7 +4,7 @@ namespace eVote360.Core.Domain.Common.CodeErrors
     public static class CandidatesError
     {
         public static Error NameInvalid
-             => new Error("Nombre inválido", "El nombre del candidato no puede estar vacío y solo debe contener letras.");
+                   => new Error("Nombre inválido", "El nombre del candidato no puede estar vacío y solo debe contener letras.");
 
 
         public static Error LastNameInvalid => new Error("Apellido inválido", "El apellido del candidato no puede estar vacío y solo debe contener letras.");
@@ -25,5 +25,12 @@ namespace eVote360.Core.Domain.Common.CodeErrors
 
         public static Error NameAlreadyExists
     => new Error("Nombre duplicado", "Ya existe un candidato con ese nombre y apellido en el partido.");
+
+
+        public static Error CandidateNotBelongsToParty
+                    => new Error("Acceso denegado", "El candidato no pertenece a su partido político.");
+
+
+
     }
 }

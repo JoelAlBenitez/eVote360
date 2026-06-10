@@ -54,6 +54,7 @@ namespace eVote360.Core.Domain.Validators.CandidateValidator
                 return ValidationResult.Failure(CandidatesError.CandidateAssignedToPosition);
 
             return ValidationResult.Success();
+
         }
     }
 }
