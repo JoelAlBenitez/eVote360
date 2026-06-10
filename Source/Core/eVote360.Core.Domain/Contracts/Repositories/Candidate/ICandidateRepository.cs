@@ -1,9 +1,10 @@
 ﻿using eVote360.Core.Domain.Contracts.Repositories.BaseRepository;
+using eVote360.Core.Domain.Entities.Candidate;
 
 namespace eVote360.Core.Domain.Contracts.Repositories.Candidate
 {
-    public interface ICandidateRepository : IBaseRepository<Entities.Candidate.Candidate, int>
+    public interface ICandidateRepository : IBaseRepository<Candidates, int>
     {
-        Task<IEnumerable<Entities.Candidate.Candidate>> GetAllByPartyIdAsync(int partyId);
+        Task<IEnumerable<Candidates>> GetAllByPartyIdAsync(int partyId);
     }
 }

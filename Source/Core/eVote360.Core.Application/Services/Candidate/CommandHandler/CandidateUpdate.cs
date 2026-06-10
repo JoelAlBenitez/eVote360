@@ -1,9 +1,10 @@
-using eVote360.Core.Application.Contracts.Candidate.Commands;
+﻿using eVote360.Core.Application.Contracts.Candidate.Commands;
 using eVote360.Core.Application.Contracts.Services;
 using eVote360.Core.Application.DTOs.Candidates;
 using eVote360.Core.Domain.Common.CodeErrors;
 using eVote360.Core.Domain.Common.ValidationResult;
 using eVote360.Core.Domain.Contracts.Repositories.Candidate;
+using eVote360.Core.Domain.Entities.Candidate;
 using eVote360.Core.Domain.Entities.Candidate.ValueObjects;
 using eVote360.Core.Domain.Validators.CandidateValidator;
 
@@ -32,23 +33,22 @@ namespace eVote360.Core.Application.Services.Candidate.CommandHandler
             {
                 if (dto == null) return ValidationResult.Failure(CandidatesError.DataInvalid);
 
-                var CandidateById = await _candidateRepository.GetByIdEntitie(dto.Id);
-                if (CandidateById == null)
+                var candidateById = await _candidateRepository.GetByIdEntitie(dto.Id);
+                if (candidateById == null)
                     return ValidationResult.Failure(CandidatesError.DataInvalid);
 
                 var validation = await _candidateValidator.ValidateUpdateAsync(dto.Id, dto.Name, dto.LastName, PartyId);
                 if (!validation.IsValid) return validation;
 
-                CandidateById.Name = new FullName(dto.Name, dto.LastName);
+                candidateById.Name = new FullName(dto.Name, dto.LastName);
 
-                // Procesamiento de la foto en la actualización
                 if (dto.PhotoUrl != null)
                 {
                     string photoPath = await _fileStorageService.SaveFileAsync(dto.PhotoUrl, "candidates");
-                    CandidateById.PhotoUrl = new CandidatePhoto(photoPath);
+                    candidateById.PhotoUrl = new CandidatePhoto(photoPath);
                 }
 
-                var update = await _candidateRepository.UpdateEntitieAsync(CandidateById);
+                var update = await _candidateRepository.UpdateEntitieAsync(candidateById);
                 if (!update) 
                 {
                     _errors.Add(CandidatesError.DataInvalid);

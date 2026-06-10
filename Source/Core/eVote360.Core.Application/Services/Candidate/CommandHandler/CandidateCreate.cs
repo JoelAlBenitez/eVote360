@@ -1,4 +1,4 @@
-using eVote360.Core.Application.Contracts.Candidate.Commands;
+﻿using eVote360.Core.Application.Contracts.Candidate.Commands;
 using eVote360.Core.Application.Contracts.Services;
 using eVote360.Core.Application.DTOs.Candidates;
 using eVote360.Core.Domain.Common.CodeErrors;
@@ -39,7 +39,7 @@ namespace eVote360.Core.Application.Services.Candidate.CommandHandler
                     photoPath = await _fileStorageService.SaveFileAsync(dto.PhotoUrl, "candidates");
                 }
 
-                var candidate = new eVote360.Core.Domain.Entities.Candidate.Candidate
+                var candidate = new Candidates
                 {
                     Name = new FullName(dto.Name, dto.LastName),
                     PhotoUrl = new CandidatePhoto(photoPath),

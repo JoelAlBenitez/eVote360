@@ -1,4 +1,4 @@
-using eVote360.Core.Application.Contracts.Candidate.Query;
+﻿using eVote360.Core.Application.Contracts.Candidate.Query;
 using eVote360.Core.Application.DTOs.Candidates;
 using eVote360.Core.Domain.Contracts.Repositories.Candidate;
 
