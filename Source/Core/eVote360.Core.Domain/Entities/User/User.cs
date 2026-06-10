@@ -17,6 +17,6 @@ namespace eVote360.Core.Domain.Entities.User
 
         public required bool UserState { get; set; }   
 
-        private User() { }
+        public User() { }
     }
 }
