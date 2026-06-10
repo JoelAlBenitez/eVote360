@@ -102,6 +102,30 @@ namespace eVote360.Presentation.EVote360.Controllers.ElectivePosictions
         }
 
         [HttpGet]
+        public async Task<IActionResult> GetElectivePosiction(int Id)
+        {
+            var elective = await _electivePosictionsGetByIdQuery.GetAllById(Id);
+            if (!elective.IsValid)
+            {
+                if (!elective.IsValid)
+                {
+                    foreach (var item in elective.errors)
+                    {
+                        ModelState.AddModelError(item.Code, item.Description);
+                    }
+                    return RedirectToAction(nameof(Index));
+                }
+            }
+
+            var vm = new ElectivePosictionsViewModel { 
+                Id = elective.Value!.Id,
+                Name = elective.Value.Name,
+                Description = elective.Value.Descriptions,
+                State = elective.Value.State
+            };
+
+            return PartialView("_ViewElectivPosiction", vm);
+        }
 
         public async Task <IActionResult> Create()
         {
