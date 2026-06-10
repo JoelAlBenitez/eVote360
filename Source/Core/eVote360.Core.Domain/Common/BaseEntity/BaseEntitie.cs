@@ -2,15 +2,23 @@
 {
     public abstract class BaseEntitie <Tkey, TName> 
     {
-        public required Tkey Id { get; set; }
+        public Tkey? Id { get; set; }
         public required TName Name {get ; set; }
+<<<<<<< HEAD
 
         
 
         public required DateTimeOffset CreateAt { get; set; }
+=======
+        public DateTimeOffset? CreateAt { get; set; }
+>>>>>>> development
         public DateTimeOffset? UpdateAt { get; set; }
-        public required int CreateUserId { get; set; }
+        public int? CreateUserId { get; set; }
         public int? UpdateUserId { get; set; }
+<<<<<<< HEAD
+=======
+        public required bool State { get; set; }
+>>>>>>> development
 
     }
 }

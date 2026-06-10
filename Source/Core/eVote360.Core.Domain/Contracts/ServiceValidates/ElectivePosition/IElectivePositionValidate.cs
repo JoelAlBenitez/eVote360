@@ -1,6 +1,6 @@
 ﻿namespace eVote360.Core.Domain.Contracts.DomainService.ElectivePosition
 {
-    public interface IElectivePositionDomainService
+    public interface IElectivePositionValidate
     {
         Task<bool> ExistElectivePositionByName(string Name);
         Task<bool> ElectivePositionUsedInElections(int Id, string Name);
