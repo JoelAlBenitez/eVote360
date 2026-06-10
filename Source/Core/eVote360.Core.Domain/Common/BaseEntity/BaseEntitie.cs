@@ -8,5 +8,7 @@
         public DateTimeOffset? UpdateAt { get; set; }
         public int? CreateUserId { get; set; }
         public int? UpdateUserId { get; set; }
+        public required bool State { get; set; }
+
     }
 }

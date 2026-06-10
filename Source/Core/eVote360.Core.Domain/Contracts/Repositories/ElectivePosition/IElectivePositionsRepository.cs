@@ -7,6 +7,6 @@ namespace eVote360.Core.Domain.Contracts.Repositories.ElectivePosition
     {
         Task<IReadOnlyCollection<ElectivePositions>> GetAllAsync();
         Task<IReadOnlyCollection<ElectivePositions>> GetAllActiveAsync();
-        Task<IReadOnlyCollection<ElectivePositions>> GetAllDateAsync(DateTimeOffset dateStart, DateTimeOffset dateEnd);
+        Task<IReadOnlyCollection<ElectivePositions>> GetAllDateAsync(DateTimeOffset? dateStart, DateTimeOffset? dateEnd);
     }
 }

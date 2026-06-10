@@ -18,7 +18,7 @@ namespace eVote360.Core.Application.Services.ElectivePosiction.Query
           
         }
 
-        public async Task<IReadOnlyCollection<ElectivePosictionsDto>> GetElectivePosictionsByDate(DateTimeOffset dateStart, DateTimeOffset dateEnd)
+        public async Task<IReadOnlyCollection<ElectivePosictionsDto>> GetElectivePosictionsByDate(DateTimeOffset? dateStart, DateTimeOffset? dateEnd)
         {
             try
             {
