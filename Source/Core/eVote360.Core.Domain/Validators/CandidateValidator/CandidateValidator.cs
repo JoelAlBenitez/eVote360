@@ -1,6 +1,6 @@
 ﻿using eVote360.Core.Domain.Common.CodeErrors;
 using eVote360.Core.Domain.Common.ValidationResult;
-using eVote360.Core.Domain.Contracts.DomainService.Canditate;
+using eVote360.Core.Domain.Contracts.DomainService.Candidate;
 
 namespace eVote360.Core.Domain.Validators.CandidateValidator
 {
@@ -34,7 +34,7 @@ namespace eVote360.Core.Domain.Validators.CandidateValidator
 
             var hasParticipated = await _candidateDomainService.CandidateHasParticipatedInElection(candidateId);
             if (hasParticipated)
-                return ValidationResult.Failure(CandidatesError.CandidateHasParticipatedElection);
+                return ValidationResult.Failure(CandidatesError.CandidateHasParticipatedInElection);
 
             var nameExists = await _candidateDomainService.CandidateNameExistsInParty(name, lastName, partyId, candidateId);
             if (nameExists)

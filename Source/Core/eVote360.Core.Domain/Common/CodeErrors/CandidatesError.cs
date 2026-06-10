@@ -11,7 +11,7 @@ namespace eVote360.Core.Domain.Common.CodeErrors
 
         public static Error PhotoInvalid => new Error("Foto inválida", "La foto del candidato es obligatoria y debe ser un archivo .jpg, .jpeg o .png.");
 
-        public static Error CandidateHasParticipatedElection => new Error("Candidato con historial electoral", "No se pueden modificar los datos de un candidato que ya ha participado en procesos electorales pasados.");
+        public static Error CandidateHasParticipatedInElection => new Error("Candidato con historial electoral", "No se pueden modificar los datos de un candidato que ya ha participado en procesos electorales pasados.");
 
         public static Error ActiveElectionExists => new Error("Elección activa", "No se pueden realizar operaciones de mantenimiento mientras exista una elección en curso.");
 
