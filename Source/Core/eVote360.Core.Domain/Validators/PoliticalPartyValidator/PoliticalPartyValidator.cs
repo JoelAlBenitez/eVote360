@@ -2,6 +2,7 @@
 using eVote360.Core.Domain.Common.CodeErrors;
 using eVote360.Core.Domain.Common.ValidationResult;
 using eVote360.Core.Domain.Common.Errors;
+using System.ComponentModel;
 
 namespace eVote360.Core.Domain.Validators.PoliticalPartyValidator
 {
@@ -14,6 +15,27 @@ namespace eVote360.Core.Domain.Validators.PoliticalPartyValidator
             _service = service;
         }
 
+        public async Task<ValidationResult> ValidateAlterState(int partyId)
+        {
+            var errors = new List<Error>();
+
+            var exists = await _service.GetByIdEntitie(partyId);
+            if (exists == null) {
+                errors.Add(new Error("Partido Politico", "El partido politico no existe"));
+                return ValidationResult.Failure(errors.ToArray());
+            }
+
+          /*  var isElectionActive = await _electionService.ExistActiveElecion();
+            if (isElectionActive)
+            {
+                errors.Add(PoliticalPartyError.CantDesactivateDuringElection);
+                return ValidationResult.Failure(errors.ToArray());
+            }
+          */
+
+
+            return errors.Any() ? ValidationResult.Failure(errors.ToArray()) : ValidationResult.Success();
+        }
 
         public async Task<ValidationResult> ValidateCreate(Entities.PoliticalParty.PoliticalParty party)
         {

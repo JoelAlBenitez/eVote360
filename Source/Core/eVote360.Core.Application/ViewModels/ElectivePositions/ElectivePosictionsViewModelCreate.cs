@@ -5,7 +5,7 @@ namespace eVote360.Core.Application.ViewModels.ElectivePositions
     {
         [Display(Name = "Nombre")]
         [Required(ErrorMessage = "Se requiere un nombre valido")]
-        [StringLength(30, MinimumLength = 5, ErrorMessage = "Ingrese un nombre mayor a 5 caracteres y no mayor a 30")
+        [StringLength(30, MinimumLength = 5, ErrorMessage = "Ingrese un nombre mayor a 5 caracteres y no mayor a 30")]
         public required string Name { get; set; }
 
         [Display(Name = "Descripción")]

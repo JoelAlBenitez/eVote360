@@ -7,5 +7,6 @@ namespace eVote360.Core.Domain.Validators.PoliticalPartyValidator
     {
         Task<ValidationResult> ValidateCreate(PoliticalParty party);
         Task<ValidationResult> ValidateUpdate(PoliticalParty party);
+        Task<ValidationResult> ValidateAlterState(int party);
     }
 }

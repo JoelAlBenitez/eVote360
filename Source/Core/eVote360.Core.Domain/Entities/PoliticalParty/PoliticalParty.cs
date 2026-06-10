@@ -12,10 +12,10 @@ namespace eVote360.Core.Domain.Entities.PoliticalParty
 {
     public class PoliticalParty : BaseEntitie<int, string>
     {
-        public string PoliticalPartyDescription { get; set; }
-        public PoliticalPartyAcronym PoliticalPartyAcronym { get; set; }
-        public string PoliticalPartyLogo { get; set; }
-        public bool PoliticalPartyState { get; set; }
-        private PoliticalParty(){ }
+        public required string PoliticalPartyDescription { get; set; }
+        public required PoliticalPartyAcronym PoliticalPartyAcronym { get; set; }
+        public required string PoliticalPartyLogo { get; set; }
+        public required bool PoliticalPartyState { get; set; }
+        public PoliticalParty(){ }
     }
 }
