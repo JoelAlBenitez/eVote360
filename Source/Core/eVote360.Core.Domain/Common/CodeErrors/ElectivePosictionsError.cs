@@ -7,7 +7,10 @@ namespace eVote360.Core.Domain.Common.CodeErrors
         public static Error ElectivePosictionByEleccionsActive
             => new Error("Modificaciones no permitidas", "No se puede modificar el puesto si hay eleccciones activas.");
         public static Error NameInvalid
+            => new Error("Nombre no permitido", "El nombre a intentar registrar no es permitido, el mismo solo puede contener letras y no tener longitud mayor a 30 caracteres.");
+        public static Error ExistElectivePosictions
             => new Error("Puesto ya registrado", "El nombre ya existe en el sistema por lo que uso no es valido.");
+
         public static Error ElectivePosictionHasAssociatedByCandidates
             => new Error("Puesto con candidactos", "Mientras existan candidactos asociados al puesto el mismo no se puede desactivar.");
         public static Error DataInvalid
@@ -24,5 +27,7 @@ namespace eVote360.Core.Domain.Common.CodeErrors
             => new Error("Cambios no validos", "El nombre de este puesto electivo se encuentra asociado a otro registro, favor verificar la información.");
         public static Error NonExistentElectivePosition
             => new Error("Inexistencia de Puesto Electivo", "El puesto electivo en el que ha intentado operar no existe en el sistema.");
+        public static Error StateNotValid
+            => new Error("Estado inicial invalido", "El estado inicial del puesto electivo debe ser marcado como activo de manera obligatoria.");
     }
 }

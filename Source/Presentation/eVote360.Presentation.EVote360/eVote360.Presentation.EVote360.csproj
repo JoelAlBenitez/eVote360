@@ -6,4 +6,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\eVote360.Core.Application\eVote360.Core.Application.csproj" />
+  </ItemGroup>
+
 </Project>
