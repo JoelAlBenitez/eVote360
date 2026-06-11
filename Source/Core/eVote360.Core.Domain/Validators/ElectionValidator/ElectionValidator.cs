@@ -2,7 +2,7 @@
 using eVote360.Core.Domain.Common.Errors;
 using eVote360.Core.Domain.Common.ValidationResult;
 using eVote360.Core.Domain.Contracts.DomainService.Election;
-using eVote360.Core.Domain.Enums;
+using eVote360.Core.Domain.Common.Enums;
 using eVote360.Core.Domain.ValueObjects;
 
 namespace eVote360.Core.Domain.Validators.ElectionValidator
@@ -26,7 +26,7 @@ namespace eVote360.Core.Domain.Validators.ElectionValidator
             };
 
             errors.AddRange(validations.Where(v => v != null));
-            return errors.Any() ? ValidationResult.Failure(errors.ToArray()) : ValidationResult.Success(); ;
+            return errors.Any() ? ValidationResult.Failure(errors) : ValidationResult.Success(); ;
         }
 
         private async Task<Error> ExistActiveElection(int id)
