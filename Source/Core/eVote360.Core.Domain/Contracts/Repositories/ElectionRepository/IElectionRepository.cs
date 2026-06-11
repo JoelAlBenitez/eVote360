@@ -12,5 +12,7 @@ namespace eVote360.Core.Domain.Contracts.Repositories.ElectionRepository
     {
         Task<IEnumerable<Election>> GetAllElectionsAsync();
         Task<Election?> GetActivateElectionAsync();
+
+        Task<bool> DeactivateElectionAsync(int id);
     }
 }
