@@ -7,6 +7,7 @@ using ElectionEntity = eVote360.Core.Domain.Entities.Election.Election;
 using ElectionEnum = eVote360.Core.Domain.Common.Enums.ElectionState;
 using ElectionDate = eVote360.Core.Domain.ValueObjects.ElectionDate;
 using eVote360.Core.Domain.Validators.ElectionValidator;
+using eVote360.Core.Domain.Common.Errors;
 
 namespace eVote360.Core.Application.Services.Election.CommandHandler
 {
@@ -23,6 +24,11 @@ namespace eVote360.Core.Application.Services.Election.CommandHandler
 
         public async Task<ValidationResult> ExecuteAsync(ElectionDto dto)
         {
+            if (dto.Id ==null)
+            {
+                var errors = new List<Error> { new Error("ID ELECCION", "El Id es requerido para actualizar") };
+                return ValidationResult.Failure(errors);
+            }
             var election = new ElectionEntity
             {
                 Id = dto.Id,
