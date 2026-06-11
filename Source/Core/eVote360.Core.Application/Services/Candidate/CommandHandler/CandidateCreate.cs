@@ -5,7 +5,7 @@ using eVote360.Core.Domain.Common.CodeErrors;
 using eVote360.Core.Domain.Common.ValidationResult;
 using eVote360.Core.Domain.Contracts.Repositories.Candidate;
 using eVote360.Core.Domain.Entities.Candidate;
-using eVote360.Core.Domain.Entities.Candidate.ValueObjects;
+using eVote360.Core.Domain.ValueObjects;
 using eVote360.Core.Domain.Validators.CandidateValidator;
 
 namespace eVote360.Core.Application.Services.Candidate.CommandHandler

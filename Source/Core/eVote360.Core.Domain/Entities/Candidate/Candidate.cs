@@ -1,5 +1,5 @@
 ﻿using eVote360.Core.Domain.Commom.BaseEntity;
-using eVote360.Core.Domain.Entities.Candidate.ValueObjects;
+using eVote360.Core.Domain.ValueObjects;
 
 namespace eVote360.Core.Domain.Entities.Candidate
 {

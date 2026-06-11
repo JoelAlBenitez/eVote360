@@ -3,7 +3,7 @@ using System;
 using System.IO;
 using System.Linq;
 
-namespace eVote360.Core.Domain.Entities.Candidate.ValueObjects
+namespace eVote360.Core.Domain.ValueObjects
 {
     public sealed record CandidatePhoto
     {
