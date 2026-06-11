@@ -4,7 +4,7 @@ using eVote360.Core.Domain.Settings.ValueObjects.Identifications;
 
 namespace eVote360.Core.Domain.Entities.Citizens
 {
-    public class Citizen : BaseEntitie<int, string>
+    public class Citizen : BaseEntitie<Guid, string>
     {
         public required string LastName { get; set; }
         public required Email Email { get; set; }
