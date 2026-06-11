@@ -17,7 +17,7 @@ namespace eVote360.Core.Application.ViewModels.Election
         [Required(ErrorMessage = "Se requiere un nombre valido")]
         [StringLength(30, MinimumLength = 5, ErrorMessage = "Ingrese un nombre de eleccion mayor a 5 caracteres y no mayor a 30")]
 
-        public string ElectionName { get; set; }
+        public string? ElectionName { get; set; }
 
         [Display(Name = "Fecha de Eleccion")]
         [Required(ErrorMessage = "Se requiere una fecha valida")]

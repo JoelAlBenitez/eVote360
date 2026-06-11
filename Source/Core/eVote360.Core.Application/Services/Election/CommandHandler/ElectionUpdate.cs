@@ -24,7 +24,7 @@ namespace eVote360.Core.Application.Services.Election.CommandHandler
 
         public async Task<ValidationResult> ExecuteAsync(ElectionDto dto)
         {
-            if (dto.Id ==null)
+            if (dto?.Id ==null)
             {
                 var errors = new List<Error> { new Error("ID ELECCION", "El Id es requerido para actualizar") };
                 return ValidationResult.Failure(errors);
