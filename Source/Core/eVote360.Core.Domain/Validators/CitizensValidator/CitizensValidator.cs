@@ -109,7 +109,7 @@ namespace eVote360.Core.Domain.Validators.CitizensValidator
             if (validateLastName != null) _errors.Add(CitizenErrors.LastNameNoValid);
 
             var exitsCitizenByEmail = await _citizensServiceValidate.ExistCitizensByEmail(citizen.Email.Value);
-            if (exitsCitizenByEmail || exitsCitizenByIdentification) _errors.Add(CitizenErrors.ExistCitizen);
+            if (exitsCitizenByEmail) _errors.Add(CitizenErrors.ExistEmail);
 
 
             return _errors.Any() ? ValidationResult.Failure(_errors) : ValidationResult.Success();
