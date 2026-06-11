@@ -1,6 +1,5 @@
 ﻿using eVote360.Core.Domain.Contracts.DomainService.User;
 using eVote360.Core.Domain.Common.ValidationResult;
-using eVote360.Core.Domain.Contracts.DomainService.User;
 using eVote360.Core.Domain.Common.CodeErrors;
 using eVote360.Core.Domain.Common.Errors;
 using Enums = eVote360.Core.Domain.Common.Enums;
@@ -26,9 +25,9 @@ namespace eVote360.Core.Domain.Validators.UserValidator
 
         await ValidateUsername(user.Name),
         await ValidateEmail(user.UserEmail.Value),
-        await ValidateLastAdmin(user.Id, user.UserState == false),
+        await ValidateLastAdmin(user.Id, user.State == false),
         await ValidateNames(user.UserFirstName, user.UserLastName),
-        await ValidateSelfDesactivation(user.Id,currentUserId, user.UserState == false),
+        await ValidateSelfDesactivation(user.Id,currentUserId, user.State == false),
         await ValidatePassword(plainPassword)
         };
 
@@ -42,14 +41,14 @@ namespace eVote360.Core.Domain.Validators.UserValidator
         {
             var exists = await _userDomainService.ExistByUsernameAsync(username);
             if (exists) return UserErrors.UsernameAlreadyExist;
-            return null;
+            return null!;
         }
 
         private async Task<Error> ValidateEmail(string email)
         {
             var exists = await _userDomainService.ExistByEmailAsync(email);
             if (exists) return UserErrors.EmailAlreadyExist;
-            return null;
+            return null!;
         }
         private async Task<Error> ValidateLastAdmin(int userId, bool isDesactivating)
         {
@@ -57,14 +56,14 @@ namespace eVote360.Core.Domain.Validators.UserValidator
             var isLastAdmin = await _userDomainService.CountActiveAdminAsync();
             if (isLastAdmin <= 1) return UserErrors.LastAdminDesactivation;
             }
-            return null;
+            return null!;
         }
 
         private async Task<Error> ValidateNames(string firstName, string lastName)
         {
             if (string.IsNullOrWhiteSpace(firstName)) return UserErrors.FirstNameRequired;
             if (string.IsNullOrWhiteSpace(lastName)) return UserErrors.LastNameRequired;
-            return null;
+            return null!;
         }
 
         private async Task<Error> ValidateSelfDesactivation(int targetUserId, int currentUserId,bool isDesactivating)
@@ -73,7 +72,7 @@ namespace eVote360.Core.Domain.Validators.UserValidator
             {
                 return UserErrors.SelfDesactivation;
             }
-            return null;
+            return null!;
         }
 
         private async Task<Error> ValidatePassword(string PlainPassword)

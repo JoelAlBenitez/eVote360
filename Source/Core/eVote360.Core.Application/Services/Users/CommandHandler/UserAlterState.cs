@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace eVote360.Core.Application.Services.Users
+namespace eVote360.Core.Application.Services.Users.CommandHandler
 {
-    internal class UsersService
+    internal class UserAlterState
     {
     }
 }

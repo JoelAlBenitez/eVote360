@@ -14,9 +14,6 @@ namespace eVote360.Core.Domain.Entities.User
         public required UserPassword UserPassword { get; set; }
 
         public UserRole UserRole { get; set; }
-
-        public required bool UserState { get; set; }   
-
         public User() { }
     }
 }

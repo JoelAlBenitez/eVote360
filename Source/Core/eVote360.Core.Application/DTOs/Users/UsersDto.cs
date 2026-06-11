@@ -21,5 +21,13 @@ namespace eVote360.Core.Application.DTOs.Users
         public required string UserPassword { get; set; }
 
         public UserRole UserRole { get; set; }
+
+        public DateTimeOffset? CreateAt { get; set; }
+
+        public  DateTimeOffset? UpdateAt { get; set; }
+
+        public  int? CreateUserId { get; set; }
+
+        public  int? UpdateUserId { get; set; }
     }
 }
