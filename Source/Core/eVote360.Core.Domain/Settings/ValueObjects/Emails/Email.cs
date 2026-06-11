@@ -1,0 +1,18 @@
+﻿using System.Text.RegularExpressions;
+
+namespace eVote360.Core.Domain.Settings.ValueObjects.Emails
+{
+    public sealed record  Email
+    {
+        public string Value { get; }
+        private Email() { }
+        public Email(string value) { 
+        
+            if(string.IsNullOrEmpty(value.Trim()) || value.Length > 254 ) 
+                throw new ArgumentNullException("Error : Email no valido ingresado.");
+            if (!Regex.IsMatch("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}", value.Trim()))
+                throw new ArgumentException("Error: Email ingresado no tiene un formato valido.");
+            Value = value;
+        }
+    }
+}
