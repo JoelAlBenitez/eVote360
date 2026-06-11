@@ -25,7 +25,7 @@ namespace eVote360.Core.Domain.Validators.PoliticalAssignment
                await validatePoliticalLeader(politicalAssignment.PoliticalLeaderId),
             };
             errors.AddRange(validations.Where(v => v != null));
-            return errors.Any() ? ValidationResult.Failure(errors.ToArray()) : ValidationResult.Success();
+            return errors.Any() ? ValidationResult.Failure(errors) : ValidationResult.Success();
         }
 
         private async Task<Error> validatePoliticalLeader(int userId)
