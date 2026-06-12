@@ -4,9 +4,11 @@ using eVote360.Core.Application.DTOs.Candidates;
 using eVote360.Core.Domain.Common.CodeErrors;
 using eVote360.Core.Domain.Common.ValidationResult;
 using eVote360.Core.Domain.Contracts.Repositories.Candidate;
-using eVote360.Core.Domain.Entities.Candidate;
 using eVote360.Core.Domain.ValueObjects;
 using eVote360.Core.Domain.Validators.CandidateValidator;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace eVote360.Core.Application.Services.Candidate.CommandHandler
 {
@@ -37,6 +39,10 @@ namespace eVote360.Core.Application.Services.Candidate.CommandHandler
                 if (candidateById == null)
                     return ValidationResult.Failure(CandidatesError.DataInvalid);
 
+                // SEGURIDAD: Validacion de pertenencia al partido (Multi-tenant isolation)
+                if (candidateById.PoliticalPartyId != PartyId)
+                    return ValidationResult.Failure(CandidatesError.CandidateNotBelongsToParty);
+
                 var validation = await _candidateValidator.ValidateUpdateAsync(dto.Id, dto.Name, dto.LastName, PartyId);
                 if (!validation.IsValid) return validation;
 
@@ -45,8 +51,16 @@ namespace eVote360.Core.Application.Services.Candidate.CommandHandler
                 if (dto.PhotoUrl != null)
                 {
                     string photoPath = await _fileStorageService.SaveFileAsync(dto.PhotoUrl, "candidates");
+                    
+                    // ROBUSTEZ: Evitar excepcion en Value Object si el guardado falla
+                    if (string.IsNullOrWhiteSpace(photoPath))
+                        return ValidationResult.Failure(CandidatesError.PhotoInvalid);
+
                     candidateById.PhotoUrl = new CandidatePhoto(photoPath);
                 }
+
+                candidateById.UpdateAt = DateTimeOffset.UtcNow;
+                candidateById.UpdateUserId = 0; // TODO: Usar ID de sesion
 
                 var update = await _candidateRepository.UpdateEntitieAsync(candidateById);
                 if (!update) 
