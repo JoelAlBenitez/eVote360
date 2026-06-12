@@ -1,6 +1,6 @@
 ﻿using eVote360.Core.Domain.Common.CodeErrors;
 using eVote360.Core.Domain.Common.ValidationResult;
-using eVote360.Core.Domain.Contracts.DomainService.Candidate;
+using eVote360.Core.Domain.Contracts.ServiceValidates.Candidate;
 
 namespace eVote360.Core.Domain.Validators.CandidateValidator
 {

@@ -1,5 +1,4 @@
-﻿
-namespace eVote360.Core.Domain.Contracts.DomainService.Candidate
+﻿namespace eVote360.Core.Domain.Contracts.ServiceValidates.Candidate
 {
 
 
