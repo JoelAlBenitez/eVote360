@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36930.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eVote360.Core.Application", "eVote360.Core.Application.csproj", "{4ECD9263-C1DB-CEA2-D96A-0EA53DFE50D7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eVote360.Core.Domain", "..\eVote360.Core.Domain\eVote360.Core.Domain.csproj", "{A6B1CD78-C461-53CF-100C-2E50EDBED7FC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eVote360.Infraestructure.Persistence", "..\..\Infraestructure\eVote360.Infraestructure.Persistence\eVote360.Infraestructure.Persistence.csproj", "{4B77F795-3445-1708-C275-E9107726BF52}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eVote360.Presentation.EVote360", "..\..\Presentation\eVote360.Presentation.EVote360\eVote360.Presentation.EVote360.csproj", "{D1C61C1D-7C54-DB4D-B42D-FF7545E88C15}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infraestructure", "Infraestructure", "{6C020F53-64D2-4584-A8B8-A8213B2CBEB7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{59D347BF-E981-4866-85B4-9068C94A098C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4ECD9263-C1DB-CEA2-D96A-0EA53DFE50D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4ECD9263-C1DB-CEA2-D96A-0EA53DFE50D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4ECD9263-C1DB-CEA2-D96A-0EA53DFE50D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4ECD9263-C1DB-CEA2-D96A-0EA53DFE50D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A6B1CD78-C461-53CF-100C-2E50EDBED7FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6B1CD78-C461-53CF-100C-2E50EDBED7FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A6B1CD78-C461-53CF-100C-2E50EDBED7FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A6B1CD78-C461-53CF-100C-2E50EDBED7FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4B77F795-3445-1708-C275-E9107726BF52}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4B77F795-3445-1708-C275-E9107726BF52}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4B77F795-3445-1708-C275-E9107726BF52}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4B77F795-3445-1708-C275-E9107726BF52}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D1C61C1D-7C54-DB4D-B42D-FF7545E88C15}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1C61C1D-7C54-DB4D-B42D-FF7545E88C15}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1C61C1D-7C54-DB4D-B42D-FF7545E88C15}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1C61C1D-7C54-DB4D-B42D-FF7545E88C15}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{4ECD9263-C1DB-CEA2-D96A-0EA53DFE50D7} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{A6B1CD78-C461-53CF-100C-2E50EDBED7FC} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{4B77F795-3445-1708-C275-E9107726BF52} = {6C020F53-64D2-4584-A8B8-A8213B2CBEB7}
+		{D1C61C1D-7C54-DB4D-B42D-FF7545E88C15} = {59D347BF-E981-4866-85B4-9068C94A098C}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6F124AFC-3BE5-4D3D-81F7-79FA5D739CF3}
+	EndGlobalSection
+EndGlobal
