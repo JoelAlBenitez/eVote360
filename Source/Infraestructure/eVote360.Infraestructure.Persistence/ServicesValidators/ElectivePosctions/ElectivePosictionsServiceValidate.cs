@@ -2,13 +2,13 @@
 using eVote360.Infraestructure.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 
-namespace eVote360.Infraestructure.Persistence.ServicesValidators
+namespace eVote360.Infraestructure.Persistence.ServicesValidators.ElectivePosctions
 {
-    public class ElectivePosictionsServiceValidator : IElectivePositionValidate
+    public class ElectivePosictionsServiceValidate : IElectivePositionValidate
     {
 
         private readonly DbContextEVote360 _context;
-        public ElectivePosictionsServiceValidator(DbContextEVote360 context)
+        public ElectivePosictionsServiceValidate(DbContextEVote360 context)
         {
             _context = context;
         }
