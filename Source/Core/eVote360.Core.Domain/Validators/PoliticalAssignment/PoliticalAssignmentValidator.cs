@@ -37,7 +37,7 @@ namespace eVote360.Core.Domain.Validators.PoliticalAssignment
             if (!UserIsActiveAsync) return PoliticalAssignmentError.UserIsNotActive;
 
             var UserAlreadyAssignedAsync = await _politicalAssignmentDomainService.UserAlreadyAssignedAsync(userId);
-            if (!UserAlreadyAssignedAsync) return PoliticalAssignmentError.HasAlreadyAnAssignment;
+            if (UserAlreadyAssignedAsync) return PoliticalAssignmentError.HasAlreadyAnAssignment;
 
             return null!;
         }
@@ -45,7 +45,7 @@ namespace eVote360.Core.Domain.Validators.PoliticalAssignment
         private async Task<Error> ValidatePoliticalParty(int partyId)
         {
             var isPartyActive = await _politicalAssignmentDomainService.IsPartyActiveAsync(partyId);
-            if (!isPartyActive) return PoliticalAssignmentError.HasAlreadyALeader;
+            if (!isPartyActive) return PoliticalAssignmentError.PartyIsNotActivated;
 
             var alreadyHasLeader = await _politicalAssignmentDomainService.PartyAlreadyHasLeaderAsync(partyId);
             if (alreadyHasLeader) return PoliticalAssignmentError.HasAlreadyALeader;

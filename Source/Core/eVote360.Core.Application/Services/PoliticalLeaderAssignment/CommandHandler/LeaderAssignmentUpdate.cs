@@ -10,7 +10,7 @@ using AssignmentEntity = eVote360.Core.Domain.Entities.PoliticalAssignment.Polit
 
 namespace eVote360.Core.Application.Services.PoliticalLeaderAssignment.CommandHandler
 {
-    public class LeaderAssignmentUpdate : ILeaderAssignmentUpdateCommand
+    public sealed class LeaderAssignmentUpdate : ILeaderAssignmentUpdateCommand
     {
        private readonly IPoliticalAssignmentRepository _repository;
        private readonly IPoliticalAssignmentValidator _validator;
@@ -39,12 +39,11 @@ namespace eVote360.Core.Application.Services.PoliticalLeaderAssignment.CommandHa
                 UpdateUserId = dto.UpdateUserId,
 
                 Name = dto.Name ?? "Asignacion Actualizada",
-                PoliticalAssignmentState = dto.State,
 
                 PoliticalLeaderId = dto.PoliticalLeaderId,
                 PoliticalPartyId = dto.PoliticalPartyId,
-                PoliticalAssignmentDate = dto.PoliticalAssignmentDate,
                 State = dto.State,
+                PolitcalAssignmentDate = dto.PoliticalAssignmentDate
             };
 
             var validationResult = await _validator.ValidatePoliticalAssignment(assignment);

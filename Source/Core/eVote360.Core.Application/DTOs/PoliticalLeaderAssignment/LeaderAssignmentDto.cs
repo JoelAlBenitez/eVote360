@@ -13,10 +13,10 @@ namespace eVote360.Core.Application.DTOs.PoliticalLeaderAssignment
 
         public required int PoliticalPartyId { get; set; }
 
-        public required DateTime PoliticalAssignmentDate { get; set; }
-
         public required DateTimeOffset? CreateAt { get; set; }
         public required DateTimeOffset? UpdateAt { get; set; }
+
+        public required DateTime PoliticalAssignmentDate { get; set; }
 
         public required int? CreateUserId { get; set; } 
 

@@ -14,10 +14,7 @@ namespace eVote360.Core.Domain.Entities.PoliticalAssignment
 
         public required int PoliticalPartyId { get; set; }
 
-        public required DateTime PoliticalAssignmentDate { get; set; }
-
-        public required bool PoliticalAssignmentState { get; set; }
-
+        public required DateTime PolitcalAssignmentDate {  get; set; }
         public PoliticalAssignment() { }
     }
 }

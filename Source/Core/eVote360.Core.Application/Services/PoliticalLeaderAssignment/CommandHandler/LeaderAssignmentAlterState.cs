@@ -9,7 +9,7 @@ using eVote360.Core.Domain.Validators.PoliticalAssignment;
 
 namespace eVote360.Core.Application.Services.PoliticalLeaderAssignment.CommandHandler
 {
-    public class LeaderAssignmentAlterState : ILeaderAssignmentAlterStateCommand
+    public sealed class LeaderAssignmentAlterState : ILeaderAssignmentAlterStateCommand
     {
         private readonly IPoliticalAssignmentRepository _repository;
 

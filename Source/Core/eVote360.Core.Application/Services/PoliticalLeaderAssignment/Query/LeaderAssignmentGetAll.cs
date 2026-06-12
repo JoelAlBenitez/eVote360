@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace eVote360.Core.Application.Services.PoliticalLeaderAssignment.Query
 {
-    public class LeaderAssignmentGetAll : ILeaderAssignmentGetAllQuery
+    public sealed class LeaderAssignmentGetAll : ILeaderAssignmentGetAllQuery
     {
         private readonly IPoliticalAssignmentRepository _repository;
 
@@ -22,14 +22,14 @@ namespace eVote360.Core.Application.Services.PoliticalLeaderAssignment.Query
             {
                 Id = a.Id,
                 Name = a.Name,
-                State = a.PoliticalAssignmentState,
                 PoliticalLeaderId = a.PoliticalLeaderId,
                 PoliticalPartyId = a.PoliticalPartyId,
-                PoliticalAssignmentDate = a.PoliticalAssignmentDate,
                 CreateAt = a.CreateAt,
                 CreateUserId = a.CreateUserId,
                 UpdateUserId = a.UpdateUserId,
                 UpdateAt = a.UpdateAt,
+                State = a.State,
+                PoliticalAssignmentDate = a.PolitcalAssignmentDate
 
             }).ToList().AsReadOnly();
         }
