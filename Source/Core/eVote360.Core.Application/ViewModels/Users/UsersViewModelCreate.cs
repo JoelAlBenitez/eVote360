@@ -23,10 +23,6 @@ namespace eVote360.Core.Application.ViewModels.Users
         [Required(ErrorMessage = "Se requiere un correo valido")]
         public required string UserEmail { get; set; }
 
-        [Display(Name = "Nombre de usuario")]
-        [Required(ErrorMessage = "Se requiere un nombre de usuario valido")]
-        public required string Username { get; set; }
-
         [Display(Name = "Contraseña")]
         [Required(ErrorMessage = "Se requiere una contraseña valida")]
         [StringLength(30, MinimumLength = 8, ErrorMessage = "Ingrese una contraseña mayor a 5 caracteres y no mayor a 30")]

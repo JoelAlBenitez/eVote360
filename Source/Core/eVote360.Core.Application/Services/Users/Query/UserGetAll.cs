@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace eVote360.Core.Application.Services.Users.Query
 {
-    public class UserGetAll : IUserGetAllQuery
+    public sealed class UserGetAll : IUserGetAllQuery
     {
         private readonly IUserRepository _userRepository;
 
@@ -27,8 +27,6 @@ namespace eVote360.Core.Application.Services.Users.Query
                 UpdateAt = u.UpdateAt,
                 CreateUserId = u.CreateUserId,
                 UpdateUserId = u.UpdateUserId,
-
-                Username = u.Name,
                 UserFirstName = u.UserFirstName,
                 UserLastName = u.UserLastName,
                 UserRole = u.UserRole,

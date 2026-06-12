@@ -9,7 +9,7 @@ using UserEntity = eVote360.Core.Domain.Entities.User.User;
 
 namespace eVote360.Core.Application.Services.Users.CommandHandler
 {
-    public class UserCreate : IUserCreateCommand
+    public sealed class UserCreate : IUserCreateCommand
     {
         private readonly IUserRepository _repository;
         private readonly IUserValidator _validator;

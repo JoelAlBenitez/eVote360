@@ -6,7 +6,7 @@ using eVote360.Core.Domain.Contracts.Repositories.UserRepository;
 
 namespace eVote360.Core.Application.Services.Users.Query
 {
-    public class UserGetById : IUserGetByIdQuery
+    public sealed class UserGetById : IUserGetByIdQuery
     {
         private readonly IUserRepository _repository;
 
@@ -33,7 +33,6 @@ namespace eVote360.Core.Application.Services.Users.Query
                 CreateUserId = userEntity.CreateUserId,
                 UpdateUserId = userEntity.UpdateUserId,
 
-                Username = userEntity.Name,
                 UserFirstName = userEntity.UserFirstName,
                 UserLastName = userEntity.UserLastName,
                 UserRole = userEntity.UserRole,

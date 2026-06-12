@@ -6,6 +6,6 @@ namespace eVote360.Core.Application.Contracts.Users.Commands
 {
     public interface IUserAlterStateCommand
     {
-        Task<ValidationResult> ExecuteAsync(UsersDto dto);
+        Task<ValidationResult> ExecuteAsync(int id, bool state);
     }
 }

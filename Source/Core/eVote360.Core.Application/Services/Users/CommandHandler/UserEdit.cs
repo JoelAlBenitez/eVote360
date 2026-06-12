@@ -1,6 +1,7 @@
 ﻿using eVote360.Core.Application.Contracts.Users;
 using eVote360.Core.Application.Contracts.Users.Commands;
 using eVote360.Core.Application.DTOs.Users;
+using eVote360.Core.Domain.Common.Errors;
 using eVote360.Core.Domain.Common.ValidationResult;
 using eVote360.Core.Domain.Contracts.Repositories.UserRepository;
 using eVote360.Core.Domain.Validators.UserValidator;
@@ -10,7 +11,7 @@ using UserEntity = eVote360.Core.Domain.Entities.User.User;
 
 namespace eVote360.Core.Application.Services.Users.CommandHandler
 {
-    public class UserEdit : IUserEditCommand
+    public sealed class UserEdit : IUserEditCommand
     {
         private readonly IUserRepository _repository;
         private readonly IUserValidator _validator;
@@ -27,10 +28,15 @@ namespace eVote360.Core.Application.Services.Users.CommandHandler
         {
             string hashedPassword = _passwordService.HashPassword(dto.UserPassword);
 
+            if (dto.Id == null || dto.Id <= 0) { 
+                var errors = new List<Error> { new Error ("EDIT ID", "El Id del usuario no existe o es invalido") };
+            return ValidationResult.Failure(errors);
+            }
+
             var user = new UserEntity
             {
 
-                Id = dto.Id!,
+                Id = dto.Id,
                 CreateAt = dto.CreateAt,
                 CreateUserId = dto.CreateUserId,
                 State = dto.State,

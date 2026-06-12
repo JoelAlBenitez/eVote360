@@ -15,8 +15,6 @@ namespace eVote360.Core.Application.DTOs.Users
 
         public required string UserLastName { get; set; }
 
-        public required string Username { get; set; }
-
         public required string UserEmail { get; set; }
         public required string UserPassword { get; set; }
 
