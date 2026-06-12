@@ -10,7 +10,7 @@ using eVote360.Core.Domain.Settings.ValueObjects.Emails;
 
 namespace eVote360.Core.Application.Services.Citizens.CommandHandler
 {
-    public class CitizensCreate : ICitizensCreateCommand
+    public  sealed class CitizensCreate : ICitizensCreateCommand
     {
        
         private readonly ICitizenRepository _citizenRepository;

@@ -4,6 +4,6 @@ namespace eVote360.Core.Application.Contracts.Citizens.Command
 {
     public interface ICitizensAlterStateCommand
     {
-        Task<ValidationResult> AlterStateAsync(Guid Id, string Identification);
+        Task<ValidationResult> AlterStateAsync(Guid Id);
     }
 }
