@@ -26,7 +26,7 @@ namespace eVote360.Core.Domain.Validators.ElectionValidator
             };
 
             errors.AddRange(validations.Where(v => v != null));
-            return errors.Any() ? ValidationResult.Failure(errors) : ValidationResult.Success(); ;
+            return errors.Any() ? ValidationResult.Failure(errors) : ValidationResult.Success();
         }
 
         private async Task<Error> ExistActiveElection(int id)
@@ -39,7 +39,7 @@ namespace eVote360.Core.Domain.Validators.ElectionValidator
         private async Task<Error> ValidateElectionDate(ElectionDate electionDate)
         {
             var validate = await _electionDomainService.ValidElectionDate(electionDate);
-            if (validate) return ElectionError.ElectionDateNotValid;
+            if (!validate) return ElectionError.ElectionDateNotValid;
             return null!;
         }
 
