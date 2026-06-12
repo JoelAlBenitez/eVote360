@@ -3,7 +3,15 @@ using eVote360.Core.Application.Contracts.ElectivePosictions.Query;
 using eVote360.Core.Application.Contracts.ElectivePosictions.QueryServices;
 using eVote360.Core.Application.Services.ElectivePosiction.CommandHandler;
 using eVote360.Core.Application.Services.ElectivePosiction.Query;
+<<<<<<< HEAD
 using Microsoft.Extensions.DependencyInjection;
+=======
+using eVote360.Core.Application.Services.Citizens.CommandHandler;
+using eVote360.Core.Application.Services.Citizens.Query;
+using Microsoft.Extensions.DependencyInjection;
+using eVote360.Core.Application.Contracts.Citizens.Command;
+using eVote360.Core.Application.Contracts.Citizens.Query;
+>>>>>>> origin/development
 
 namespace eVote360.IOC.Dependencies
 {
@@ -24,6 +32,18 @@ namespace eVote360.IOC.Dependencies
             services.AddScoped<IElectivePosictionsGetElectivesPosictionsByDateQuery, ElectivePosictionsGetElectivesPosictionsByDate>();
 
 
+<<<<<<< HEAD
+=======
+            //Citizens
+            services.AddScoped<ICitizensAlterStateCommand, CitizensAlterState>();
+            services.AddScoped<ICitizensCreateCommand, CitizensCreate>();
+            services.AddScoped<ICitizensEditCommand, CitizensUpdate>();
+
+            services.AddScoped<ICitizensGetActiveQuery, CitizensGetAllActive>();
+            services.AddScoped<ICitizensGetAllQuery, CitizensGetAll>();
+            services.AddScoped<ICitizensGetByIdQuery, CitizensGetById>();
+
+>>>>>>> origin/development
             return services;
         }
 
