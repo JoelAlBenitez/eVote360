@@ -2,7 +2,7 @@
 using eVote360.Core.Application.DTOs.PoliticalParty;
 using eVote360.Core.Domain.Contracts.Repositories.PoliticalParty;
 using eVote360.Core.Domain.Validators.PoliticalPartyValidator;
-using eVote360.Core.Domain.ValueObjects;
+using eVote360.Core.Domain.Settings.ValueObjects.PoliticalPartyAcronym;
 
 using PartyEntity = eVote360.Core.Domain.Entities.PoliticalParty.PoliticalParty;
 using Error = eVote360.Core.Domain.Common.Errors.Error;
@@ -25,30 +25,49 @@ namespace eVote360.Core.Application.Services.PoliticalParty.CommandHandler
 
         public async Task<ValidationResult> ExecuteAsync(PoliticalPartyDto dto)
         {
-            var party = new PartyEntity
+            var errors = new List<Error>();
+            try
             {
-                Id = dto.Id,
-                CreateAt = dto.CreateAt,
-                CreateUserId = 1,
+                if (dto.Id == null || dto.Id <= 0)
+                {
+                    errors.Add(new Error("", ""));
+                    return ValidationResult.Failure(errors);
+                }
 
-                Name = dto.Name!,
-                PoliticalPartyDescription = dto.PoliticalPartyDescription,
-                PoliticalPartyLogo = dto.PoliticalPartyLogo,
-                State = dto.State,
+                var party = new PartyEntity
+                {
+                    Id = dto.Id,
+                    CreateAt = dto.CreateAt,
+                    CreateUserId = 1,
 
-                UpdateAt = DateTime.UtcNow,
-                UpdateUserId = dto.UpdateUserId,
+                    Name = dto.Name!,
+                    PoliticalPartyDescription = dto.PoliticalPartyDescription,
+                    PoliticalPartyLogo = dto.PoliticalPartyLogo,
+                    State = dto.State,
 
-                PoliticalPartyAcronym = new PoliticalPartyAcronym(dto.PoliticalPartyAcronym)
-            };
-            var result = await _validator.ValidateUpdate(party);
+                    UpdateAt = DateTime.UtcNow,
+                    UpdateUserId = dto.UpdateUserId,
 
-            if (!result.IsValid)
-                return result;
+                    PoliticalPartyAcronym = new PoliticalPartyAcronym(dto.PoliticalPartyAcronym)
+                };
+                var result = await _validator.ValidateUpdate(party);
 
-            await _repository.UpdateEntitieAsync(party);
+                if (!result.IsValid)
+                    return result;
 
-            return ValidationResult.Success();
+                var isUpdated = await _repository.UpdateEntitieAsync(party);
+
+                if (!isUpdated)
+                {
+                    errors.Add(new Error("UPD FAIL","No se puedo actualizar el Partido."));
+                    return ValidationResult.Failure(errors);
+                }
+                return ValidationResult.Success();
+            }
+            catch (ArgumentException ex) {
+                errors.Add(new Error("PARTY VALIDATION ERROR", ex.Message));
+                return ValidationResult.Failure(errors);
+            }
         }
     }
 }

@@ -3,8 +3,22 @@ using System.ComponentModel.DataAnnotations;
 
 namespace eVote360.Core.Application.ViewModels.PoliticalParty
 {
-    public sealed class PoliticalPartyViewModelEdit : ViewModelBase<int>
-    {        
+    public sealed class PoliticalPartyViewModelEdit
+    {
+
+
+        [Display(Name = "Id")]
+        [Required(ErrorMessage = "Se requiere un Id valido")]
+        public required int Id { get; set; }
+
+        [Display(Name = "Nombre")]
+        [Required(ErrorMessage = "Se requiere un nombre valido")]
+        [StringLength(20, MinimumLength = 5, ErrorMessage = "Ingrese un nombre valido de minimo 100 y maximo 500 caracteres")]
+        public required string Name { get; set; }
+
+        [Display(Name = "Estado")]
+        [Required(ErrorMessage = "Se requiere estado valido")]
+        public required bool State { get; set; }
 
         [Display(Name = "Descripcion")]
         [Required(ErrorMessage = "Se requiere una descripcion valida")]

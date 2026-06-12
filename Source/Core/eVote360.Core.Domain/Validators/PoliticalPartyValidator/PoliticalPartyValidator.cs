@@ -1,8 +1,8 @@
-﻿using eVote360.Core.Domain.Contracts.DomainService.PoliticalParty;
-using eVote360.Core.Domain.Common.CodeErrors;
+﻿using eVote360.Core.Domain.Common.CodeErrors;
 using eVote360.Core.Domain.Common.ValidationResult;
 using eVote360.Core.Domain.Common.Errors;
 using System.ComponentModel;
+using eVote360.Core.Domain.Contracts.ServiceValidates.PoliticalParty;
 
 namespace eVote360.Core.Domain.Validators.PoliticalPartyValidator
 {

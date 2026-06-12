@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace eVote360.Core.Domain.Contracts.DomainService.PoliticalParty
+namespace eVote360.Core.Domain.Contracts.ServiceValidates.PoliticalParty
 {
     public interface IPoliticalPartyDomainService : IPoliticalPartyRepository
     {

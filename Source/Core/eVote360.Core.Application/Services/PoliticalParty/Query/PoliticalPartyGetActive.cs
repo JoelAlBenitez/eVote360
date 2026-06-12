@@ -17,7 +17,7 @@ namespace eVote360.Core.Application.Services.PoliticalParty.Query
             _repository = repository;
         }
 
-        public async Task<IEnumerable<PoliticalPartyDto>> ExecuteAsync()
+        public async Task<IReadOnlyCollection<PoliticalPartyDto>> ExecuteAsync()
         {
             var entities = await _repository.GetActivePartiesAsync();
 
@@ -31,7 +31,7 @@ namespace eVote360.Core.Application.Services.PoliticalParty.Query
                 CreateAt = p.CreateAt,
                 CreateUserId = p.CreateUserId,
                 UpdateUserId = p.UpdateUserId,
-            }).ToList();
+            }).ToList().AsReadOnly();
         }
     }
 }

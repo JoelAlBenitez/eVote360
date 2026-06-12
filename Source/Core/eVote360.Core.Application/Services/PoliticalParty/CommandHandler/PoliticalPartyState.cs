@@ -2,7 +2,7 @@
 using eVote360.Core.Application.DTOs.PoliticalParty;
 using eVote360.Core.Domain.Contracts.Repositories.PoliticalParty;
 using eVote360.Core.Domain.Validators.PoliticalPartyValidator;
-using eVote360.Core.Domain.ValueObjects;
+using eVote360.Core.Domain.Settings.ValueObjects.PoliticalPartyAcronym;
 
 using PartyEntity = eVote360.Core.Domain.Entities.PoliticalParty.PoliticalParty;
 using Error = eVote360.Core.Domain.Common.Errors.Error;
