@@ -15,7 +15,6 @@ namespace eVote360.Core.Domain.Entities.PoliticalParty
         public required string PoliticalPartyDescription { get; set; }
         public required PoliticalPartyAcronym PoliticalPartyAcronym { get; set; }
         public required string PoliticalPartyLogo { get; set; }
-        public required bool PoliticalPartyState { get; set; }
         public PoliticalParty(){ }
     }
 }

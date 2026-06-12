@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace eVote360.Core.Application.Services.PoliticalParty.Query
 {
-    public class PoliticalPartyGetAll : IPoliticalPartyGetAllQuery
+    public sealed class PoliticalPartyGetAll : IPoliticalPartyGetAllQuery
     {
         private readonly IPoliticalPartyRepository _repository;
         public PoliticalPartyGetAll(IPoliticalPartyRepository repository) 
@@ -25,7 +25,7 @@ namespace eVote360.Core.Application.Services.PoliticalParty.Query
             return entities.Select(p => new PoliticalPartyDto
             {
                 Name = p.Name,
-                State = p.PoliticalPartyState,
+                State = p.State,
                 PoliticalPartyDescription = p.PoliticalPartyDescription,
                 PoliticalPartyAcronym = p.PoliticalPartyAcronym.Value,
                 PoliticalPartyLogo = p.PoliticalPartyLogo,

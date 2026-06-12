@@ -10,7 +10,7 @@ using eVote360.Core.Domain.Common.ValidationResult;
 
 namespace eVote360.Core.Application.Services.PoliticalParty.CommandHandler
 {
-    public class PoliticalPartyUpdate : IPoliticalPartyUpdateCommand
+    public sealed class PoliticalPartyUpdate : IPoliticalPartyUpdateCommand
     {
         private readonly IPoliticalPartyRepository _repository;
         private readonly IPoliticalPartyValidator _validator;
@@ -27,15 +27,17 @@ namespace eVote360.Core.Application.Services.PoliticalParty.CommandHandler
         {
             var party = new PartyEntity
             {
-                Id = 0,
-                CreateAt = DateTime.UtcNow,
+                Id = dto.Id,
+                CreateAt = dto.CreateAt,
                 CreateUserId = 1,
 
                 Name = dto.Name!,
                 PoliticalPartyDescription = dto.PoliticalPartyDescription,
                 PoliticalPartyLogo = dto.PoliticalPartyLogo,
-                PoliticalPartyState = dto.State,
                 State = dto.State,
+
+                UpdateAt = DateTime.UtcNow,
+                UpdateUserId = dto.UpdateUserId,
 
                 PoliticalPartyAcronym = new PoliticalPartyAcronym(dto.PoliticalPartyAcronym)
             };

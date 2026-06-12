@@ -10,7 +10,7 @@ using eVote360.Core.Domain.Common.ValidationResult;
 
 namespace eVote360.Core.Application.Services.PoliticalParty.CommandHandler
 {
-    public class PoliticalPartyState : IPoliticalPartyStateCommand
+    public sealed class PoliticalPartyState : IPoliticalPartyStateCommand
     {
         private readonly IPoliticalPartyRepository _repository;
         private readonly IPoliticalPartyValidator _validator;

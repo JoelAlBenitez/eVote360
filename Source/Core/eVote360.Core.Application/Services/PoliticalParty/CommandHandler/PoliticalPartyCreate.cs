@@ -8,7 +8,7 @@ using eVote360.Core.Domain.Common.ValidationResult;
 
 namespace eVote360.Core.Application.Services.PoliticalParty.CommandHandler
 {
-    public class PoliticalPartyCreate : IPoliticalPartyCreateCommand
+    public sealed class PoliticalPartyCreate : IPoliticalPartyCreateCommand
     {
         private readonly IPoliticalPartyRepository _repository;
         private readonly IPoliticalPartyValidator _validator;
@@ -32,7 +32,6 @@ namespace eVote360.Core.Application.Services.PoliticalParty.CommandHandler
                 Name = dto.Name!,
                 PoliticalPartyDescription = dto.PoliticalPartyDescription,
                 PoliticalPartyLogo = dto.PoliticalPartyLogo,
-                PoliticalPartyState = dto.State,
                 State = dto.State,
 
                 PoliticalPartyAcronym = new PoliticalPartyAcronym(dto.PoliticalPartyAcronym)
