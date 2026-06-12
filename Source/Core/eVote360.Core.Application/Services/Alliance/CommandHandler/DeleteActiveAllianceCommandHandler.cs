@@ -1,0 +1,53 @@
+using eVote360.Core.Application.Contracts.Alliance.Commands;
+using eVote360.Core.Domain.Common.Errors;
+using eVote360.Core.Domain.Common.ValidationResult;
+using eVote360.Core.Domain.Contracts.Repositories.PoliticalAlliences;
+using eVote360.Core.Domain.Validators.PoliticalAlliancesValidator;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace eVote360.Core.Application.Services.Alliance.CommandHandler
+{
+    public class DeleteActiveAllianceCommandHandler : IDeleteActiveAllianceCommand
+    {
+        private readonly IPoliticalAllienceRepository _allianceRepository;
+        private readonly IAllianceValidator _allianceValidator;
+
+        public DeleteActiveAllianceCommandHandler(IPoliticalAllienceRepository allianceRepository, IAllianceValidator allianceValidator)
+        {
+            _allianceRepository = allianceRepository;
+            _allianceValidator = allianceValidator;
+        }
+
+        public async Task<ValidationResult<bool>> ExecuteAsync(int allianceId, int authenticatedPartyId)
+        {
+            var errors = new List<Error>();
+            try
+            {
+                var alliance = await _allianceRepository.GetByIdEntitie(allianceId);
+                
+                var validation = await _allianceValidator.ValidateDeleteActiveAllianceAsync(alliance, authenticatedPartyId);
+                if (!validation.IsValid)
+                {
+                    return ValidationResult<bool>.Failure(new List<Error>(), validation.errors.ToArray());
+                }
+
+                var deleted = await _allianceRepository.DeleteAsync(allianceId);
+                if (!deleted)
+                {
+                    errors.Add(new Error("Error al eliminar", "No se pudo eliminar la alianza política."));
+                    return ValidationResult<bool>.Failure(new List<Error>(), errors.ToArray());
+                }
+
+                return ValidationResult<bool>.Success(true);
+            }
+            catch (Exception ex)
+            {
+                errors.Add(new Error("Error inesperado", ex.Message));
+                return ValidationResult<bool>.Failure(new List<Error>(), errors.ToArray());
+            }
+        }
+    }
+}
