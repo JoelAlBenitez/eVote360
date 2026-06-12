@@ -263,7 +263,7 @@ namespace eVote360.Presentation.EVote360.Controllers.ElectivePosictions
                     {
                         ModelState.AddModelError(item.Code, item.Description);
                     }
-                    return RedirectToAction(nameof(Edit));
+                    return RedirectToAction(nameof(Index));
                 }
                 return RedirectToAction(nameof(AlterState));
             }
