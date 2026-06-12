@@ -16,9 +16,19 @@ namespace eVote360.Presentation.EVote360.Controllers.Candidates
         private readonly ICandidateGetByIdQuery _candidateGetByIdQuery;
         private readonly ICandidateGetAllPartyQuery _candidateGetAllPartyQuery;
 
-        // TODO: Obtener el ID del partido desde la sesión/cookie del dirigente autenticado
-        // Por ahora hardcodeamos 1 para mantener el aislamiento de datos del módulo.
-        private readonly int _currentPartyId = 1;
+        private int _currentPartyId
+        {
+            get
+            {
+                var partyIdValue =
+                    User.FindFirst("PartyId")?.Value ??
+                    User.FindFirst("partyId")?.Value ??
+                    Request.Cookies["PartyId"] ??
+                    Request.Cookies["partyId"];
+
+                return int.TryParse(partyIdValue, out var partyId) ? partyId : 0;
+            }
+        }
 
         public CandidateController(
             ICandidateCreateCommand candidateCreateCommand,
