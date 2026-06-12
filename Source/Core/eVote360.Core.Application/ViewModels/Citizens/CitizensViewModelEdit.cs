@@ -6,7 +6,7 @@ namespace eVote360.Core.Application.ViewModels.Citizens
     public sealed class CitizensViewModelEdit
     {
 
-        public required int Id { get; set; }
+        public required Guid Id { get; set; }
 
         [Display(Name = "Identificación")]
         [Required(ErrorMessage = "El número de identificación es requerido")]

@@ -5,7 +5,7 @@ namespace eVote360.Core.Domain.Settings.ValueObjects.Identifications
     public sealed record  IdentificationN
     {
         public string Value { get;}
-        private IdentificationN() { }
+        private IdentificationN() { Value = null!; }
 
         public IdentificationN(string value)
         {

@@ -5,7 +5,7 @@ namespace eVote360.Core.Domain.Settings.ValueObjects.Emails
     public sealed record  Email
     {
         public string Value { get; }
-        private Email() { }
+        private Email() { Value = null!; }
         public Email(string value) { 
         
             if(string.IsNullOrEmpty(value.Trim()) || value.Length > 254 ) 

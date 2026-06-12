@@ -23,6 +23,8 @@ namespace eVote360.Infraestructure.Persistence.Configurations.Citizens
 
             builder.HasIndex(x => x.Email.Value).IsUnique();
             builder.HasIndex(x => x.IdentificationNumber.Value).IsUnique();
+
+            //AGREGAR REFEERENCIAS DE RELACIONES A LA TABLA DE USUARUOS CUANDO SE AGREGUEN ESOS CAMBIOS
         }
     }
 }
