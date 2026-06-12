@@ -1,6 +1,6 @@
 ﻿using eVote360.Core.Domain.Commom.BaseEntity;
 using eVote360.Core.Domain.Common.Enums;
-using eVote360.Core.Domain.ValueObjects;
+using eVote360.Core.Domain.Settings.ValueObjects.ElectionDate;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +15,5 @@ namespace eVote360.Core.Domain.Entities.Election
         public ElectionDate ElectionDate { get; set; }
 
         public ElectionState ElectionState { get; set; }
-
-        public Election() { }
     }
 }

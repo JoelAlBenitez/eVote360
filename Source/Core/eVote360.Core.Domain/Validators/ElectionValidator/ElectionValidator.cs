@@ -1,9 +1,9 @@
 ﻿using eVote360.Core.Domain.Common.CodeErrors;
 using eVote360.Core.Domain.Common.Errors;
 using eVote360.Core.Domain.Common.ValidationResult;
-using eVote360.Core.Domain.Contracts.DomainService.Election;
 using eVote360.Core.Domain.Common.Enums;
-using eVote360.Core.Domain.ValueObjects;
+using eVote360.Core.Domain.Settings.ValueObjects.ElectionDate;
+using eVote360.Core.Domain.Contracts.ServiceValidates.Election;
 
 namespace eVote360.Core.Domain.Validators.ElectionValidator
 {
