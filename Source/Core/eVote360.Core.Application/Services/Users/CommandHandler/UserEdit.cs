@@ -5,8 +5,10 @@ using eVote360.Core.Domain.Common.Errors;
 using eVote360.Core.Domain.Common.ValidationResult;
 using eVote360.Core.Domain.Contracts.Repositories.UserRepository;
 using eVote360.Core.Domain.Validators.UserValidator;
-using eVote360.Core.Domain.ValueObjects;
+using eVote360.Core.Domain.Settings.ValueObjects;
 using UserEntity = eVote360.Core.Domain.Entities.User.User;
+using eVote360.Core.Domain.Settings.ValueObjects.UserEmail;
+using eVote360.Core.Domain.Settings.ValueObjects.UserPassword;
 
 
 namespace eVote360.Core.Application.Services.Users.CommandHandler
@@ -26,41 +28,56 @@ namespace eVote360.Core.Application.Services.Users.CommandHandler
 
         public async Task<ValidationResult> ExecuteAsync(UsersDto dto)
         {
-            string hashedPassword = _passwordService.HashPassword(dto.UserPassword);
+            var errors = new List<Error>();
 
-            if (dto.Id == null || dto.Id <= 0) { 
-                var errors = new List<Error> { new Error ("EDIT ID", "El Id del usuario no existe o es invalido") };
-            return ValidationResult.Failure(errors);
-            }
-
-            var user = new UserEntity
+            try
             {
+                if (dto.Id == null || dto.Id <= 0)
+                {
+                    errors.Add(new Error("USER EDIT ID", "El ID del usuarion es invalido para editar"));
+                    return ValidationResult.Failure(errors);
+                }
 
-                Id = dto.Id,
-                CreateAt = dto.CreateAt,
-                CreateUserId = dto.CreateUserId,
-                State = dto.State,
-                UpdateAt = dto.UpdateAt,
-                UpdateUserId =dto.UpdateUserId,
+                string hashedPassword = _passwordService.HashPassword(dto.UserPassword);
 
-                UserFirstName = dto.UserFirstName,
-                UserLastName = dto.UserLastName,
-                UserRole = dto.UserRole,
-                Name = dto.Name,
+                var user = new UserEntity
+                {
 
-                UserEmail = new UserEmail(dto.UserEmail),
-                UserPassword = new UserPassword(hashedPassword)
-            };
+                    Id = dto.Id,
+                    CreateAt = dto.CreateAt,
+                    CreateUserId = dto.CreateUserId,
+                    State = dto.State,
+                    UpdateAt = dto.UpdateAt,
+                    UpdateUserId = dto.UpdateUserId,
 
-            var result = await _validator.ValidateUser(user, dto.UserPassword, 1);
+                    UserFirstName = dto.UserFirstName,
+                    UserLastName = dto.UserLastName,
+                    UserRole = dto.UserRole,
+                    Name = dto.Name,
 
-            if(!result.IsValid)
-                return result;
+                    UserEmail = new UserEmail(dto.UserEmail),
+                    UserPassword = new UserPassword(hashedPassword)
+                };
 
-            await _repository.UpdateEntitieAsync(user);
+                var result = await _validator.ValidateUser(user, dto.UserPassword, 1);
 
-            return ValidationResult.Success();
+                if (!result.IsValid)
+                    return result;
 
+                var isUpdated = await _repository.UpdateEntitieAsync(user);
+
+                if (!isUpdated)
+                {
+                    errors.Add(new Error("USER UPDATE FAIL", "No se pudo actualizar la informacion del usuario"));
+                    return ValidationResult.Failure(errors);
+                }
+
+                return ValidationResult.Success();
+            }
+            catch (ArgumentException ex) {
+                errors.Add(new Error("USER VALIDATION ERROR", ex.Message));
+                return ValidationResult.Failure(errors);
+            }
         }
 
     }

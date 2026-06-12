@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace eVote360.Core.Domain.ValueObjects
+namespace eVote360.Core.Domain.Settings.ValueObjects.Username
 {
     public record Username
     {

@@ -1,9 +1,9 @@
-﻿using eVote360.Core.Domain.Contracts.DomainService.User;
-using eVote360.Core.Domain.Common.ValidationResult;
+﻿using eVote360.Core.Domain.Common.ValidationResult;
 using eVote360.Core.Domain.Common.CodeErrors;
 using eVote360.Core.Domain.Common.Errors;
 using Enums = eVote360.Core.Domain.Common.Enums;
-using eVote360.Core.Domain.ValueObjects;
+using eVote360.Core.Domain.Settings.ValueObjects.UserPassword;
+using eVote360.Core.Domain.Contracts.ServiceValidates.User;
 
 namespace eVote360.Core.Domain.Validators.UserValidator
 {

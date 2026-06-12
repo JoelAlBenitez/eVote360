@@ -4,8 +4,11 @@ using eVote360.Core.Application.DTOs.Users;
 using eVote360.Core.Domain.Common.ValidationResult;
 using eVote360.Core.Domain.Contracts.Repositories.UserRepository;
 using eVote360.Core.Domain.Validators.UserValidator;
-using eVote360.Core.Domain.ValueObjects;
+using eVote360.Core.Domain.Settings.ValueObjects;
 using UserEntity = eVote360.Core.Domain.Entities.User.User;
+using eVote360.Core.Domain.Settings.ValueObjects.UserEmail;
+using eVote360.Core.Domain.Settings.ValueObjects.UserPassword;
+using eVote360.Core.Domain.Common.Errors;
 
 namespace eVote360.Core.Application.Services.Users.CommandHandler
 {
@@ -24,32 +27,51 @@ namespace eVote360.Core.Application.Services.Users.CommandHandler
 
         public async Task<ValidationResult> ExecuteAsync(UsersDto dto)
         {
-            string hashedPassword = _passwordService.HashPassword(dto.UserPassword);
+            var errors = new List<Error>();
 
-            var user = new UserEntity
+            try
             {
-                Id = 0,
-                CreateAt = DateTime.UtcNow,
-                CreateUserId = 1,
-                State = dto.State,
+                string hashedPassword = _passwordService.HashPassword(dto.UserPassword);
 
-                UserFirstName = dto.UserFirstName,
-                UserLastName = dto.UserLastName,
-                UserRole = dto.UserRole,
-                Name = dto.Name,
+                var user = new UserEntity
+                {
+                    Id = 0,
+                    CreateAt = DateTime.UtcNow,
+                    CreateUserId = 1,
+                    State = dto.State,
 
-                UserEmail = new UserEmail(dto.UserEmail),
-                UserPassword = new UserPassword(hashedPassword)
-            };
+                    UserFirstName = dto.UserFirstName,
+                    UserLastName = dto.UserLastName,
+                    UserRole = dto.UserRole,
+                    Name = dto.Name,
 
-            var result = await _validator.ValidateUser(user, dto.UserPassword, 1);
+                    UserEmail = new UserEmail(dto.UserEmail),
+                    UserPassword = new UserPassword(hashedPassword)
+                };
 
-            if (!result.IsValid)
-                return result;
+                var result = await _validator.ValidateUser(user, dto.UserPassword, 1);
 
-            await _repository.CreateEntiteAsync(user);
+                if (!result.IsValid)
+                    return result;
 
-            return ValidationResult.Success();  
+                var isCreated = await _repository.CreateEntiteAsync(user);
+
+                if (!isCreated)
+                {
+                    errors.Add(new Error("USER CREATE FAILED","No se pudo registrar el usuario"));
+                    return ValidationResult.Failure(errors);
+                }
+
+                return ValidationResult.Success();
+            }
+
+            catch (ArgumentException ex)
+            {
+
+                errors.Add(new Error("USER VALIDATION ERROR", ex.Message));
+                return ValidationResult.Failure(errors);
+            }
+
         }
     }
 }

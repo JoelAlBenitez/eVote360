@@ -1,6 +1,4 @@
-﻿
-
-namespace eVote360.Core.Domain.Contracts.DomainService.User
+﻿namespace eVote360.Core.Domain.Contracts.ServiceValidates.User
 {
     public interface IUserDomainService
     {

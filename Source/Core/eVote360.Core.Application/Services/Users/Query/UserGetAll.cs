@@ -14,7 +14,7 @@ namespace eVote360.Core.Application.Services.Users.Query
             _userRepository = repository;
         }
 
-        public async Task<IEnumerable<UsersDto>> ExecuteAsync()
+        public async Task<IReadOnlyCollection<UsersDto>> ExecuteAsync()
         {
             var entities = await _userRepository.GetAllAsync();
             return entities.Select(u => new UsersDto

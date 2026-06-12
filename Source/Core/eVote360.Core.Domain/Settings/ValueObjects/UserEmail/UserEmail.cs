@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace eVote360.Core.Domain.ValueObjects
+namespace eVote360.Core.Domain.Settings.ValueObjects.UserEmail
 {
     public record UserEmail
     {

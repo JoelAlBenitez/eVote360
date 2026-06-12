@@ -6,6 +6,6 @@ namespace eVote360.Core.Application.Contracts.Users.Query
 {
     public interface IUserGetAllActivesQuery
     {
-        Task<IEnumerable<UsersDto>> ExecuteAsync();
+        Task<IReadOnlyCollection<UsersDto>> ExecuteAsync();
     }
 }

@@ -1,6 +1,6 @@
 ﻿using eVote360.Core.Application.ViewModels.Base;
 using eVote360.Core.Domain.Common.Enums;
-using eVote360.Core.Domain.ValueObjects;
+using eVote360.Core.Domain.Settings.ValueObjects;
 using Enums = eVote360.Core.Domain.Common.Enums;
 
 namespace eVote360.Core.Application.ViewModels.Users

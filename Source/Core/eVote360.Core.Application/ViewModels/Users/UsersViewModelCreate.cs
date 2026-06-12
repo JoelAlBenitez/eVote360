@@ -1,6 +1,6 @@
 ﻿using eVote360.Core.Domain.Commom.BaseEntity;
 using eVote360.Core.Domain.Common.Enums;
-using eVote360.Core.Domain.ValueObjects;
+using eVote360.Core.Domain.Settings.ValueObjects;
 using System.ComponentModel.DataAnnotations;
 
 namespace eVote360.Core.Application.ViewModels.Users

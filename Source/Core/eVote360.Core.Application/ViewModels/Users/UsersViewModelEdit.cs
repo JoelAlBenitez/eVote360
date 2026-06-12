@@ -1,6 +1,6 @@
 ﻿using eVote360.Core.Application.ViewModels.Base;
 using eVote360.Core.Domain.Common.Enums;
-using eVote360.Core.Domain.ValueObjects;
+using eVote360.Core.Domain.Settings.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -10,9 +10,22 @@ using System.Threading.Tasks;
 
 namespace eVote360.Core.Application.ViewModels.Users
 {
-    public sealed class UsersViewModelEdit : ViewModelBase<int>
+    public sealed class UsersViewModelEdit 
     {
-        [Display(Name = "Nombre")]
+        [Display(Name = "Id")]
+        [Required(ErrorMessage = "Se requiere un Id valido")]
+        public required int Id { get; set; }
+
+        [Display(Name = "Username")]
+        [Required(ErrorMessage = "Se requiere un username valido")]
+        [StringLength(30, MinimumLength = 5, ErrorMessage = "Ingrese un username mayor a 5 caracteres y no mayor a 30")]
+        public required string Name { get; set; }
+
+        [Display(Name = "Estado")]
+        [Required(ErrorMessage = "Se requiere un nombre valido")]
+        public required bool State { get; set; }
+
+        [Display(Name = "Primer Nombre")]
         [Required(ErrorMessage = "Se requiere un nombre valido")]
         [StringLength(30, MinimumLength = 5, ErrorMessage = "Ingrese un nombre mayor a 5 caracteres y no mayor a 30")]
         public required string UserFirstName { get; set; }
