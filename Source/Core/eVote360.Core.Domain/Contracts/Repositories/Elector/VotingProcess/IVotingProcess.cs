@@ -1,0 +1,10 @@
+﻿using eVote360.Core.Domain.Entities.Elector.AuditVote;
+using eVote360.Core.Domain.Entities.Elector.Vote;
+namespace eVote360.Core.Domain.Contracts.Repositories.Elector.Vote
+{
+    public interface IVotingProcess
+    {
+        Task<bool> CreateAsync(Votes votes, AuditVotes auditVotes);
+        Task<bool> GetAllVote(Votes votes);
+    }
+}
