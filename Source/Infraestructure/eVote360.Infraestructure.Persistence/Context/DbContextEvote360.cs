@@ -16,9 +16,6 @@ namespace eVote360.Infraestructure.Persistence.Context
 
         public DbSet<Citizen> Citzens { get; set; }
         
-        public DbContextEVote360(DbContextOptions<DbContextEVote360> options) : base(options)
-        {
-        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
