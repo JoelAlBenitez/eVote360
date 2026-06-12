@@ -21,7 +21,8 @@ namespace eVote360.Infraestructure.Persistence.Services
                 Directory.CreateDirectory(uploadsFolder);
             }
 
-            string uniqueFileName = Guid.NewGuid().ToString() + "_" + file.FileName;
+            string safeFileName = Path.GetFileName(file.FileName);
+            string uniqueFileName = $"{Guid.NewGuid()}_{safeFileName}";
             string filePath = Path.Combine(uploadsFolder, uniqueFileName);
 
             using (var fileStream = new FileStream(filePath, FileMode.Create))
