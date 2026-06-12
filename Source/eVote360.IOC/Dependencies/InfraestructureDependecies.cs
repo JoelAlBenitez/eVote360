@@ -1,5 +1,7 @@
-﻿using eVote360.Core.Domain.Contracts.Repositories.ElectivePosition;
+﻿using eVote360.Core.Domain.Contracts.Repositories.Citizens;
+using eVote360.Core.Domain.Contracts.Repositories.ElectivePosition;
 using eVote360.Infraestructure.Persistence.Context;
+using eVote360.Infraestructure.Persistence.Repositories.Citizens;
 using eVote360.Infraestructure.Persistence.Repositories.ElectivePosiction;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -22,7 +24,8 @@ namespace eVote360.IOC.Dependencies
             //Elecitive Poisitions
             services.AddScoped<IElectivePositionsRepository, ElectivePosictionsRepository>();
 
-            //.......
+            //Citizens
+            services.AddScoped<ICitizenRepository, CitizensRepository>();
             return services;
         }
     }
