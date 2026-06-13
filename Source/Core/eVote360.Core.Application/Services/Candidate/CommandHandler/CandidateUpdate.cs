@@ -4,7 +4,7 @@ using eVote360.Core.Application.DTOs.Candidates;
 using eVote360.Core.Domain.Common.CodeErrors;
 using eVote360.Core.Domain.Common.ValidationResult;
 using eVote360.Core.Domain.Contracts.Repositories.Candidate;
-using eVote360.Core.Domain.ValueObjects;
+using eVote360.Core.Domain.Settings.ValueObjects.Candidate;
 using eVote360.Core.Domain.Validators.CandidateValidator;
 using System;
 using System.Collections.Generic;
