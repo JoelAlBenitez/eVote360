@@ -5,6 +5,8 @@ using eVote360.Core.Domain.Common.CodeErrors;
 using eVote360.Core.Domain.Common.ValidationResult;
 using eVote360.Core.Domain.Contracts.Repositories.Candidate;
 using eVote360.Core.Domain.Validators.CandidateValidator;
+using eVote360.Core.Domain.Settings.ValueObjects.CandidatePhoto;
+using eVote360.Core.Domain.Settings.ValueObjects.FullName;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
