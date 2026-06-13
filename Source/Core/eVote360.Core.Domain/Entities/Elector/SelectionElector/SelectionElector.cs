@@ -5,6 +5,7 @@
         public required int IdPosictionElective { get; set; }
         public required int IdCandidacte { get; set; }
 
-        public required int 
+        public required bool NotSelectionCandidate {  get; set; }
     }
+
 }
