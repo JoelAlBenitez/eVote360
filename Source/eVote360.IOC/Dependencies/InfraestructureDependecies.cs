@@ -1,6 +1,11 @@
 ﻿using eVote360.Core.Domain.Contracts.Repositories.ElectivePosition;
+using eVote360.Core.Domain.Contracts.Repositories.PoliticalAlliences;
+using eVote360.Core.Domain.Contracts.ServiceValidates.PoliticalAlliance;
+using eVote360.Core.Domain.Validators.PoliticalAlliancesValidator;
 using eVote360.Infraestructure.Persistence.Context;
 using eVote360.Infraestructure.Persistence.Repositories.ElectivePosiction;
+using eVote360.Infraestructure.Persistence.Repositories.PoliticalAlliances;
+using eVote360.Infraestructure.Persistence.ServicesValidators;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,6 +26,11 @@ namespace eVote360.IOC.Dependencies
 
             //Elecitive Poisitions
             services.AddScoped<IElectivePositionsRepository, ElectivePosictionsRepository>();
+
+            //PoliticalAlliances
+            services.AddScoped<IPoliticalAllienceRepository, PoliticalAlliancesRepository>();
+            services.AddScoped<IPoliticalAlliancesValidate, PoliticalAlliancesServiceValidator>();
+            services.AddScoped<IAllianceValidator, AllianceValidator>();
 
             //.......
             return services;
