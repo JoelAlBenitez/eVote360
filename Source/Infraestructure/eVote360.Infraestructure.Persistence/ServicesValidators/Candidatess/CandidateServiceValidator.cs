@@ -57,5 +57,21 @@ namespace eVote360.Infraestructure.Persistence.ServicesValidators.Candidatess
                                x.PoliticalPartyId == partyId && 
                                x.Id != excludeId);
         }
+        public async Task<bool> GetCandidateStateAsync(int candidateId)
+        {
+            var candidate = await _context.Candidates
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x => x.Id == candidateId);
+
+            if (candidate == null) return false;
+            return candidate.State;
+        }
+
+        public async Task<bool> CandidateExistsAsync(int candidateId)
+        {
+            return await _context.Candidates
+                .AsNoTracking()
+                .AnyAsync(x => x.Id == candidateId);
+        }
     }
 }
