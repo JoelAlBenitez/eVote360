@@ -16,6 +16,12 @@ using eVote360.Core.Application.Contracts.Candidate.Commands;
 using eVote360.Core.Application.Contracts.Candidate.Query;
 using eVote360.Core.Application.Services.Candidate.CommandHandler;
 using eVote360.Core.Application.Services.Candidate.Query;
+using eVote360.Core.Application.Contracts.CandidateAssignment.Commands;
+using eVote360.Core.Application.Contracts.CandidateAssignment.Query;
+using eVote360.Core.Application.Services.CandidateAssignment.CommandHandler;
+using eVote360.Core.Application.Services.CandidateAssignment.QueryHandler;
+using eVote360.Core.Domain.Contracts.Validators.CandidateAssignment;
+using eVote360.Core.Domain.Validators.AssignmentValidator;
 
 namespace eVote360.IOC.Dependencies
 {
@@ -46,6 +52,14 @@ namespace eVote360.IOC.Dependencies
             services.AddScoped<IGetSentAllianceRequestsQuery, GetSentAllianceRequestsQueryHandler>();
             services.AddScoped<IGetActiveAlliancesQuery, GetActiveAlliancesQueryHandler>();
             services.AddScoped<IGetAllianceByIdQuery, GetAllianceByIdQueryHandler>();
+
+            //CandidateAssignment
+            services.AddScoped<ICreateAssignmentCommand, CreateAssignmentCommandHandler>();
+            services.AddScoped<IDeleteAssignmentCommand, DeleteAssignmentCommandHandler>();
+            services.AddScoped<IGetAssignmentsByPartyQuery, GetAssignmentsByPartyQueryHandler>();
+            services.AddScoped<IGetAssignmentByIdQuery, GetAssignmentByIdQueryHandler>();
+            services.AddScoped<IGetEligibleCandidatesForPositionQuery, GetEligibleCandidatesForPositionQueryHandler>();
+            services.AddScoped<IAssignmentValidator, AssignmentValidator>();
 
             //Citizens
             services.AddScoped<ICitizensAlterStateCommand, CitizensAlterState>();

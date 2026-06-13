@@ -16,15 +16,15 @@ namespace eVote360.Infraestructure.Persistence.ServicesValidators.Candidatess
 
         public async Task<bool> IsElectionProcessActive()
         {
-            // TODO: Integrar con el modulo de Elecciones cuando se cree la tabla.
+            //  Integrar con el modulo de Elecciones cuando se cree la tabla.
             // Por ahora retornamos false para permitir operaciones.
             return await Task.FromResult(false); 
         }
 
         public async Task<bool> IsPoliticalPartyActive(int partyId)
         {
-            // Integrar con el modulo de Partidos Politicos de Sebastian.
-            // Por ahora simulamos que el partido esta activo
+            // Integrar con el modulo de Partidos Politicos de Sebastia
+            // Por ahora simulamos que el partido esta activoxd
             return await Task.FromResult(true);
         }
 
