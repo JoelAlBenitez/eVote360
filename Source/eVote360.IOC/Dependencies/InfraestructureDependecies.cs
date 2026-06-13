@@ -19,7 +19,6 @@ using Microsoft.Extensions.Options;
 using eVote360.Infraestructure.Persistence.ServicesValidators.Candidatess;
 using eVote360.Core.Domain.Contracts.ServiceValidates.Candidate;
 
-
 namespace eVote360.IOC.Dependencies
 {
     public static class InfraestructureDependecies
