@@ -1,5 +1,6 @@
 ﻿using eVote360.Core.Application.Contracts.PoliticalLeaderAssignment.Commands;
 using eVote360.Core.Application.DTOs.PoliticalLeaderAssignment;
+using eVote360.Core.Domain.Common.CodeErrors;
 using eVote360.Core.Domain.Common.Errors;
 using eVote360.Core.Domain.Common.ValidationResult;
 using eVote360.Core.Domain.Contracts.Repositories.PoliticalAssignment;
@@ -23,39 +24,54 @@ namespace eVote360.Core.Application.Services.PoliticalLeaderAssignment.CommandHa
 
         public async Task<ValidationResult> ExecuteAsync(LeaderAssignmentDto dto)
         {
-            if (dto.Id <= 0)
+            var errors = new List<Error>();
+
+
+            try
             {
-                var errors = new List<Error> { new Error(" ASIG. ID", "El ID es invalido") };
+                if (dto.Id <= 0)
+                {
+                    errors.Add(new Error(" ASIG. ID", "El ID es invalido"));
+                    return ValidationResult.Failure(errors);
+                }
+
+                var assignment = new AssignmentEntity
+                {
+                    Id = dto.Id,
+                    CreateAt = dto.CreateAt,
+                    CreateUserId = dto.CreateUserId,
+
+                    UpdateAt = DateTime.UtcNow,
+                    UpdateUserId = dto.UpdateUserId,
+
+                    Name = dto.Name ?? "Asignacion Actualizada",
+
+                    PoliticalLeaderId = dto.PoliticalLeaderId,
+                    PoliticalPartyId = dto.PoliticalPartyId,
+                    State = dto.State,
+                    PolitcalAssignmentDate = dto.PoliticalAssignmentDate
+                };
+
+                var validationResult = await _validator.ValidatePoliticalAssignment(assignment);
+                if (!validationResult.IsValid)
+                {
+                    return validationResult;
+                }
+
+                var isUpdated = await _repository.UpdateEntitieAsync(assignment);
+
+                if (!isUpdated)
+                {
+                    errors.Add(new Error("ASSIGN UPDATE FAIL", "No se pudo acualizar la asignacion de lider"));
+                    return ValidationResult.Failure(errors);
+                }
+
+                return ValidationResult.Success();
+            }
+            catch (Exception ex) {
+            errors.Add(new Error("ASSIGN ERROR",ex.Message));
                 return ValidationResult.Failure(errors);
             }
-
-            var assignment = new AssignmentEntity
-            {
-                Id = dto.Id,
-                CreateAt = dto.CreateAt,
-                CreateUserId = dto.CreateUserId,
-
-                UpdateAt = DateTime.UtcNow,
-                UpdateUserId = dto.UpdateUserId,
-
-                Name = dto.Name ?? "Asignacion Actualizada",
-
-                PoliticalLeaderId = dto.PoliticalLeaderId,
-                PoliticalPartyId = dto.PoliticalPartyId,
-                State = dto.State,
-                PolitcalAssignmentDate = dto.PoliticalAssignmentDate
-            };
-
-            var validationResult = await _validator.ValidatePoliticalAssignment(assignment);
-            if (!validationResult.IsValid)
-            {
-                return validationResult;
-            }
-
-            await _repository.UpdateEntitieAsync(assignment);
-
-            return ValidationResult.Success();
-
         }
     }
 }

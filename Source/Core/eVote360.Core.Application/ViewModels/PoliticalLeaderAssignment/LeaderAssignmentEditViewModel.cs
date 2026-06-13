@@ -8,8 +8,22 @@ using System.Threading.Tasks;
 
 namespace eVote360.Core.Application.ViewModels.PoliticalLeaderAssignment
 {
-    public sealed class LeaderAssignmentEditViewModel : ViewModelBase<int>
+    public sealed class LeaderAssignmentEditViewModel 
     {
+
+        [Display(Name = "Id de asignacion")]
+        [Required(ErrorMessage = "Se requiere un Id valido")]
+        public required int Id { get; set; }
+
+        [Display(Name = "Nombre de Asignacion")]
+        [Required(ErrorMessage = "Se requiere un nombre de asignacion valido")]
+        public required string Name { get; set; }
+
+        [Display(Name = "Estado de asignacion")]
+        [Required(ErrorMessage = "Se requiere un estado valido")]
+        public required bool State { get; set; }
+
+
         [Display(Name = "Id Lider Politico")]
         [Required(ErrorMessage = "Se requiere un Id valido")]
         public required int PoliticalLeaderId { get; set; }

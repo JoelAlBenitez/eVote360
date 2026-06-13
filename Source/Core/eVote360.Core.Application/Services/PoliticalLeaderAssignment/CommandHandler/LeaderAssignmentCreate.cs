@@ -22,7 +22,9 @@ namespace eVote360.Core.Application.Services.PoliticalLeaderAssignment.CommandHa
 
         public async Task<ValidationResult> ExecuteAsync(LeaderAssignmentDto dto)
         {
+            var errors = new List<Error>();
 
+            try { 
             var assignment = new AssignmentEntity
             {
                 Id = 0,
@@ -38,14 +40,27 @@ namespace eVote360.Core.Application.Services.PoliticalLeaderAssignment.CommandHa
             };
 
             var validationResult = await _validator.ValidatePoliticalAssignment(assignment);
-            if (!validationResult.IsValid) 
-            {
-            return validationResult;
+                if (!validationResult.IsValid)
+                {
+                    return validationResult;
+                }
+
+                var isCreated = await _repository.CreateEntiteAsync(assignment);
+
+                if (!isCreated)
+                {
+                    errors.Add(new Error("ASSIGN CREATE FAIL", "No se pudo crear la asignacion de lider"));
+                    return ValidationResult.Failure(errors);
+                }
+
+                return ValidationResult.Success();
             }
+            catch (ArgumentException ex)
+            {
+                errors.Add(new Error("ASSIGN ERROR", ex.Message));
+                return ValidationResult.Failure(errors);
 
-            await _repository.CreateEntiteAsync(assignment);
-
-            return ValidationResult.Success();
+            }
         }
     }
 }
