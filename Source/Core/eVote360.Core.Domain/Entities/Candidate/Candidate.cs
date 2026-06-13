@@ -1,5 +1,6 @@
 ﻿using eVote360.Core.Domain.Commom.BaseEntity;
-using eVote360.Core.Domain.ValueObjects;
+using eVote360.Core.Domain.Settings.ValueObjects.CandidatePhoto;
+using eVote360.Core.Domain.Settings.ValueObjects.FullName;
 
 namespace eVote360.Core.Domain.Entities.Candidate
 {

@@ -1,9 +1,9 @@
-﻿using eVote360.Core.Domain.Contracts.DomainService.Candidate;
+﻿using eVote360.Core.Domain.Contracts.ServiceValidates.Candidate;
 using eVote360.Infraestructure.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 
-namespace eVote360.Infraestructure.Persistence.ServicesValidators
+namespace eVote360.Infraestructure.Persistence.ServicesValidators.Candidate
 {
     public class CandidateServiceValidator : ICandidateDomainService
     {

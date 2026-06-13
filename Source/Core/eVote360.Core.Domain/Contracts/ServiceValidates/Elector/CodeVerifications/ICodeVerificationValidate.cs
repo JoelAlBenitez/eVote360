@@ -6,7 +6,7 @@
         Task<bool> CodeExpire(Guid IdCitizen, int IdElection);
         Task<bool> CodeUse (Guid IdCitizen, int IdElection);
         Task<bool> CodeMatchesWithRecord(int code, Guid IdCitizen, int IdElection);
-
+        Task<bool> ExistCodeVerification (Guid IdCitizen, int IdElection);
     }
 
 }
