@@ -41,7 +41,7 @@ namespace eVote360.Core.Application.Services.Alliance.QueryHandler
             catch (Exception ex)
             {
                 errors.Add(new Error("Error al consultar", ex.Message));
-                return ValidationResult<IEnumerable<AllianceDto>>.Failure(new List<Error>(), errors.ToArray());
+                return ValidationResult<IEnumerable<AllianceDto>>.Failure(errors.ToArray());
             }
         }
     }

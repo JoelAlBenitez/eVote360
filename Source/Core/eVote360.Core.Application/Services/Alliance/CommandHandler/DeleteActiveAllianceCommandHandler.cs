@@ -31,14 +31,14 @@ namespace eVote360.Core.Application.Services.Alliance.CommandHandler
                 var validation = await _allianceValidator.ValidateDeleteActiveAllianceAsync(alliance, authenticatedPartyId);
                 if (!validation.IsValid)
                 {
-                    return ValidationResult<bool>.Failure(new List<Error>(), validation.errors.ToArray());
+                    return ValidationResult<bool>.Failure(validation.errors.ToList());
                 }
 
                 var deleted = await _allianceRepository.DeleteAsync(allianceId);
                 if (!deleted)
                 {
                     errors.Add(new Error("Error al eliminar", "No se pudo eliminar la alianza política."));
-                    return ValidationResult<bool>.Failure(new List<Error>(), errors.ToArray());
+                    return ValidationResult<bool>.Failure(errors.ToArray());
                 }
 
                 return ValidationResult<bool>.Success(true);
@@ -46,7 +46,7 @@ namespace eVote360.Core.Application.Services.Alliance.CommandHandler
             catch (Exception ex)
             {
                 errors.Add(new Error("Error inesperado", ex.Message));
-                return ValidationResult<bool>.Failure(new List<Error>(), errors.ToArray());
+                return ValidationResult<bool>.Failure(errors.ToArray());
             }
         }
     }

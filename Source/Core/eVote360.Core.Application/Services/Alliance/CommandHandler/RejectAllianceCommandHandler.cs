@@ -33,7 +33,7 @@ namespace eVote360.Core.Application.Services.Alliance.CommandHandler
                 var validation = await _allianceValidator.ValidateRejectRequestAsync(alliance, authenticatedPartyId);
                 if (!validation.IsValid)
                 {
-                    return ValidationResult<AllianceDto>.Failure(new List<Error>(), validation.errors.ToArray());
+                    return ValidationResult<AllianceDto>.Failure(validation.errors.ToList());
                 }
 
                 // DDD: Usando el método de la entidad
@@ -43,7 +43,7 @@ namespace eVote360.Core.Application.Services.Alliance.CommandHandler
                 if (!updated)
                 {
                     errors.Add(new Error("Error al actualizar", "No se pudo rechazar la solicitud de alianza."));
-                    return ValidationResult<AllianceDto>.Failure(new List<Error>(), errors.ToArray());
+                    return ValidationResult<AllianceDto>.Failure(errors.ToArray());
                 }
 
                 var dto = new AllianceDto
@@ -61,7 +61,7 @@ namespace eVote360.Core.Application.Services.Alliance.CommandHandler
             catch (Exception ex)
             {
                 errors.Add(new Error("Error inesperado", ex.Message));
-                return ValidationResult<AllianceDto>.Failure(new List<Error>(), errors.ToArray());
+                return ValidationResult<AllianceDto>.Failure(errors.ToArray());
             }
         }
     }

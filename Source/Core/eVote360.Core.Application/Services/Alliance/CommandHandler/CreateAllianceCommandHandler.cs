@@ -31,7 +31,7 @@ namespace eVote360.Core.Application.Services.Alliance.CommandHandler
                 var validation = await _allianceValidator.ValidateCreateRequestAsync(requestingPartyId, request.ReceivingPartyId);
                 if (!validation.IsValid)
                 {
-                    return ValidationResult<AllianceDto>.Failure(new List<Error>(), validation.errors.ToArray());
+                    return ValidationResult<AllianceDto>.Failure(validation.errors.ToList());
                 }
 
                 var alliance = new PoliticalAlliances
@@ -48,7 +48,7 @@ namespace eVote360.Core.Application.Services.Alliance.CommandHandler
                 if (!created)
                 {
                     errors.Add(new Error("Error en la creación", "No se pudo crear la solicitud de alianza."));
-                    return ValidationResult<AllianceDto>.Failure(new List<Error>(), errors.ToArray());
+                    return ValidationResult<AllianceDto>.Failure(errors.ToArray());
                 }
 
                 var dto = new AllianceDto
@@ -66,7 +66,7 @@ namespace eVote360.Core.Application.Services.Alliance.CommandHandler
             catch (Exception ex)
             {
                 errors.Add(new Error("Error inesperado", ex.Message));
-                return ValidationResult<AllianceDto>.Failure(new List<Error>(), errors.ToArray());
+                return ValidationResult<AllianceDto>.Failure(errors.ToArray());
             }
         }
     }
