@@ -1,7 +1,7 @@
 ﻿using eVote360.Core.Domain.Common.CodeErrors;
 using System.Text.RegularExpressions;
 
-namespace eVote360.Core.Domain.ValueObjects
+namespace eVote360.Core.Domain.Settings.ValueObjects.Candidate
 {
     public sealed record FullName
     {
