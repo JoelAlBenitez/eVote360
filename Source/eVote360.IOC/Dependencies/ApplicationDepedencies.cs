@@ -37,6 +37,7 @@ namespace eVote360.IOC.Dependencies
             services.AddScoped<IGetPendingReceivedAlliancesQuery, GetPendingReceivedAlliancesQueryHandler>();
             services.AddScoped<IGetSentAllianceRequestsQuery, GetSentAllianceRequestsQueryHandler>();
             services.AddScoped<IGetActiveAlliancesQuery, GetActiveAlliancesQueryHandler>();
+            services.AddScoped<IGetAllianceByIdQuery, GetAllianceByIdQueryHandler>();
 
             return services;
         }

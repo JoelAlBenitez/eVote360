@@ -32,7 +32,6 @@ namespace eVote360.IOC.Dependencies
             services.AddScoped<IPoliticalAlliancesValidate, PoliticalAlliancesServiceValidator>();
             services.AddScoped<IAllianceValidator, AllianceValidator>();
 
-            //.......
             return services;
         }
     }
