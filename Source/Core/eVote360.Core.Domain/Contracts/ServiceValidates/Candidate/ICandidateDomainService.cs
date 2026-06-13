@@ -1,5 +1,4 @@
-﻿
-namespace eVote360.Core.Domain.Contracts.DomainService.Candidate
+﻿namespace eVote360.Core.Domain.Contracts.ServiceValidates.Candidate
 {
 
 
@@ -10,7 +9,8 @@ namespace eVote360.Core.Domain.Contracts.DomainService.Candidate
     Task<bool> CandidateHasParticipatedInElection(int candidateId);
     Task<bool> CandidateHasPositionAssigned(int candidateId);
     Task<bool> CandidateBelongsToParty(int candidateId, int partyId);
-
+        Task<bool> GetCandidateStateAsync(int candidateId);
+        Task<bool> CandidateExistsAsync(int candidateId);
         Task<bool> CandidateNameExistsInParty(string name, string lastName, int partyId, int excludeId);
     }
 }

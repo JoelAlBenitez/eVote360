@@ -1,9 +1,9 @@
-﻿using eVote360.Core.Domain.Contracts.DomainService.Candidate;
+﻿using eVote360.Core.Domain.Contracts.ServiceValidates.Candidate;
 using eVote360.Infraestructure.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 
-namespace eVote360.Infraestructure.Persistence.ServicesValidators
+namespace eVote360.Infraestructure.Persistence.ServicesValidators.Candidatess
 {
     public class CandidateServiceValidator : ICandidateDomainService
     {
@@ -56,6 +56,22 @@ namespace eVote360.Infraestructure.Persistence.ServicesValidators
                                x.Name.LastName == lastName && 
                                x.PoliticalPartyId == partyId && 
                                x.Id != excludeId);
+        }
+        public async Task<bool> GetCandidateStateAsync(int candidateId)
+        {
+            var candidate = await _context.Candidates
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x => x.Id == candidateId);
+
+            if (candidate == null) return false;
+            return candidate.State;
+        }
+
+        public async Task<bool> CandidateExistsAsync(int candidateId)
+        {
+            return await _context.Candidates
+                .AsNoTracking()
+                .AnyAsync(x => x.Id == candidateId);
         }
     }
 }
