@@ -9,6 +9,10 @@ using eVote360.Core.Application.Services.Citizens.Query;
 using Microsoft.Extensions.DependencyInjection;
 using eVote360.Core.Application.Contracts.Citizens.Command;
 using eVote360.Core.Application.Contracts.Citizens.Query;
+using eVote360.Core.Application.Contracts.Candidate.Commands;
+using eVote360.Core.Application.Contracts.Candidate.Query;
+using eVote360.Core.Application.Services.Candidate.CommandHandler;
+using eVote360.Core.Application.Services.Candidate.Query;
 
 
 namespace eVote360.IOC.Dependencies
@@ -38,6 +42,14 @@ namespace eVote360.IOC.Dependencies
             services.AddScoped<ICitizensGetActiveQuery, CitizensGetAllActive>();
             services.AddScoped<ICitizensGetAllQuery, CitizensGetAll>();
             services.AddScoped<ICitizensGetByIdQuery, CitizensGetById>();
+
+            //Candidates
+            services.AddScoped<ICandidateCreateCommand, CandidateCreate>();
+            services.AddScoped<ICandidateChangeStateCommand, CandidateChangeState>();
+            services.AddScoped<ICandidateUpdateCommand, CandidateUpdate>();
+
+            services.AddScoped<ICandidateGetAllPartyQuery, CandidateGetAllParty>();
+            services.AddScoped<ICandidateGetByIdQuery, CandidateGetById>();
 
             return services;
         }
