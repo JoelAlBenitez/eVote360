@@ -1,4 +1,4 @@
-﻿using eVote360.Core.Application.Contracts.ElectivePosictions.Commands;
+using eVote360.Core.Application.Contracts.ElectivePosictions.Commands;
 using eVote360.Core.Application.Contracts.ElectivePosictions.Query;
 using eVote360.Core.Application.Contracts.ElectivePosictions.QueryServices;
 using eVote360.Core.Application.Services.ElectivePosiction.CommandHandler;
@@ -7,7 +7,15 @@ using eVote360.Core.Application.Contracts.Alliance.Commands;
 using eVote360.Core.Application.Contracts.Alliance.Query;
 using eVote360.Core.Application.Services.Alliance.CommandHandler;
 using eVote360.Core.Application.Services.Alliance.QueryHandler;
+using eVote360.Core.Application.Services.Citizens.CommandHandler;
+using eVote360.Core.Application.Services.Citizens.Query;
 using Microsoft.Extensions.DependencyInjection;
+using eVote360.Core.Application.Contracts.Citizens.Command;
+using eVote360.Core.Application.Contracts.Citizens.Query;
+using eVote360.Core.Application.Contracts.Candidate.Commands;
+using eVote360.Core.Application.Contracts.Candidate.Query;
+using eVote360.Core.Application.Services.Candidate.CommandHandler;
+using eVote360.Core.Application.Services.Candidate.Query;
 
 namespace eVote360.IOC.Dependencies
 {
@@ -38,6 +46,23 @@ namespace eVote360.IOC.Dependencies
             services.AddScoped<IGetSentAllianceRequestsQuery, GetSentAllianceRequestsQueryHandler>();
             services.AddScoped<IGetActiveAlliancesQuery, GetActiveAlliancesQueryHandler>();
             services.AddScoped<IGetAllianceByIdQuery, GetAllianceByIdQueryHandler>();
+
+            //Citizens
+            services.AddScoped<ICitizensAlterStateCommand, CitizensAlterState>();
+            services.AddScoped<ICitizensCreateCommand, CitizensCreate>();
+            services.AddScoped<ICitizensEditCommand, CitizensUpdate>();
+
+            services.AddScoped<ICitizensGetActiveQuery, CitizensGetAllActive>();
+            services.AddScoped<ICitizensGetAllQuery, CitizensGetAll>();
+            services.AddScoped<ICitizensGetByIdQuery, CitizensGetById>();
+
+            //Candidates
+            services.AddScoped<ICandidateCreateCommand, CandidateCreate>();
+            services.AddScoped<ICandidateChangeStateCommand, CandidateChangeState>();
+            services.AddScoped<ICandidateUpdateCommand, CandidateUpdate>();
+
+            services.AddScoped<ICandidateGetAllPartyQuery, CandidateGetAllParty>();
+            services.AddScoped<ICandidateGetByIdQuery, CandidateGetById>();
 
             return services;
         }

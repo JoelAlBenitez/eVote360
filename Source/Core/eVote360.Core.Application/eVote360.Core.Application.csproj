@@ -7,7 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\eVote360.Core.Domain\eVote360.Core.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Services\Candidate\CommandHandler\" />
+    <Folder Include="Services\Candidate\Query\" />
   </ItemGroup>
 
 </Project>

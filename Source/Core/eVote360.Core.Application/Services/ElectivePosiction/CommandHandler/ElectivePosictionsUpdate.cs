@@ -21,12 +21,13 @@ namespace eVote360.Core.Application.Services.ElectivePosiction.CommandHandler
         {
             _electivePositionsRepository = electivePositionsRepository;
             _electivePositionsValidator = electivePositionsValidator;
-         
+
         }
 
         public async Task<ValidationResult> UpdateAsync(ElectivePosictionsDto dto)
         {
-            try{
+            try
+            {
                 //agregar validaciones de autorizacion
 
                 var eleccion = new ElectivePositions()
@@ -48,7 +49,8 @@ namespace eVote360.Core.Application.Services.ElectivePosiction.CommandHandler
 
                 return ValidationResult.Success();
 
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 _errors.Add(new Error("Ha ocurrido un error en la comunicación", ex.Message));
                 return ValidationResult.Failure(_errors);
