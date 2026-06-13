@@ -10,6 +10,6 @@ namespace eVote360.Core.Domain.Entities.Elector.Vote
         public required int IdCandidate { get; init; }
         public ElectivePositions? ElectivePosition { get; init; }
 
-        //agregar entidad virtual de elecciones y candidatos
+        //agregar entidad virtual de elecciones y candidatos -> agregar IColleccion en puestos electivos
     }
 }
