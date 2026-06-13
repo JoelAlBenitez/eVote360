@@ -1,4 +1,4 @@
-﻿using eVote360.Core.Application.Contracts.Candidate.Commands;
+using eVote360.Core.Application.Contracts.Candidate.Commands;
 using eVote360.Core.Application.Contracts.Services;
 using eVote360.Core.Application.DTOs.Candidates;
 using eVote360.Core.Domain.Common.CodeErrors;
