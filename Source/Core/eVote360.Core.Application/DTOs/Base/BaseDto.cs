@@ -3,8 +3,7 @@
     public abstract record BaseDto<Tkey>
     {
         public Tkey? Id { get; set; }
-        public required string Name { get; set;}
+        public required string Name { get; set; }
         public required bool State { get; set; }
-      
     }
 }

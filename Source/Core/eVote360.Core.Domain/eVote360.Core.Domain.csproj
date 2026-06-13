@@ -8,14 +8,8 @@
 
   <ItemGroup>
     <Compile Remove="Enums\**" />
-    <Compile Remove="Interfaces\**" />
-    <Compile Remove="ValueObjects\**" />
     <EmbeddedResource Remove="Enums\**" />
-    <EmbeddedResource Remove="Interfaces\**" />
-    <EmbeddedResource Remove="ValueObjects\**" />
     <None Remove="Enums\**" />
-    <None Remove="Interfaces\**" />
-    <None Remove="ValueObjects\**" />
   </ItemGroup>
 
 </Project>
