@@ -1,11 +1,13 @@
 ﻿using eVote360.Core.Application.Contracts.Authentication.Command;
 using eVote360.Core.Application.Contracts.LeaderDashboard.Query;
 using eVote360.Core.Application.ViewModels.LeaderDashboard;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
 namespace eVote360.Presentation.EVote360.Controllers.LeaderDashboard
 {
+    [Authorize(Roles = "DirigentePolitico")]
     public class LeaderDashboardController : Controller
     {
         private readonly ILeaderDashboardGetQuery _leaderDashboardGetQuery;
