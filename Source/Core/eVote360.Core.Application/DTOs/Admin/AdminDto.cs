@@ -2,10 +2,10 @@
 {
     public class AdminDto
     {
-        public required string NameElection { get; set; }
-        public required DateTime DateRealized { get; set; }
-        public required int NumberParticipatingMatches { get; set; }
-        public required int NumberCandidactesParticipating { get; set; }
-        public required int NumberCitizenParticipating { get; set; }
+        public required string UserName { get; set; }
+        public required int CountElectionsRegisterAsync { get; set; }
+        public required int PoliticalPartyAsync { get; set; }
+        public required int CountCitizensRegisterAsync { get; set; }
+        public required int CountCandidacteRegisterAsync { get; set; }
     }
 }

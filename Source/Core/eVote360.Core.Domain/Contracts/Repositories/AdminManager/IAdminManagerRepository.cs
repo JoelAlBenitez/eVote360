@@ -7,6 +7,7 @@ namespace eVote360.Core.Domain.Contracts.Repositories.AdminManager
         Task<int> CountCitizensRegisterAsync();
         Task<int> PoliticalPartyAsync();
         Task<int> CountElectionsRegisterAsync();
+        Task<int> CountCandidactsRegisterAsync();
         Task<IReadOnlyCollection<Admin>> ElectionByYearAsync(DateTime year);
         Task<IReadOnlyCollection<int>> GetYears();
     }

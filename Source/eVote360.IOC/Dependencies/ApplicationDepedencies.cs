@@ -75,7 +75,7 @@ namespace eVote360.IOC.Dependencies
             //admin
             services.AddScoped<ICountRegisterAdminQuery, CountRegisterQueryHandler>();
             services.AddScoped<IElectionByYearQuery, ElectionByYear>();
-
+            services.AddScoped<IAvailableYearsQuery, AvailableYearQuery>();
 
             return services;
         }

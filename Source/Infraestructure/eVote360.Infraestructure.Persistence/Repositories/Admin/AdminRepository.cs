@@ -6,13 +6,17 @@ namespace eVote360.Infraestructure.Persistence.Repositories.Admin
 {
     public class AdminRepository : IAdminManagerRepository
     {
-
-
         private readonly DbContextEVote360 _context;
 
         public AdminRepository(DbContextEVote360 context)
         {
             _context = context;
+        }
+
+        public async Task<int> CountCandidactsRegisterAsync()
+        {
+            var result = await _context.Candidates.AsNoTracking().ToListAsync();
+            return result != null ? result.Count : 0;
         }
 
         public async Task<int> CountCitizensRegisterAsync()

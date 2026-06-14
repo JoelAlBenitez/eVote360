@@ -2,12 +2,11 @@
 {
     public sealed class AdminViewModel
     {
-        public required string NameElection { get; set; }
-        public required DateTime DateRealized { get; set; }
-        public required int NumberParticipatingMatches { get; set; }
-        public required int NumberCandidactesParticipating { get; set; }
-        public required int NumberCitizenParticipating { get; set; }
+        public required string UserName { get; set; }
+        public required int NumberOfRegisteredCitizens { get; set; }
+        public required int NumberOfElections { get; set; }
+        public required int NumberOfMatches { get; set; }
+        public required int NumberOfCandidates { get; set; }
 
-        public required List<int> YearAvaible {  get; set; }
     }
 }

@@ -15,13 +15,14 @@ using eVote360.Infraestructure.Persistence.ServicesValidators;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 using eVote360.Infraestructure.Persistence.ServicesValidators.Candidatess;
 using eVote360.Core.Domain.Contracts.ServiceValidates.Candidate;
 using eVote360.Core.Domain.Contracts.Repositories.AuthenticationAndAutorization;
 using eVote360.Infraestructure.Persistence.Repositories.Authentication;
 using eVote360.Core.Domain.Contracts.Repositories.AdminManager;
 using eVote360.Infraestructure.Persistence.Repositories.Admin;
+using eVote360.Core.Domain.Contracts.ServiceValidates.Admin;
+using eVote360.Infraestructure.Persistence.ServicesValidators.Admin;
 
 
 namespace eVote360.IOC.Dependencies
@@ -61,6 +62,7 @@ namespace eVote360.IOC.Dependencies
             //admin
 
             services.AddScoped<IAdminManagerRepository, AdminRepository>();
+            services.AddScoped<IAdminFunctionalitysValidate, AdminServiceValidator>();
 
             return services;
         }
