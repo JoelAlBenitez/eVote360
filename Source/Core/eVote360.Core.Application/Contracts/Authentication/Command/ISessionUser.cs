@@ -8,6 +8,6 @@ namespace eVote360.Core.Application.Contracts.Authentication.Command
         int GetUserId();
         UserRole GetRole();
         string GetUserName();
-
+        int GetPoliticalParty();
     }
 }

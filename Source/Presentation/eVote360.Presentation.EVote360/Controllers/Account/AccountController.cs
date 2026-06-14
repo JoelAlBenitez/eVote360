@@ -46,15 +46,17 @@ namespace eVote360.Presentation.EVote360.Controllers.Account
                 IdUser = user.Value!.IdUser,
                 userName = user.Value!.userName,
                 password = "",
-                Role = user.Value!.Role
+                Role = user.Value!.Role,
+                IdPoliticalParty = user.Value.IdPoliticalParty
+               
             };
 
             var claims = new List<Claim> {
 
                 new Claim(ClaimTypes.NameIdentifier, newDto.IdUser.ToString()),
                 new Claim(ClaimTypes.Name, newDto.userName),
-                new Claim(ClaimTypes.Role, newDto.Role.ToString())
-
+                new Claim(ClaimTypes.Role, newDto.Role.ToString()),
+                new Claim("PartyId", newDto.IdPoliticalParty.ToString()!)
             };
             var claimIdentity = new ClaimsIdentity(claims, "CookieAuth");
             var claimsFirts = new ClaimsPrincipal(claimIdentity);

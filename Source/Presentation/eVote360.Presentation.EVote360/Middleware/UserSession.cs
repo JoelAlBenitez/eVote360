@@ -14,6 +14,18 @@ namespace eVote360.Presentation.EVote360.Middleware
             _httpContextAccessor = httpContextAccessor;
         }
 
+        public int GetPoliticalParty()
+        {
+             var idParty = _httpContextAccessor.HttpContext?.User?.FindFirst("PartyId");
+            if (idParty != null && int.TryParse(idParty.Value, out int partyId))
+            {
+                return partyId;
+            }
+
+            return 0;
+
+        }
+
         public UserRole GetRole()
         {
             var role = _httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.Role);
