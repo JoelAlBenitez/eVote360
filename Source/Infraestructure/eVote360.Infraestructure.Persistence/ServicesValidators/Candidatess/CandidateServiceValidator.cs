@@ -1,4 +1,5 @@
-﻿using eVote360.Core.Domain.Contracts.ServiceValidates.Candidate;
+using eVote360.Core.Domain.Contracts.ServiceValidates.Candidate;
+using eVote360.Core.Domain.Common.Enums;
 using eVote360.Infraestructure.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
@@ -16,16 +17,16 @@ namespace eVote360.Infraestructure.Persistence.ServicesValidators.Candidatess
 
         public async Task<bool> IsElectionProcessActive()
         {
-            //  Integrar con el modulo de Elecciones cuando se cree la tabla.
-            // Por ahora retornamos false para permitir operaciones.
-            return await Task.FromResult(false); 
+            return await _context.Elections
+                .AsNoTracking()
+                .AnyAsync(x => x.ElectionState == ElectionState.Activa);
         }
 
         public async Task<bool> IsPoliticalPartyActive(int partyId)
         {
-            // Integrar con el modulo de Partidos Politicos de Sebastia
-            // Por ahora simulamos que el partido esta activoxd
-            return await Task.FromResult(true);
+            return await _context.PoliticalParties
+                .AsNoTracking()
+                .AnyAsync(x => x.Id == partyId && x.State == true);
         }
 
         public async Task<bool> CandidateHasParticipatedInElection(int candidateId)
@@ -37,8 +38,9 @@ namespace eVote360.Infraestructure.Persistence.ServicesValidators.Candidatess
 
         public async Task<bool> CandidateHasPositionAssigned(int candidateId)
         {
-            // Integrar con la tabla de Alianzas o Inscripciones.
-            return await Task.FromResult(false);
+            return await _context.CandidateAssignments
+                .AsNoTracking()
+                .AnyAsync(x => x.CandidateId == candidateId);
         }
 
         public async Task<bool> CandidateBelongsToParty(int candidateId, int partyId)

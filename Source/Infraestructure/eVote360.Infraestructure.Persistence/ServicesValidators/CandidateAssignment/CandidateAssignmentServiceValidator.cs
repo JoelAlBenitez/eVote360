@@ -18,14 +18,44 @@ namespace eVote360.Infraestructure.Persistence.ServicesValidators.CandidateAssig
 
         public async Task<bool> IsElectionProcessActive()
         {
-            // TODO: Integrar con módulo de Elecciones de Sebastián
-            return await Task.FromResult(false);
+            return await _context.Elections
+                .AsNoTracking()
+                .AnyAsync(x => x.ElectionState == ElectionState.Activa);
         }
 
         public async Task<bool> IsPartyActive(int partyId)
         {
-            //Integrar con módulo de Partidos de Sebastiann cuando te lito 
-            return await Task.FromResult(true);
+            return await _context.PoliticalParties
+                .AsNoTracking()
+                .AnyAsync(x => x.Id == partyId && x.State == true);
+        }
+
+        public async Task<bool> UserExists(int userId)
+        {
+            return await _context.Users
+                .AsNoTracking()
+                .AnyAsync(x => x.Id == userId);
+        }
+
+        public async Task<bool> UserIsActive(int userId)
+        {
+            return await _context.Users
+                .AsNoTracking()
+                .AnyAsync(x => x.Id == userId && x.State == true);
+        }
+
+        public async Task<bool> UserHasLeaderRole(int userId)
+        {
+            return await _context.Users
+                .AsNoTracking()
+                .AnyAsync(x => x.Id == userId && x.UserRole == UserRole.DirigentePolitico);
+        }
+
+        public async Task<bool> PartyExists(int partyId)
+        {
+            return await _context.PoliticalParties
+                .AsNoTracking()
+                .AnyAsync(x => x.Id == partyId);
         }
 
         public async Task<bool> CandidateIsActive(int candidateId)
