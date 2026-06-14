@@ -7,13 +7,11 @@ using System.Reflection;
 using eVote360.Core.Domain.Entities.Citizens;
 using eVote360.Core.Domain.Entities.User;
 using eVote360.Core.Domain.Entities.PoliticalAssignment;
-<<<<<<< HEAD
 using eVote360.Core.Domain.Entities.Election;
 using eVote360.Core.Domain.Entities.PoliticalParty;
-=======
-using eVote360.Core.Domain.Entities.PoliticalParty;
-using eVote360.Core.Domain.Entities.Election;
->>>>>>> 2477d0bdda57f906534161cc18d3308fd6c2ce53
+
+
+
 
 namespace eVote360.Infraestructure.Persistence.Context
 {
@@ -32,9 +30,7 @@ namespace eVote360.Infraestructure.Persistence.Context
         public DbSet<PoliticalParty> PoliticalParties { get; set; }
 
 
-        public DbSet<Election> Elections{ get; set; }
-
-        public DbSet<PoliticalParty> PoliticalParties { get; set; }
+      
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
