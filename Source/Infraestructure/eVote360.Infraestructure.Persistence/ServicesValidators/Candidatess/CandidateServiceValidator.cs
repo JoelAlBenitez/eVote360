@@ -3,7 +3,6 @@ using eVote360.Core.Domain.Common.Enums;
 using eVote360.Infraestructure.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
-
 namespace eVote360.Infraestructure.Persistence.ServicesValidators.Candidatess
 {
     public class CandidateServiceValidator : ICandidateDomainService
