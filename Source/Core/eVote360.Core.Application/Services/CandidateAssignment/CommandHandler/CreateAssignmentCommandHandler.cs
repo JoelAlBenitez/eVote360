@@ -1,4 +1,3 @@
-using eVote360.Core.Application.CandidateAssignment.DTOs;
 using eVote360.Core.Application.Contracts.CandidateAssignment.Commands;
 using eVote360.Core.Domain.Common.Errors;
 using eVote360.Core.Domain.Common.ValidationResult;
@@ -9,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using eVote360.Core.Application.DTOs.CandidateAssignment;
 
 namespace eVote360.Core.Application.Services.CandidateAssignment.CommandHandler
 {

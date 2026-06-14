@@ -8,7 +8,7 @@ namespace eVote360.Core.Domain.Entities.PoliticalAlliances
         public int Id { get; set; }
         public int RequestingPartyId { get; set; }
         public int ReceivingPartyId { get; set; }
-        public ElectionState Status { get; set; }
+        public AllianceStatus Status { get; set; }
 
         public DateTimeOffset RequestDate { get; set; }
         public DateTimeOffset? ResponseDate { get; set; }
@@ -17,13 +17,13 @@ namespace eVote360.Core.Domain.Entities.PoliticalAlliances
 
         public void Accept()
         {
-            Status = ElectionState.Accepted;
+            Status = AllianceStatus.Accepted;
             ResponseDate = DateTimeOffset.Now;
         }
 
         public void Reject()
         {
-            Status = ElectionState.Rejected;
+            Status = AllianceStatus.Rejected;
             ResponseDate = DateTimeOffset.Now;
         }
 

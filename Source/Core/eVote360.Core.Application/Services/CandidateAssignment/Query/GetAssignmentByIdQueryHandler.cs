@@ -1,5 +1,5 @@
-using eVote360.Core.Application.CandidateAssignment.DTOs;
 using eVote360.Core.Application.Contracts.CandidateAssignment.Query;
+using eVote360.Core.Application.DTOs.CandidateAssignment;
 using eVote360.Core.Domain.Common.CodeErrors;
 using eVote360.Core.Domain.Common.Errors;
 using eVote360.Core.Domain.Common.ValidationResult;

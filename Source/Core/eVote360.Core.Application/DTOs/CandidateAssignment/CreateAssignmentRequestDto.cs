@@ -1,4 +1,4 @@
-namespace eVote360.Core.Application.CandidateAssignment.DTOs
+namespace eVote360.Core.Application.DTOs.CandidateAssignment
 {
     public class CreateAssignmentRequestDto
     {

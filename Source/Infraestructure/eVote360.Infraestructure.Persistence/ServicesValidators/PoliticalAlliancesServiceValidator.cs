@@ -1,3 +1,4 @@
+using eVote360.Core.Domain.Common.Enums;
 using eVote360.Core.Domain.Contracts.ServiceValidates.PoliticalAlliance;
 using eVote360.Core.Domain.Entities.PoliticalAlliances;
 using eVote360.Infraestructure.Persistence.Context;

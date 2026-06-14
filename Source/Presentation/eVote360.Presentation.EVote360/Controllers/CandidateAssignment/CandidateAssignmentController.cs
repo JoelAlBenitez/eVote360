@@ -1,4 +1,4 @@
-using eVote360.Core.Application.CandidateAssignment.DTOs;
+using eVote360.Core.Application.DTOs.CandidateAssignment;
 using eVote360.Core.Application.Contracts.Authentication.Command;
 using eVote360.Core.Application.Contracts.CandidateAssignment.Commands;
 using eVote360.Core.Application.Contracts.CandidateAssignment.Query;

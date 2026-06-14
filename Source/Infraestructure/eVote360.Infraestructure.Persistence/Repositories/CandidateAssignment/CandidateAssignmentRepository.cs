@@ -48,7 +48,7 @@ namespace eVote360.Infraestructure.Persistence.Repositories.CandidateAssignment
 
         public async Task<IEnumerable<CandidateAssignmentReadModel>> GetAllByPartyIdAsync(int partyId)
         {
-            // JOINs para poblar el modelo de lectura de la boleta completa
+            
             var query = from ep in _context.ElectivePosition.Where(e => e.State == true)
                         join ca in _context.CandidateAssignments.Where(c => c.AssigningPartyId == partyId)
                             on ep.Id equals ca.ElectivePositionId into caGroup
@@ -57,12 +57,7 @@ namespace eVote360.Infraestructure.Persistence.Repositories.CandidateAssignment
                         join c in _context.Candidates on (caLeft != null ? caLeft.CandidateId : 0) equals c.Id into cGroup
                         from cLeft in cGroup.DefaultIfEmpty()
 
-                        // Asumiendo que la entidad PoliticalParty no está mapeada en este DbContext local por los conflictos anteriores,
-                        // y que Adrián me prohibió tocar módulos ajenos, no haré JOIN físico con PoliticalParty si no está en DbSet.
-                        // Revisé DbContext y no agregamos PoliticalParty (solo PoliticalAlliances que luego quitamos).
-                        // Por lo tanto, no puedo hacer JOIN con _context.PoliticalParty si no existe en el DbContext de Adrián.
-                        // NOTA: Para no romper la compilación, extraeré los datos del candidato y dejaré el partido en null
-                        // o lo tomaré de Candidate.PoliticalPartyId si tuviéramos acceso a sus descriptores.
+                   
 
                         select new CandidateAssignmentReadModel
                         {
@@ -147,12 +142,12 @@ namespace eVote360.Infraestructure.Persistence.Repositories.CandidateAssignment
                 .Select(x => x.CandidateId)
                 .ToListAsync();
 
-            // Paso 2: IDs de partidos aliados vigentes
-            // AQUI USABAMOS POLITICALALLIANCES PERO NO ESTA EN DBCONTEXT EN ESTA RAMA.
+           
+            // AQUI Usare POLITICALALLIANCES PERO NO ESTA EN DBCONTEXT EN ESTA RAMA
             // Para que compile, devolveremos lista vacia de aliados temporalmente.
             var alliedPartyIds = new List<int>(); 
 
-            // Paso 3: IDs de candidatos aliados que tienen el MISMO puesto en su partido de origen
+            
             var eligibleAlliedCandidateIds = await _context.CandidateAssignments
                 .AsNoTracking()
                 .Where(x => alliedPartyIds.Contains(x.AssigningPartyId) && 
@@ -160,7 +155,6 @@ namespace eVote360.Infraestructure.Persistence.Repositories.CandidateAssignment
                 .Select(x => x.CandidateId)
                 .ToListAsync();
 
-            // Paso 4: Candidatos propios activos no asignados + candidatos aliados elegibles
             return await _context.Candidates
                 .AsNoTracking()
                 .Where(x => x.State == true &&
