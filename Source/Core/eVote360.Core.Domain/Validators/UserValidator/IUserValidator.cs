@@ -9,6 +9,6 @@ namespace eVote360.Core.Domain.Validators.UserValidator
 {
     public interface IUserValidator
     {
-        Task<ValidationResult> ValidateUser(Entities.User.User user, string plainPassword, int currentUserId);
+        Task<ValidationResult> ValidateUser(Entities.User.User user, string plainPassword, int currentUserId = 0);
     }
 }

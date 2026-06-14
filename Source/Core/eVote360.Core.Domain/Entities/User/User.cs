@@ -6,8 +6,14 @@ using AssignmentEntities = eVote360.Core.Domain.Entities.PoliticalAssignment.Pol
 
 namespace eVote360.Core.Domain.Entities.User
 {
-    public class User : BaseEntitie<int, string>
+    public class User
+
     { 
+        public int Id { get; set; }
+
+        public required string Name { get; set; }
+        public required bool State {  get; set; }
+
         public required string UserFirstName { get; set; }
 
         public required string UserLastName { get; set; }

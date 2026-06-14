@@ -10,6 +10,7 @@ using UserEntity = eVote360.Core.Domain.Entities.User.User;
 using eVote360.Core.Domain.Settings.ValueObjects.Emails;
 using eVote360.Core.Domain.Settings.ValueObjects.UserPassword;
 using eVote360.Core.Application.Contracts.Authentication.Command;
+using PasswordVO = eVote360.Core.Domain.Settings.ValueObjects.UserPassword.UserPassword;
 
 
 namespace eVote360.Core.Application.Services.Users.CommandHandler
@@ -47,11 +48,7 @@ namespace eVote360.Core.Application.Services.Users.CommandHandler
                 {
 
                     Id = dto.Id,
-                    CreateAt = dto.CreateAt,
-                    CreateUserId = dto.CreateUserId,
                     State = dto.State,
-                    UpdateAt = dto.UpdateAt,
-                    UpdateUserId = _sessionUser.GetUserId(),
 
                     UserFirstName = dto.UserFirstName,
                     UserLastName = dto.UserLastName,
@@ -59,7 +56,7 @@ namespace eVote360.Core.Application.Services.Users.CommandHandler
                     Name = dto.Name,
 
                     UserEmail = new Email(dto.UserEmail),
-                    UserPassword = new UserPassword(hashedPassword)
+                    UserPassword = new PasswordVO(hashedPassword)
                 };
 
                 var result = await _validator.ValidateUser(user, dto.UserPassword, _sessionUser.GetUserId());

@@ -40,7 +40,6 @@ namespace eVote360.Infraestructure.Persistence.Configurations.User
                    .IsRequired();
 
                 builder.Property(x => x.UserPassword.HashValue)
-                   .HasColumnName("PasswordHash")
                    .IsRequired();
             
                  builder.Property(x => x.UserRole)
@@ -50,12 +49,6 @@ namespace eVote360.Infraestructure.Persistence.Configurations.User
                 builder.Property(x => x.State)
                    .IsRequired()
                    .HasDefaultValue(true);
-            
-                
-                builder.Property(x => x.CreateAt)
-                   .HasColumnType("datetimeoffset(0)")
-                   .HasDefaultValueSql("GETUTCDATE()");
-            
                 
                 builder.HasIndex(x => x.Name).IsUnique();
                          builder.HasIndex(x => x.UserEmail.Value).IsUnique();
