@@ -1,4 +1,5 @@
 ﻿using eVote360.Core.Domain.Entities.Citizens;
+using eVote360.Core.Domain.Entities.User;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -24,7 +25,23 @@ namespace eVote360.Infraestructure.Persistence.Configurations.Citizens
             builder.HasIndex(x => x.Email.Value).IsUnique();
             builder.HasIndex(x => x.IdentificationNumber.Value).IsUnique();
 
-            //AGREGAR REFEERENCIAS DE RELACIONES A LA TABLA DE USUARUOS CUANDO SE AGREGUEN ESOS CAMBIOS
+            builder.Property(x => x.CreateAt).HasDefaultValue("SYSDATETIMEOFFSET()");
+
+          
+            builder.HasOne(u => u.UserCreate)
+                .WithMany()
+                .HasForeignKey(u => u.CreateUserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasOne(u => u.UserUpdate)
+               .WithMany()
+               .HasForeignKey(u => u.UpdateUserId)
+               .OnDelete(DeleteBehavior.Restrict);
+
+
+
+
+
         }
     }
 }

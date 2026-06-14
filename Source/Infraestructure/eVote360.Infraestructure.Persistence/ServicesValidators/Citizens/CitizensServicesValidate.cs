@@ -16,7 +16,35 @@ namespace eVote360.Infraestructure.Persistence.ServicesValidators.Citizens
 
         public Task<bool> CitizenParticipatedInElection(Guid Id, string Identification)
         {
+
+            /*
+                    
+                 var result  = await _context.AuditVotes
+                 .AsNoTracking()
+                .FirstOrDefaultAsync(c => c.IdCitizen == Id && c.Citizens.Identification == Identification);
+            
+                return result != null;
+             */
+
             throw new NotImplementedException(); //en espera de la entidad de elecciones y votos 
+        }
+
+        public async Task<bool> CitizentHasAssociatedEmail(Guid Id)
+        {
+            var result = await _context.Citzens
+                .AsNoTracking()
+                .FirstOrDefaultAsync(c => c.Id == Id);
+            
+            return result!.Email.Value != null ? true : false;
+        }
+
+        public async Task<bool> CurrentStateCitizen(Guid Id)
+        {
+            var result = await _context.Citzens
+                .AsNoTracking()
+                .FirstOrDefaultAsync(c => c.Id == Id);
+            if (result == null) return false;
+            return result.State;
         }
 
         public async Task<bool> CurrentStateOfTheCitizen(Guid Id)
@@ -27,12 +55,31 @@ namespace eVote360.Infraestructure.Persistence.ServicesValidators.Citizens
             return citizen!.State;
         }
 
-        public async Task<bool> ExistCitizensByEmail(string Email)
+        public async Task<bool> ExistByIdCitizen(Guid Id)
         {
             var citizen = await _context.Citzens
                 .AsNoTracking()
-                .FirstOrDefaultAsync(x => x.Email.Value == Email);
+                .FirstOrDefaultAsync(x => x.Id == Id);
+
             return citizen != null;
+        }
+
+        public async Task<bool> ExistCitizensByEmail(string Email, Guid? Id)
+        {
+            if (Id == null)
+            {
+                var citizen = await _context.Citzens
+                    .AsNoTracking()
+                    .FirstOrDefaultAsync(x => x.Email.Value == Email);
+                return citizen != null;
+            }
+            else
+            {
+                var citizen = await _context.Citzens
+                   .AsNoTracking()
+                   .FirstOrDefaultAsync(x => x.Email.Value == Email &&  x.Id != Id );
+                return citizen != null;
+            }
         }
 
         public  async Task<bool> ExistCitizensByIdentification(string Identification)
@@ -52,11 +99,12 @@ namespace eVote360.Infraestructure.Persistence.ServicesValidators.Citizens
 
         public async Task<bool> ExistOtherCitizensByState(Guid Id, string Identification, bool state)
         {
-            var citizen = await _context
+          return await _context
                 .Citzens
                 .AsNoTracking()
-                .FirstOrDefaultAsync(x => x.Id == Id && x.IdentificationNumber.Value == Identification && x.State == state);
-            return citizen != null;
+                .AnyAsync(x => x.Id != Id && x.IdentificationNumber.Value != Identification && x.State == state);
+
+            
         }
     }
 }
