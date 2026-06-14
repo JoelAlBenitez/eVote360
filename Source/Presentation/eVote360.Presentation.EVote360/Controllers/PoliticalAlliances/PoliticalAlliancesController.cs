@@ -1,7 +1,9 @@
 using eVote360.Core.Application.Alliances.DTOs;
 using eVote360.Core.Application.Contracts.Alliance.Commands;
 using eVote360.Core.Application.Contracts.Alliance.Query;
+using eVote360.Core.Application.Contracts.Authentication.Command;
 using eVote360.Core.Application.ViewModels.PoliticalAlliances;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -10,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace eVote360.Presentation.EVote360.Controllers.PoliticalAlliances
 {
+    [Authorize(Roles = "DirigentePolitico")]
     public class PoliticalAlliancesController : Controller
     {
         private readonly ICreateAllianceCommand _createAllianceCommand;
@@ -21,6 +24,7 @@ namespace eVote360.Presentation.EVote360.Controllers.PoliticalAlliances
         private readonly IGetSentAllianceRequestsQuery _getSentRequestsQuery;
         private readonly IGetActiveAlliancesQuery _getActiveAlliancesQuery;
         private readonly IGetAllianceByIdQuery _getAllianceByIdQuery;
+        private readonly ISessionUser _sessionUser;
 
         public PoliticalAlliancesController(
             ICreateAllianceCommand createAllianceCommand,
@@ -31,7 +35,8 @@ namespace eVote360.Presentation.EVote360.Controllers.PoliticalAlliances
             IGetPendingReceivedAlliancesQuery getPendingReceivedQuery,
             IGetSentAllianceRequestsQuery getSentRequestsQuery,
             IGetActiveAlliancesQuery getActiveAlliancesQuery,
-            IGetAllianceByIdQuery getAllianceByIdQuery)
+            IGetAllianceByIdQuery getAllianceByIdQuery,
+            ISessionUser sessionUser)
         {
             _createAllianceCommand = createAllianceCommand;
             _acceptAllianceCommand = acceptAllianceCommand;
@@ -42,11 +47,11 @@ namespace eVote360.Presentation.EVote360.Controllers.PoliticalAlliances
             _getSentRequestsQuery = getSentRequestsQuery;
             _getActiveAlliancesQuery = getActiveAlliancesQuery;
             _getAllianceByIdQuery = getAllianceByIdQuery;
+            _sessionUser = sessionUser;
         }
 
-        // TODO: Estas funciones deben ser reemplazadas cuando se integre con el módulo de autenticación de Joel.
-        private int GetAuthenticatedPartyId() => 1; 
-        private int GetAuthenticatedUserId() => 1;
+        private int GetAuthenticatedPartyId() => _sessionUser.GetPoliticalParty(); 
+        private int GetAuthenticatedUserId() => _sessionUser.GetUserId();
 
         public async Task<IActionResult> Index()
         {
