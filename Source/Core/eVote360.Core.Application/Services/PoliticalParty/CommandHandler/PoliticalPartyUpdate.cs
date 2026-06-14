@@ -1,12 +1,12 @@
-﻿using eVote360.Core.Application.Contracts.PoliticalParty.Commands;
+﻿using eVote360.Core.Application.Contracts.Authentication.Command;
+using eVote360.Core.Application.Contracts.PoliticalParty.Commands;
 using eVote360.Core.Application.DTOs.PoliticalParty;
-using eVote360.Core.Domain.Contracts.Repositories.PoliticalParty;
-using eVote360.Core.Domain.Validators.PoliticalPartyValidator;
-using eVote360.Core.Domain.Settings.ValueObjects.PoliticalPartyAcronym;
-
-using PartyEntity = eVote360.Core.Domain.Entities.PoliticalParty.PoliticalParty;
-using Error = eVote360.Core.Domain.Common.Errors.Error;
 using eVote360.Core.Domain.Common.ValidationResult;
+using eVote360.Core.Domain.Contracts.Repositories.PoliticalParty;
+using eVote360.Core.Domain.Settings.ValueObjects.PoliticalPartyAcronym;
+using eVote360.Core.Domain.Validators.PoliticalPartyValidator;
+using Error = eVote360.Core.Domain.Common.Errors.Error;
+using PartyEntity = eVote360.Core.Domain.Entities.PoliticalParty.PoliticalParty;
 
 namespace eVote360.Core.Application.Services.PoliticalParty.CommandHandler
 {
@@ -14,13 +14,14 @@ namespace eVote360.Core.Application.Services.PoliticalParty.CommandHandler
     {
         private readonly IPoliticalPartyRepository _repository;
         private readonly IPoliticalPartyValidator _validator;
+        private readonly ISessionUser _sessionUser;
 
 
-
-        public PoliticalPartyUpdate(IPoliticalPartyRepository repository, IPoliticalPartyValidator validator)
+        public PoliticalPartyUpdate(IPoliticalPartyRepository repository, IPoliticalPartyValidator validator, ISessionUser sessionUser)
         {
             _repository = repository;
             _validator = validator;
+            _sessionUser = sessionUser;
         }
 
         public async Task<ValidationResult> ExecuteAsync(PoliticalPartyDto dto)
@@ -38,7 +39,7 @@ namespace eVote360.Core.Application.Services.PoliticalParty.CommandHandler
                 {
                     Id = dto.Id,
                     CreateAt = dto.CreateAt,
-                    CreateUserId = 1,
+                    CreateUserId = dto.CreateUserId,
 
                     Name = dto.Name!,
                     PoliticalPartyDescription = dto.PoliticalPartyDescription,
@@ -46,7 +47,7 @@ namespace eVote360.Core.Application.Services.PoliticalParty.CommandHandler
                     State = dto.State,
 
                     UpdateAt = DateTime.UtcNow,
-                    UpdateUserId = dto.UpdateUserId,
+                    UpdateUserId = _sessionUser.GetUserId(),
 
                     PoliticalPartyAcronym = new PoliticalPartyAcronym(dto.PoliticalPartyAcronym)
                 };
