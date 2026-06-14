@@ -24,15 +24,21 @@ namespace eVote360.Core.Application.Services.CandidateAssignment.QueryHandler
             var errors = new List<Error>();
             try
             {
-                var entities = await _repository.GetAllByPartyIdAsync(partyId);
-                
-                var dtos = entities.Select(entity => new CandidateAssignmentDto
+                var readModels = await _repository.GetAllByPartyIdAsync(partyId);
+
+                var dtos = readModels.Select(rm => new CandidateAssignmentDto
                 {
-                    AssignmentId = entity.Id,
-                    AssigningPartyId = entity.AssigningPartyId,
-                    CandidateId = entity.CandidateId,
-                    ElectivePositionId = entity.ElectivePositionId
-                    // Los campos de nombre, foto, tipo se llenan en Infrastructure con joinss x2
+                    ElectivePositionId = rm.ElectivePositionId,
+                    ElectivePositionName = rm.ElectivePositionName,
+                    AssignmentId = rm.AssignmentId,
+                    CandidateId = rm.CandidateId,
+                    CandidateName = rm.CandidateName,
+                    CandidateLastName = rm.CandidateLastName,
+                    PhotoUrl = rm.PhotoUrl,
+                    CandidateType = rm.CandidateType,
+                    OriginPartyName = rm.OriginPartyName,
+                    OriginPartySiglas = rm.OriginPartySiglas,
+                    AssigningPartyId = rm.AssigningPartyId
                 });
 
                 return ValidationResult<IEnumerable<CandidateAssignmentDto>>.Success(dtos);
