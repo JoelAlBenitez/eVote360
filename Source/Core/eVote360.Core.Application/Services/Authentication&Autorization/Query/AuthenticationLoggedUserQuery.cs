@@ -34,7 +34,9 @@ namespace eVote360.Core.Application.Services.Authentication_Autorization.Query
                     IdUser = user.Id,
                     userName = loginDto.userName,
                     password = loginDto.password,
-                    Role = user.UserRole
+                    Role = user.UserRole,
+                    //paritido aqui
+
                 };
 
                 return ValidationResult<LoginDto>.Success(dto);

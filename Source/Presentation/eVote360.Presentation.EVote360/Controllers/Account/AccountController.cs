@@ -47,6 +47,8 @@ namespace eVote360.Presentation.EVote360.Controllers.Account
                 userName = user.Value!.userName,
                 password = "",
                 Role = user.Value!.Role
+                //agregar aqui id partido
+                
             };
 
             var claims = new List<Claim> {
