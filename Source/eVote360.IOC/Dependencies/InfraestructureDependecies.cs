@@ -14,10 +14,25 @@ using eVote360.Infraestructure.Persistence.Services;
 using eVote360.Infraestructure.Persistence.ServicesValidators;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
+using Microsoft.Extensions.DependencyInjection; 
 using eVote360.Infraestructure.Persistence.ServicesValidators.Candidatess;
 using eVote360.Core.Domain.Contracts.ServiceValidates.Candidate;
+using eVote360.Core.Domain.Contracts.Repositories.AuthenticationAndAutorization;
+using eVote360.Infraestructure.Persistence.Repositories.Authentication;
+using eVote360.Core.Domain.Validators.UserValidator;
+using eVote360.Core.Domain.Contracts.ServiceValidates.User;
+using eVote360.Infraestructure.Persistence.ServicesValidators.User;
+using eVote360.Core.Domain.Contracts.Repositories.UserRepository;
+using eVote360.Infraestructure.Persistence.Repositories.User;
+using eVote360.Core.Domain.Contracts.ServiceValidates.PoliticalParty;
+using eVote360.Infraestructure.Persistence.ServicesValidators.PoliticalParty;
+using eVote360.Core.Domain.Contracts.Repositories.PoliticalParty;
+using eVote360.Infraestructure.Persistence.Repositories.PoliticalParty;
+using eVote360.Core.Domain.Contracts.Repositories.ElectionRepository;
+using eVote360.Core.Domain.Contracts.ServiceValidates.Election;
+using eVote360.Infraestructure.Persistence.Repositories.Election;
+using eVote360.Core.Domain.Validators.ElectionValidator;
+using eVote360.Infraestructure.Persistence.ServicesValidators.Election;
 
 namespace eVote360.IOC.Dependencies
 {
@@ -46,8 +61,24 @@ namespace eVote360.IOC.Dependencies
             services.AddScoped<ICandidateRepository, CandidateRepository>();
             services.AddScoped<ICandidateDomainService, CandidateServiceValidator>();
 
+            //Users
+            services.AddScoped<IUserValidator, UserValidator>();
+            services.AddScoped<IUserDomainService, UserServiceValidator>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            //Election
+            services.AddScoped<IElectionRepository, ElectionRepository>();
+            services.AddScoped<IElectionDomainService, ElectionServiceValidator>();
+
             //Common Services
             services.AddScoped<IFileStorageService, LocalFileStorageService>();
+
+            //Authentication
+
+            services.AddScoped<IAuthenticationRepository, AuthenticationRepository>();
+
+            //Political Parties
+            services.AddScoped<IPoliticalPartyRepository, PoliticalPartyRepository>();
+            services.AddScoped<IPoliticalPartyDomainService, PoliticalPartyServiceValidator>();
 
             return services;
         }

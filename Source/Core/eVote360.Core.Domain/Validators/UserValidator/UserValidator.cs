@@ -16,7 +16,7 @@ namespace eVote360.Core.Domain.Validators.UserValidator
             _userDomainService = userDomainService;
         }
 
-        public async Task<ValidationResult> ValidateUser(Entities.User.User user, string plainPassword, int currentUserId) { 
+        public async Task<ValidationResult> ValidateUser(Entities.User.User user, string plainPassword, int currentUserId = 0) { 
 
             var errors = new List<Error>();
 
