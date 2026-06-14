@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using AssignmentEntity = eVote360.Core.Domain.Entities.PoliticalAssignment.PoliticalAssignment;
+using UserEntity = eVote360.Core.Domain.Entities.User.User;
+using PartyEntity = eVote360.Core.Domain.Entities.PoliticalParty.PoliticalParty;
 
 namespace eVote360.Infraestructure.Persistence.Configurations.PoliticalAssignment
 {
@@ -28,14 +30,6 @@ namespace eVote360.Infraestructure.Persistence.Configurations.PoliticalAssignmen
                    .HasMaxLength(150)
                    .HasColumnType("nvarchar")
                    .IsRequired();
-            
-                builder.Property(x => x.State)
-                   .IsRequired()
-                   .HasDefaultValue(true);
-            
-                builder.HasIndex(x => x.PoliticalLeaderId);
-                         builder.HasIndex(x => x.PoliticalPartyId);
-
         }
     }
 }
