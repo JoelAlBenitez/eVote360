@@ -20,6 +20,11 @@ using eVote360.Infraestructure.Persistence.ServicesValidators.Candidatess;
 using eVote360.Core.Domain.Contracts.ServiceValidates.Candidate;
 using eVote360.Core.Domain.Contracts.Repositories.AuthenticationAndAutorization;
 using eVote360.Infraestructure.Persistence.Repositories.Authentication;
+using eVote360.Core.Domain.Contracts.Repositories.ElectionRepository;
+using eVote360.Core.Domain.Contracts.ServiceValidates.Election;
+using eVote360.Infraestructure.Persistence.Repositories.Election;
+using eVote360.Core.Domain.Validators.ElectionValidator;
+using eVote360.Infraestructure.Persistence.ServicesValidators.Election;
 
 
 namespace eVote360.IOC.Dependencies
@@ -48,6 +53,10 @@ namespace eVote360.IOC.Dependencies
             //Candidates
             services.AddScoped<ICandidateRepository, CandidateRepository>();
             services.AddScoped<ICandidateDomainService, CandidateServiceValidator>();
+
+            //Election
+            services.AddScoped<IElectionRepository, ElectionRepository>();
+            services.AddScoped<IElectionDomainService, ElectionServiceValidator>();
 
             //Common Services
             services.AddScoped<IFileStorageService, LocalFileStorageService>();
