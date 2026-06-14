@@ -1,0 +1,13 @@
+﻿namespace eVote360.Core.Application.ViewModels.Admin
+{
+    public sealed class AdminViewModel
+    {
+        public required string NameElection { get; set; }
+        public required DateTime DateRealized { get; set; }
+        public required int NumberParticipatingMatches { get; set; }
+        public required int NumberCandidactesParticipating { get; set; }
+        public required int NumberCitizenParticipating { get; set; }
+
+        public required List<int> YearAvaible {  get; set; }
+    }
+}

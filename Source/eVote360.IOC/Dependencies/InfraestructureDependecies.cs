@@ -20,6 +20,8 @@ using eVote360.Infraestructure.Persistence.ServicesValidators.Candidatess;
 using eVote360.Core.Domain.Contracts.ServiceValidates.Candidate;
 using eVote360.Core.Domain.Contracts.Repositories.AuthenticationAndAutorization;
 using eVote360.Infraestructure.Persistence.Repositories.Authentication;
+using eVote360.Core.Domain.Contracts.Repositories.AdminManager;
+using eVote360.Infraestructure.Persistence.Repositories.Admin;
 
 
 namespace eVote360.IOC.Dependencies
@@ -55,6 +57,10 @@ namespace eVote360.IOC.Dependencies
             //Authentication
 
             services.AddScoped<IAuthenticationRepository, AuthenticationRepository>();
+
+            //admin
+
+            services.AddScoped<IAdminManagerRepository, AdminRepository>();
 
             return services;
         }

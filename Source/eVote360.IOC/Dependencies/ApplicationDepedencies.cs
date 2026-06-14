@@ -18,6 +18,8 @@ using eVote360.Core.Application.Services.Candidate.CommandHandler;
 using eVote360.Core.Application.Services.Candidate.Query;
 using eVote360.Core.Application.Contracts.Authentication.Query;
 using eVote360.Core.Application.Services.Authentication_Autorization.Query;
+using eVote360.Core.Application.Contracts.Admin.Query;
+using eVote360.Core.Application.Services.Admin;
 
 namespace eVote360.IOC.Dependencies
 {
@@ -69,6 +71,11 @@ namespace eVote360.IOC.Dependencies
             //Authentication
 
             services.AddScoped<ILoginQuery, AuthenticationLoggedUserQuery>();
+
+            //admin
+            services.AddScoped<ICountRegisterAdminQuery, CountRegisterQueryHandler>();
+            services.AddScoped<IElectionByYearQuery, ElectionByYear>();
+
 
             return services;
         }
