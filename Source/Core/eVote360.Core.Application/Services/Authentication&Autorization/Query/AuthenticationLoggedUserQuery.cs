@@ -28,15 +28,14 @@ namespace eVote360.Core.Application.Services.Authentication_Autorization.Query
                     _errors.Add(AuthenticationAuthorizationError.DoesNotHaveEnoughPrivileges);
                     return ValidationResult<LoginDto>.Failure(_errors);
                 }
-
+                if (!user.state) _errors.Add(new Error("Usuario inactivo", "El usuario que ha ingresado se encuentra en un estado de inactividad, favor contactar con un administrador."));
                 var dto = new LoginDto
                 {
-                    IdUser = user.Id,
+                    IdUser = user.IdUser,
                     userName = loginDto.userName,
                     password = loginDto.password,
-                    Role = user.UserRole,
-                    //paritido aqui
-
+                    Role = user.Role,
+                    IdPoliticalParty = user.PoliticalPartyId
                 };
 
                 return ValidationResult<LoginDto>.Success(dto);
