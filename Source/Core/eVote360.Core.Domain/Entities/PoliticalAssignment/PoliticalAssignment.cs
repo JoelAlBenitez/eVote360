@@ -1,9 +1,6 @@
 ﻿using eVote360.Core.Domain.Commom.BaseEntity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using UserEntitie = eVote360.Core.Domain.Entities.User.User;
+using PartyEntitie = eVote360.Core.Domain.Entities.PoliticalParty.PoliticalParty;
 
 namespace eVote360.Core.Domain.Entities.PoliticalAssignment
 {
@@ -15,5 +12,11 @@ namespace eVote360.Core.Domain.Entities.PoliticalAssignment
         public required int PoliticalPartyId { get; set; }
 
         public required DateTime PolitcalAssignmentDate {  get; set; }
+
+
+        //Navigation Property
+
+        public virtual UserEntitie PoliticalLeader { get; set; } = null;
+        public virtual PartyEntitie PoliticalParty { get; set; } = null;
     }
 }

@@ -8,7 +8,7 @@ namespace eVote360.Core.Domain.Common.Enums
 {
     public enum UserRole
     {
-        Admin,
-        DirigentePolitico
+        Admin = 1,
+        DirigentePolitico = 2
     }
 }

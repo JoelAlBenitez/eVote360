@@ -1,4 +1,5 @@
-﻿using eVote360.Core.Application.Contracts.PoliticalLeaderAssignment.Commands;
+﻿using eVote360.Core.Application.Contracts.Authentication.Command;
+using eVote360.Core.Application.Contracts.PoliticalLeaderAssignment.Commands;
 using eVote360.Core.Application.DTOs.PoliticalLeaderAssignment;
 using eVote360.Core.Domain.Common.Errors;
 using eVote360.Core.Domain.Common.ValidationResult;
@@ -11,13 +12,15 @@ namespace eVote360.Core.Application.Services.PoliticalLeaderAssignment.CommandHa
 {
     public sealed class LeaderAssignmentCreate : ILeaderAssignmentCreateCommand
     {
-        IPoliticalAssignmentRepository _repository;
-        IPoliticalAssignmentValidator _validator;
+        private readonly IPoliticalAssignmentRepository _repository;
+        private readonly IPoliticalAssignmentValidator _validator;
+        private readonly ISessionUser _sessionUser;
 
-    public LeaderAssignmentCreate(IPoliticalAssignmentRepository repository, IPoliticalAssignmentValidator validator)
+    public LeaderAssignmentCreate(IPoliticalAssignmentRepository repository, IPoliticalAssignmentValidator validator, ISessionUser sessionUser)
         {
             _repository = repository;
             _validator = validator;
+            _sessionUser = sessionUser;
         }
 
         public async Task<ValidationResult> ExecuteAsync(LeaderAssignmentDto dto)
@@ -29,7 +32,7 @@ namespace eVote360.Core.Application.Services.PoliticalLeaderAssignment.CommandHa
             {
                 Id = 0,
                 CreateAt = DateTime.UtcNow,
-                CreateUserId = dto.CreateUserId,
+                CreateUserId = _sessionUser.GetUserId(),
 
                 Name = dto.Name ?? "Asignacion Creada",
 
