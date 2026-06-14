@@ -30,6 +30,44 @@ namespace eVote360.Infraestructure.Persistence.ServicesValidators.Election
                 return await _context.Elections.AnyAsync(x => x.Id == idElection);
         }
 
+        public async Task<bool> HasEnoughActiveParties()
+        {
+            return await _context.PoliticalParties.CountAsync(x => x.State) >= 2;
+        }
+
+        public async Task<bool> HasEnoughActivePositions()
+        {
+            return await _context.ElectivePosition.AnyAsync(x => x.State);
+        }
+
+        public async Task<List<string>> GetPartiesWithMissingCandidates()
+        {
+            var activeParties = await _context.PoliticalParties.Where(p => p.State).ToListAsync();
+            var activePositions = await _context.ElectivePosition.Where(p => p.State).ToListAsync();
+            var missing = new List<string>();
+
+            foreach (var party in activeParties)
+            {
+                var missingPositions = new List<string>();
+                foreach (var position in activePositions)
+                {
+                    var hasCandidate = await _context.CandidateAssignments
+                        .AnyAsync(ca => ca.AssigningPartyId == party.Id && ca.ElectivePositionId == position.Id && ca.Candidate!.State);
+
+                    if (!hasCandidate)
+                    {
+                        missingPositions.Add(position.Name);
+                    }
+                }
+
+                if (missingPositions.Any())
+                {
+                    missing.Add($"El partido político {party.Name} ({party.PoliticalPartyAcronym.Value}) no tiene candidatos activos asignados para los siguientes puestos electivos: {string.Join(", ", missingPositions)}.");
+                }
+            }
+            return missing;
+        }
+
         public async Task<bool> ExistActiveElection()
         {
                 return await _context.Elections.AnyAsync(x => x.ElectionState == ElectionState.Activa && x.State == true);
@@ -44,12 +82,6 @@ namespace eVote360.Infraestructure.Persistence.ServicesValidators.Election
         {
                  return await _context.Elections.AnyAsync(x => x.Id == electionId && x.ElectionState == expectedState);
         }
-
-         public async Task<bool> ElectionHasEnoughParties(int idElection)
-         {
-                 //pendiente de integrar
-                return await Task.FromResult(true);
-         }
 
 
     }

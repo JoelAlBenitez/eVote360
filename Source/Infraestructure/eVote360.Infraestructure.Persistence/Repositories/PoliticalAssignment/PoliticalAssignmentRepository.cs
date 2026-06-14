@@ -63,9 +63,10 @@ namespace eVote360.Infraestructure.Persistence.Repositories.PoliticalAssignment
             {
                  return await _context.PoliticalAssignments
                  .AsNoTracking()
+                 .Include(x => x.PoliticalLeader)
+                 .Include(x => x.PoliticalParty)
                  .ToListAsync();
             }
-
 
     }
 }

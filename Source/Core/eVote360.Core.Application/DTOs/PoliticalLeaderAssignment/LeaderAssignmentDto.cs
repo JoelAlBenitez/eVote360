@@ -10,8 +10,14 @@ namespace eVote360.Core.Application.DTOs.PoliticalLeaderAssignment
     public record  LeaderAssignmentDto : BaseDto<int>
     {
         public required int PoliticalLeaderId { get; set; }
+        public string? PoliticalLeaderName { get; set; }
+        public string? PoliticalLeaderUsername { get; set; }
+        public bool PoliticalLeaderState { get; set; }
 
         public required int PoliticalPartyId { get; set; }
+        public string? PoliticalPartyName { get; set; }
+        public string? PoliticalPartyAcronym { get; set; }
+        public bool PoliticalPartyState { get; set; }
 
         public  DateTimeOffset? CreateAt { get; set; }
         public  DateTimeOffset? UpdateAt { get; set; }

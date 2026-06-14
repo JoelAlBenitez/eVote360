@@ -14,7 +14,7 @@ namespace eVote360.Core.Application.ViewModels.PoliticalParty
 
         [Display(Name = "Nombre")]
         [Required(ErrorMessage = "Se requiere un nombre valido")]
-        [StringLength(20, MinimumLength = 5, ErrorMessage = "Ingrese un nombre valido de minimo 100 y maximo 500 caracteres")]
+        [StringLength(20, MinimumLength = 5, ErrorMessage = "Ingrese un nombre valido de minimo 5 y maximo 20 caracteres")]
         public required string Name { get; set; }
 
         [Display(Name = "Estado")]
@@ -33,7 +33,7 @@ namespace eVote360.Core.Application.ViewModels.PoliticalParty
 
         [Display(Name = "Logo")]
         [Required(ErrorMessage = "Se requiere un Logo de partido valido")]
-        [StringLength(200, ErrorMessage = "Ingrese una imagen valida")]
+        
         public required string PoliticalPartyLogo { get; set; }
 
         public required IFormFile? LogoFile { get; set; }

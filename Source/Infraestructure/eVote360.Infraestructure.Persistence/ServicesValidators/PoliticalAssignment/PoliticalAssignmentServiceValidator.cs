@@ -19,13 +19,13 @@ namespace eVote360.Infraestructure.Persistence.ServicesValidators.PoliticalAssig
         }
 
         public async Task<bool> IsPartyActiveAsync(int partyId)
-            { /*
+            { 
                 var party = await _context.PoliticalParties
                     .AsNoTracking()
                     .FirstOrDefaultAsync(x => x.Id == partyId);
                 return party != null && party.State;
-            */
-            return await Task.FromResult(true);
+            
+         
             }
    
             public async Task<bool> PartyAlreadyHasLeaderAsync(int partyId)

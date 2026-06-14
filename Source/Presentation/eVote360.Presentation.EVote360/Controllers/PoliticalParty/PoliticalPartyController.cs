@@ -67,7 +67,7 @@ using System.Xml.Linq;
                 });
              }
 
-   [HttpPost]
+    [HttpPost]
             public async Task<IActionResult> Create(PoliticalPartyViewModelCreate vm)
             {
                  if (!ModelState.IsValid) return View("~/Views/PoliticalParties/Save.cshtml",vm);

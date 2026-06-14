@@ -31,40 +31,6 @@ namespace eVote360.Infraestructure.Persistence.Repositories.Admin
             return result != null ? result.Count : 0;
         }
 
-        public async Task<IReadOnlyCollection<Core.Domain.Entities.Admin.Admin>> ElectionByYearAsync(DateTime year)
-        {
-            
-            var resum = await _context.Elections
-                .AsNoTracking().Where(e => e.ElectionDate.Value.Year == year.Year)
-                .Select(e => new Core.Domain.Entities.Admin.Admin
-                {
-                    NameElection = e.Name,
-                    DateRealized = e.ElectionDate.Value,
-
-                    NumberCandidactesParticipating =   _context.Vote
-                       .AsNoTracking()
-                       .Where(v => v.IdElection == e.Id)
-                       .Select(v => v.IdCandidate)
-                        .Distinct()
-                        .Count(),
-
-                    NumberCitizenParticipating = _context.AuditVote
-                        .AsNoTracking()
-                        .Where(v => v.IdElection == e.Id)
-                        .Select(v => v.IdCitizen)
-                        .Distinct()
-                        .Count(),
-                   
-                    NumberParticipatingMatches =  _context.Vote.
-                     AsNoTracking()
-                    .Where(v => v.IdElection == e.Id)
-                    .Select(v => v.Candidacte!.PoliticalPartyId)
-                    .Distinct()
-                    .Count()
-                }).ToListAsync();
-
-            return resum;
-        }
 
         public async Task<IReadOnlyCollection<int>> GetYears()
         {

@@ -18,14 +18,32 @@ namespace eVote360.Core.Domain.Validators.ElectionValidator
         public async Task<ValidationResult> ValidateElection(Entities.Election.Election election)
         {
             var errors = new List<Error>();
-            var validations = new[]
-            {
-                await ValidateElectionName (election.Name),
-                await ValidateElectionDate(election.ElectionDate),
-                await ExistActiveElection(election.ElectionState)
-            };
+            
+            var nameError = await ValidateElectionName(election.Name);
+            if (nameError != null) errors.Add(nameError);
 
-            errors.AddRange(validations.Where(v => v != null));
+            var dateError = await ValidateElectionDate(election.ElectionDate);
+            if (dateError != null) errors.Add(dateError);
+
+            var activeError = await ExistActiveElection(election.ElectionState);
+            if (activeError != null) errors.Add(activeError);
+
+            if (!await _electionDomainService.HasEnoughActivePositions())
+            {
+                errors.Add(ElectionError.NoActivePositions);
+            }
+
+            if (!await _electionDomainService.HasEnoughActiveParties())
+            {
+                errors.Add(ElectionError.NotEnoughParties);
+            }
+
+            var missingCandidates = await _electionDomainService.GetPartiesWithMissingCandidates();
+            foreach (var message in missingCandidates)
+            {
+                errors.Add(ElectionError.MissingCandidates(message));
+            }
+
             return errors.Any() ? ValidationResult.Failure(errors) : ValidationResult.Success();
         }
 

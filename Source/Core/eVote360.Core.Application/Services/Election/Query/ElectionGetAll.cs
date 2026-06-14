@@ -19,24 +19,21 @@ namespace eVote360.Core.Application.Services.Election.Query
             _repository = repository;
         }
 
-        public async Task<IReadOnlyCollection<ElectionDto>> ExecuteAsync()
+        public async Task<IReadOnlyCollection<ElectionResumDto>> ExecuteAsync()
         {
             var entities = await _repository.GetAllElectionsAsync();
 
-            return entities.Select(e => new ElectionDto
+            return entities.Select(e => new ElectionResumDto
             {
+                
                 Id = e.Id,
-                Name = e.Name,
-                State = e.State,
-
-                ElectionDate = e.ElectionDate.Value,
-
-                ElectionState = e.ElectionState,
-
-                CreateAt = e.CreateAt?.Date ?? DateTime.MinValue,
-                UpdateAt = e.UpdateAt?.Date ?? DateTime.MinValue,
-                CreateUserId = e.CreateUserId ?? 0,
-                UpdateUserId = e.UpdateUserId ?? 0,
+                Name = e.NameElection,
+                ElectionDate = e.DateRealized,
+                ElectionState = e.State,
+                NumberCandidactesParticipating = e.NumberElectivePositionsParticipating,
+                NumberCitizenParticipating = e.NumberCitizenParticipating,
+                NumberParticipatingMatches = e.NumberParticipatingMatches
+              
             }).ToList().AsReadOnly();
         }
     }

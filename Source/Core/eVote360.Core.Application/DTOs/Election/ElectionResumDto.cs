@@ -1,20 +1,18 @@
-﻿using eVote360.Core.Application.ViewModels.Base;
+﻿using eVote360.Core.Application.DTOs.Base;
 using eVote360.Core.Domain.Common.Enums;
-using eVote360.Core.Domain.Settings.ValueObjects;
 using Microsoft.AspNetCore.DataProtection.KeyManagement;
 
-
-namespace eVote360.Core.Application.ViewModels.Election
+namespace eVote360.Core.Application.DTOs.Election
 {
-    public sealed class ElectionViewModel 
+    public record ElectionResumDto
     {
+
         public required int Id { get; set; }
         public required string Name { get; set; }
-
         public DateTime ElectionDate { get; set; }
         public ElectionState ElectionState { get; set; }
         public required int NumberParticipatingMatches { get; set; }
-        public required int NumberElectivePositionsParticipating { get; set; }
+        public required int NumberCandidactesParticipating { get; set; }
         public required int NumberCitizenParticipating { get; set; }
     }
 }

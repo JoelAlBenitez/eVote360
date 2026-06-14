@@ -61,10 +61,10 @@ using eVote360.Infraestructure.Persistence.ServicesValidators.PoliticalAssignmen
 using eVote360.Infraestructure.Persistence.ServicesValidators.PoliticalParty;
 using eVote360.Infraestructure.Persistence.ServicesValidators.User;
 using eVote360.Core.Domain.Contracts.DomainService.LeaderDashboard;
-using eVote360.Infraestructure.Persistence.DomainServices;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using eVote360.Infraestructure.Persistence.ServicesValidators.LeaderDashboard;
 
 namespace eVote360.IOC.Dependencies
 {

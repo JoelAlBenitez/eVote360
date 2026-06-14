@@ -7,7 +7,9 @@ namespace eVote360.Core.Domain.Contracts.ServiceValidates.Election
     {
         Task<bool> ExistElectionByName(string Name);
         Task<bool> ExistElectionById(int idElection);
-        Task<bool> ElectionHasEnoughParties (int idElection);
+        Task<bool> HasEnoughActiveParties();
+        Task<bool> HasEnoughActivePositions();
+        Task<List<string>> GetPartiesWithMissingCandidates();
         Task<bool> ExistActiveElection();
         Task<bool> ValidElectionDate(ElectionDate electionDate);
         Task<bool> ValidateElectionState(int electionId, ElectionState expectedState);

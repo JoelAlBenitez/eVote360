@@ -17,5 +17,6 @@ namespace eVote360.Core.Application.DTOs.Election
         public DateTimeOffset? UpdateAt { get; set; }
 
         public int? UpdateUserId { get; set; }
+
     }
 }

@@ -1,5 +1,5 @@
-@using eVote360.Core.Application.ViewModels.Admin
-@model List<ElectoralSummaryViewModel>
+@using eVote360.Core.Application.ViewModels.Election
+@model List<ElectionResumsViewModel>;
 @{
     ViewData["Title"] = "Resumen Electoral";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
@@ -52,19 +52,28 @@
             <thead>
                 <tr>
                     <th scope="col">
-                        <i class="bi bi-calendar-check" aria-hidden="true"></i>Nombre
+                        Nombre de partido
                     </th>
                     <th scope="col">
-                        <i class="bi bi-calendar-date" aria-hidden="true"></i>Fecha
+                       Acronimo
                     </th>
                     <th scope="col">
-                        <i class="bi bi-flag-fill" aria-hidden="true"></i>Partidos
+                        <i class="bi bi-flag-fill" aria-hidden="true"></i> Logo
                     </th>
                     <th scope="col">
                         <i class="bi bi-person-badge-fill" aria-hidden="true"></i>Candidatos
                     </th>
                     <th scope="col">
-                        <i class="bi bi-people-fill" aria-hidden="true"></i>Ciudadanos
+                        Posicion
+                    </th>
+                    <th scope="col">
+                        Porcentage
+                    </th>
+                    <th scope="col">
+                        Estado
+                    </th>
+                    <th scope="col">
+                        Total votos
                     </th>
                 </tr>
             </thead>
@@ -72,26 +81,43 @@
                 @foreach (var item in Model!)
                 {
                     <tr>
-                        <td class="data-table__name">@item.NameElection</td>
+                        <td class="data-table__name">@item.PartyName</td>
                         <td>
                             <span class="data-table__date">
-                                @item.DateRealized.ToString("dd 'de' MMMM 'de' yyyy",
-                                    new System.Globalization.CultureInfo("es-DO"))
+                                @item.PartyAcronym
                             </span>
                         </td>
                         <td>
                             <span class="data-badge data-badge--parties">
-                                @item.NumberParticipatingMatches
+                                <img src="@item.PartyLogo"
+                                        class="img-fluid rounded"
+                                        style="width:40px; height:40px; object-fit:contain;"
+                                        alt="Logo del partido" />
                             </span>
                         </td>
                         <td>
                             <span class="data-badge data-badge--candidates">
-                                @item.NumberCandidactesParticipating
+                                @item.CandidateName
                             </span>
                         </td>
                         <td>
                             <span class="data-badge data-badge--citizens">
-                                @item.NumberCitizenParticipating
+                                @item.PositionName
+                            </span>
+                        </td>
+                        <td>
+                            <span class="data-badge data-badge--citizens">
+                                @item.Percentage
+                            </span>
+                        </td>
+                        <td>
+                            <span class="data-badge data-badge--citizens">
+                                @item.ResultStatus
+                            </span>
+                        </td>
+                        <td>
+                            <span class="data-badge data-badge--citizens">
+                                @item.TotalVotes
                             </span>
                         </td>
                     </tr>
@@ -106,27 +132,28 @@
         {
             <article class="summary-card">
                 <div class="summary-card__header">
-                    <span class="summary-card__name">@item.NameElection</span>
+                    <span class="summary-card__name">@item.PartyName</span>
                     <span class="summary-card__date">
-                        @item.DateRealized.ToString("dd MMM yyyy",
-                            new System.Globalization.CultureInfo("es-DO"))
+                       @item.PartyAcronym
                     </span>
                 </div>
                 <div class="summary-card__stats">
                     <div class="summary-card__stat">
                         <i class="bi bi-flag-fill" aria-hidden="true"></i>
-                        <span class="summary-card__stat-value">@item.NumberParticipatingMatches</span>
-                        <span class="summary-card__stat-label">Partidos</span>
+                        <span class="summary-card__stat-value">
+                            @item.CandidateName
+                            </span>
+                        <span class="summary-card__stat-label">Candidactos</span>
                     </div>
                     <div class="summary-card__stat">
                         <i class="bi bi-person-badge-fill" aria-hidden="true"></i>
-                        <span class="summary-card__stat-value">@item.NumberCandidactesParticipating</span>
-                        <span class="summary-card__stat-label">Candidatos</span>
+                        <span class="summary-card__stat-value">@item.PositionName</span>
+                        <span class="summary-card__stat-label">Posiciones electivas</span>
                     </div>
                     <div class="summary-card__stat">
                         <i class="bi bi-people-fill" aria-hidden="true"></i>
-                        <span class="summary-card__stat-value">@item.NumberCitizenParticipating</span>
-                        <span class="summary-card__stat-label">Ciudadanos</span>
+                        <span class="summary-card__stat-value">@item.TotalVotes</span>
+                        <span class="summary-card__stat-label">Votos</span>
                     </div>
                 </div>
             </article>

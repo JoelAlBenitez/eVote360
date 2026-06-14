@@ -24,7 +24,7 @@ namespace eVote360.Presentation.EVote360.Controllers.Election
 
         private readonly IElectionGetAllQuery _getAllQuery;
         private readonly IElectionGetByIdQuery _getByIdQuery;
-        private readonly Core.Application.Contracts.Admin.Query.IElectionByYearQuery _getByYearQuery;
+        private readonly IElectionByYearQuery _getByYearQuery;
         private readonly IGetElectionReportQuery _reportQuery;
 
         public ElectionController(
@@ -61,9 +61,11 @@ namespace eVote360.Presentation.EVote360.Controllers.Election
                 {
                     Id = item.Id,
                     Name = item.Name,
-                    State = item.State,
                     ElectionDate = item.ElectionDate,
-                    ElectionState = item.ElectionState
+                    ElectionState = item.ElectionState,
+                    NumberElectivePositionsParticipating = item.NumberCandidactesParticipating,
+                    NumberCitizenParticipating = item.NumberCitizenParticipating,
+                    NumberParticipatingMatches = item.NumberParticipatingMatches
                 });
             }
             return View("~/Views/ElectionManager/Index.cshtml", views);
@@ -95,17 +97,21 @@ namespace eVote360.Presentation.EVote360.Controllers.Election
         {
 
             var list = await _getByYearQuery.GetRegisterAsync(new DateTime(year, 1, 1));
-            var view = new List<ElectoralSummaryViewModel>();
+            var view = new List<ElectionResumsViewModel>();
             foreach (var item in list.Value!)
             {
 
-                var e = new ElectoralSummaryViewModel
+                var e = new ElectionResumsViewModel
                 {
-                    DateRealized = item.DateRealized,
-                    NameElection = item.NameElection,
-                    NumberCandidactesParticipating = item.NumberCandidactesParticipating,
-                    NumberCitizenParticipating = item.NumberCitizenParticipating,
-                    NumberParticipatingMatches = item.NumberParticipatingMatches,
+                    PositionName = item.PositionName,
+                    CandidateName = item.CandidateName,
+                    PartyAcronym = item.PartyAcronym,
+                    PartyLogo = item.PartyLogo,
+                    PartyName = item.PartyName,
+                    Percentage = item.Percentage,
+                    ResultStatus = item.ResultStatus,
+                    TotalVotes = item.TotalVotes
+
                 };
                 view.Add(e);
             }
@@ -134,14 +140,16 @@ namespace eVote360.Presentation.EVote360.Controllers.Election
         {
             var elections = await _getAllQuery.ExecuteAsync();
             var views = elections
-                .Where(e => e.State)
+                .Where(e => e.ElectionState == ElectionState.Activa)
                 .Select(item => new ElectionViewModel
                 {
                     Id = item.Id,
                     Name = item.Name,
-                    State = item.State,
                     ElectionDate = item.ElectionDate,
-                    ElectionState = item.ElectionState
+                    ElectionState = item.ElectionState,
+                    NumberCitizenParticipating = item.NumberCitizenParticipating,
+                    NumberElectivePositionsParticipating = item.NumberCandidactesParticipating,
+                    NumberParticipatingMatches = item.NumberParticipatingMatches
                 }).ToList();
             return View("~/Views/ElectionManager/Index.cshtml", views);
         }
@@ -210,7 +218,9 @@ namespace eVote360.Presentation.EVote360.Controllers.Election
                 Name = model.Name,
                 ElectionDate = model.ElectionDate,
                 ElectionState = model.ElectionState,
-                State = model.State
+                State = model.State,
+                
+                
             };
             var result = await _updateCommand.ExecuteAsync(dto);
 
@@ -336,7 +346,18 @@ namespace eVote360.Presentation.EVote360.Controllers.Election
                 return RedirectToAction(nameof(Index));
             }
 
-            return View("~/Views/ElectionManager/Results.cshtml", reportResult);
+            var view = reportResult.Select(d => new ElectionResumsViewModel
+            {
+                PositionName = d.PositionName,
+                CandidateName = d.CandidateName,
+                PartyAcronym = d.PartyAcronym,
+                PartyLogo = d.PartyLogo,
+                PartyName = d.PartyName,
+                Percentage = d.Percentage,
+                ResultStatus = d.ResultStatus,
+                TotalVotes = d.TotalVotes,
+            }).ToList();
+            return View("~/Views/ElectionManager/Results.cshtml", view);
         }
     }
 }

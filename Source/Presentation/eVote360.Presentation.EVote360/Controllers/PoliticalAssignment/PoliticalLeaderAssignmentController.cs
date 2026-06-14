@@ -52,8 +52,12 @@ namespace eVote360.Presentation.EVote360.Controllers.PoliticalLeaderAssignment
                      Id = item.Id,
                      Name = item.Name,
                      State = item.State,
-                     PoliticalLeaderId = item.PoliticalLeaderId,
-                     PoliticalPartyId = item.PoliticalPartyId,
+                     PoliticalLeaderName = item.PoliticalLeaderName,
+                     PoliticalLeaderUsername = item.PoliticalLeaderUsername,
+                     PoliticalLeaderState = item.PoliticalLeaderState,
+                     PoliticalPartyName = item.PoliticalPartyName,
+                     PoliticalPartyAcronym = item.PoliticalPartyAcronym,
+                     PoliticalPartyState = item.PoliticalPartyState,
                      PoliticalAssignmentDate = item.PoliticalAssignmentDate
                  });
              }

@@ -16,8 +16,14 @@ namespace eVote360.Core.Domain.Common.CodeErrors
 
         public static Error ElectionStateError
           => new Error("Estado de elecciones no valido", "No se pueden activar unas elecciones mientras hayan otras activas.");
-         public static Error ElectionCreationNotValid
-           => new Error("Creacion de elecciones no valida", "La eleccion debe tener minimo 2 partidos politicos para poder comenzar.");
+         public static Error NoActivePositions
+           => new Error("No hay puestos electivos", "No hay puestos electivos activos para realizar una elección.");
+
+        public static Error NotEnoughParties
+           => new Error("No hay suficientes partidos", "No hay suficientes partidos políticos para realizar una elección.");
+
+        public static Error MissingCandidates(string message)
+           => new Error("Candidatos faltantes", message);
 
         public static Error ElectionActive
             => new Error("Elecciones ya iniciadas", "Hay un proceso electivo iniciado por lo que ninguna de estas operaciones se encuentra disponible de momento.");

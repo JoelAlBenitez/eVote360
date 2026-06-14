@@ -73,19 +73,23 @@
                     <tr>
                         <td>@item.Id</td>
                         <td class="data-table__name">
-                            @* Idealmente, el ViewModel debería tener el nombre del líder resuelto, aquí usamos el ID como placeholder hasta que se integre en el handler *@
-                            Usuario ID: @item.PoliticalLeaderId
+                            <div class="fw-bold">@item.PoliticalLeaderName</div>
+                            <div class="small text-muted">@item.PoliticalLeaderUsername</div>
                         </td>
                         <td>
-                            @* Idealmente, el ViewModel debería tener el nombre del partido resuelto *@
-                            Partido ID: @item.PoliticalPartyId
+                            <div class="fw-bold">@item.PoliticalPartyName</div>
+                            <div class="small text-muted">@item.PoliticalPartyAcronym</div>
                         </td>
                         <td>@item.PoliticalAssignmentDate.ToString("dd/MM/yyyy")</td>
                         <td>
-                            <span class="data-badge @(item.State ? "data-badge--active" : "data-badge--inactive")">
-                                <i class="bi @(item.State ? "bi-check-circle-fill" : "bi-x-circle-fill")" aria-hidden="true"></i>
-                                @(item.State ? "Vigente" : "Inactiva")
-                            </span>
+                            <div class="d-flex flex-column gap-1">
+                                <span class="data-badge @(item.PoliticalLeaderState ? "data-badge--active" : "data-badge--inactive")">
+                                    Dirigente: @(item.PoliticalLeaderState ? "Activo" : "Inactivo")
+                                </span>
+                                <span class="data-badge @(item.PoliticalPartyState ? "data-badge--active" : "data-badge--inactive")">
+                                    Partido: @(item.PoliticalPartyState ? "Activo" : "Inactivo")
+                                </span>
+                            </div>
                         </td>
                         <td>
                             <div class="table-actions justify-content-center">

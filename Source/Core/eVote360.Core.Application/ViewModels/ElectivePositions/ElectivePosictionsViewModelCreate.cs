@@ -9,8 +9,8 @@ namespace eVote360.Core.Application.ViewModels.ElectivePositions
         public required string Name { get; set; }
 
         [Display(Name = "Descripción")]
-        [Required(ErrorMessage = "Se requiere el ingreso de una descripción no mayor a 100 caracteres")]
-        [StringLength(100, MinimumLength = 1, ErrorMessage = "Se requiere una descripción mayor a 0 caracteres y menor a 100")]
+        [Required(ErrorMessage = "Se requiere el ingreso de una descripción no mayor a 30 caracteres")]
+        [StringLength(30, MinimumLength = 1, ErrorMessage = "Se requiere una descripción mayor a 0 caracteres y menor a 100")]
         public required string Description { get; set; }
 
         [Display(Name = "Estado")]

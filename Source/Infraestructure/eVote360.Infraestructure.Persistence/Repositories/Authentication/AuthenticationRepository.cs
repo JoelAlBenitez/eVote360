@@ -29,7 +29,7 @@ namespace eVote360.Infraestructure.Persistence.Repositories.Authentication
             bool passwordValid = _userPasswordService.verifyPassword(password, result.UserPassword.HashValue);
             if (!passwordValid) return null!;
 
-            int? partyId = nullGIT_AUTHOR_DATE = "2026-06-18T18:00:00" \
+            int? partyId = null;
 
             if (result.UserRole == UserRole.DirigentePolitico)
             {

@@ -1,0 +1,75 @@
+@using eVote360.Core.Application.ViewModels.Election
+@model IReadOnlyCollection<ElectionResumsViewModel>
+@{
+    ViewData["Title"] = "Resultados de la Elección";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    var groupedResults = Model.GroupBy(r => r.PositionName);
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/admin-views.css" asp-append-version="true" />
+}
+
+<div class="page-header">
+    <div class="page-header__left">
+        <div class="page-header__icon page-header__icon--elections">
+            <i class="bi bi-bar-chart-fill" aria-hidden="true"></i>
+        </div>
+        <div>
+            <h1 class="page-header__title">Resultados de la Elección</h1>
+        </div>
+    </div>
+    <a asp-action="Index" class="btn-back">
+        <i class="bi bi-arrow-left" aria-hidden="true"></i>
+        <span>Volver atrás</span>
+    </a>
+</div>
+
+@foreach (var group in groupedResults)
+{
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-header bg-white border-bottom-0 pt-4 pb-2">
+            <h4 class="fw-bold mb-0 text-primary">@group.Key</h4>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Candidato</th>
+                            <th>Partido</th>
+                            <th>Votos</th>
+                            <th>Porcentaje</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in group)
+                        {
+                            <tr class="@(item.ResultStatus == "Ganador" ? "table-success" : "")">
+                                <td class="fw-bold">@item.CandidateName</td>
+                                <td>@item.PartyName (@item.PartyAcronym)</td>
+                                <td>@item.TotalVotes</td>
+                                <td>@item.Percentage.ToString("F2")%</td>
+                                <td>
+                                    @if (item.ResultStatus == "Ganador")
+                                    {
+                                        <span class="badge bg-success">Ganador</span>
+                                    }
+                                    else if (item.ResultStatus == "Empate")
+                                    {
+                                        <span class="badge bg-warning text-dark">Empate</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-secondary">Perdedor</span>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+}

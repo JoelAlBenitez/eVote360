@@ -57,14 +57,43 @@ namespace eVote360.Infraestructure.Persistence.Repositories.Election
                  return await _context.SaveChangesAsync() > 0;
              }
    
-            public async Task<IEnumerable<ElectionEntity>> GetAllElectionsAsync()
+            public async Task<IReadOnlyCollection<ElectionResum>> GetAllElectionsAsync()
             {
-                 return await _context.Elections
-                   .AsNoTracking()
-                   .ToListAsync();
-            }
+            var resum = await _context.Elections
+                      .AsNoTracking()
+                      .Select(e => new ElectionResum
+                      {
+                          NameElection = e.Name,
+                          Id = e.Id,
+                          DateRealized = e.ElectionDate.Value,
+                          State = e.ElectionState,
+                          NumberElectivePositionsParticipating = _context.Vote
+                             .AsNoTracking()
+                             .Where(v => v.IdElection == e.Id)
+                             .Select(v => v.IdElectivePosiction)
+                              .Distinct()
+                              .Count(),
 
-            public async Task<ElectionEntity?> GetActivateElectionAsync()
+                          NumberCitizenParticipating = _context.AuditVote
+                              .AsNoTracking()
+                              .Where(v => v.IdElection == e.Id)
+                              .Select(v => v.IdCitizen)
+                              .Distinct()
+                              .Count(),
+
+                          NumberParticipatingMatches = _context.Vote.
+                           AsNoTracking()
+                          .Where(v => v.IdElection == e.Id)
+                          .Select(v => v.Candidacte!.PoliticalPartyId)
+                          .Distinct()
+                          .Count()
+                      }).ToListAsync();
+
+            return resum;
+
+        }
+
+        public async Task<ElectionEntity?> GetActivateElectionAsync()
             {
                 return await _context.Elections
                    .AsNoTracking()
@@ -103,35 +132,71 @@ namespace eVote360.Infraestructure.Persistence.Repositories.Election
         }
         public async Task<IReadOnlyCollection<ElectionResult>> GetElectionResultAsync(int electionId)
         {
-            var totalVotesCount = await _context.Vote.Where(v=>v.IdElection == electionId)
-            .CountAsync();
-
             var results = await (from vote in _context.Vote
-                                 join candidate in _context.Candidates on vote.IdCandidate equals candidate.Id
-                                 join party in _context.PoliticalParties on candidate.PoliticalPartyId equals party.Id
+                                 join position in _context.ElectivePosition on vote.IdElectivePosiction equals position.Id
+                                 join candidate in _context.Candidates on vote.IdCandidate equals candidate.Id into candidateGroup
+                                 from candidate in candidateGroup.DefaultIfEmpty()
+                                 join party in _context.PoliticalParties on candidate.PoliticalPartyId equals party.Id into partyGroup
+                                 from party in partyGroup.DefaultIfEmpty()
                                  where vote.IdElection == electionId
-                                 group vote by new {
-                                 CandidateId = candidate.Id,
-                                 CandidateObj = candidate.Name,
-                                 PartyId = party.Id,
-                                 PartyName = party.Name,
-                                 PartyAcronym = party.PoliticalPartyAcronym,
-                                 PartyLog = party.PoliticalPartyLogo.PhotoUrl,
+                                 group vote by new
+                                 {
+                                     PositionId = position.Id,
+                                     PositionName = position.Name,
+                                     CandidateId = candidate != null ? (int?)candidate.Id : null,
+                                     CandidateFullName = candidate != null ? candidate.Name.Name + " " + candidate.Name.LastName : "Ninguno",
+                                     PartyName = party != null ? party.Name : "No aplica",
+                                     PartyAcronym = party != null ? party.PoliticalPartyAcronym.Value : "N/A",
+                                     PartyLogo = party != null ? party.PoliticalPartyLogo.PhotoUrl : ""
                                  } into g
                                  select new ElectionResult
                                  {
-                                     CandidateNamer = g.Key.CandidateObj.Name + " " + g.Key.CandidateObj.LastName,
+                                     PositionName = g.Key.PositionName,
+                                     CandidateNamer = g.Key.CandidateFullName,
                                      PartyName = g.Key.PartyName,
-                                     PartyAcronym = g.Key.PartyAcronym.Value,
-                                     PartyLogo = g.Key.PartyLog,
-                                     TotalVotes = g.Count(),
-                                     Percentage = totalVotesCount > 0 ? (double)g.Count() / totalVotesCount * 100 : 0
+                                     PartyAcronym = g.Key.PartyAcronym,
+                                     PartyLogo = g.Key.PartyLogo,
+                                     TotalVotes = g.Count()
                                  })
-                                 .OrderByDescending(r=>r.TotalVotes)
+                                 .OrderBy(r => r.PositionName).AsNoTracking()
                                  .ToListAsync();
 
             return results;
-           
+        }
+
+        public async Task<IReadOnlyCollection<ElectionResult>> ElectionByYearAsync(DateTime year)
+        {
+            var results = await (from vote in _context.Vote
+                                 join position in _context.ElectivePosition on vote.IdElectivePosiction equals position.Id
+                                 join candidate in _context.Candidates on vote.IdCandidate equals candidate.Id into candidateGroup
+                                 from candidate in candidateGroup.DefaultIfEmpty()
+                                 join party in _context.PoliticalParties on candidate.PoliticalPartyId equals party.Id into partyGroup
+                                 from party in partyGroup.DefaultIfEmpty()
+                                 where vote.Elections!.ElectionDate.Value.Year == year.Year
+                                 group vote by new
+                                 {
+                                     PositionId = position.Id,
+                                     PositionName = position.Name,
+                                     CandidateId = candidate != null ? (int?)candidate.Id : null,
+                                     CandidateFullName = candidate != null ? candidate.Name.Name + " " + candidate.Name.LastName : "Ninguno",
+                                     PartyName = party != null ? party.Name : "No aplica",
+                                     PartyAcronym = party != null ? party.PoliticalPartyAcronym.Value : "N/A",
+                                     PartyLogo = party != null ? party.PoliticalPartyLogo.PhotoUrl : ""
+                                 } into g
+                                 select new ElectionResult
+                                 {
+                                     PositionName = g.Key.PositionName,
+                                     CandidateNamer = g.Key.CandidateFullName,
+                                     PartyName = g.Key.PartyName,
+                                     PartyAcronym = g.Key.PartyAcronym,
+                                     PartyLogo = g.Key.PartyLogo,
+                                     TotalVotes = g.Count()
+                                 })
+                                .OrderBy(r => r.PositionName).AsNoTracking()
+                                .ToListAsync();
+
+            return results;
         }
     }
-}
+    }
+
