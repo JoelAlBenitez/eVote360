@@ -1,4 +1,5 @@
 using eVote360.Core.Domain.Contracts.Repositories.PoliticalAlliences;
+using eVote360.Core.Domain.Common.Enums;
 using PoliticalAllianceEntity = eVote360.Core.Domain.Entities.PoliticalAlliances.PoliticalAlliances;
 using eVote360.Core.Domain.Entities.PoliticalAlliances;
 using eVote360.Infraestructure.Persistence.Context;
