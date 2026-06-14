@@ -4,7 +4,6 @@ namespace eVote360.Core.Domain.Contracts.Repositories.AuthenticationAndAutorizat
 {
     public interface IAuthenticationRepository
     {
-        Task<bool> ExistUserAsync(string username, string password);
-        Task<User> ReturnUserFindAsync(string username);
+        Task<User> ReturnUserFindAsync(string username, string password);
     }
 }

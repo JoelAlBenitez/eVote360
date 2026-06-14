@@ -22,7 +22,7 @@ namespace eVote360.Core.Application.Services.Authentication_Autorization.Query
         {
             try
             {
-                var user = await _authenticationRepository.ReturnUserFindAsync(loginDto.userName);
+                var user = await _authenticationRepository.ReturnUserFindAsync(loginDto.userName, loginDto.password);
                 if (user == null)
                 {
                     _errors.Add(AuthenticationAuthorizationError.DoesNotHaveEnoughPrivileges);
