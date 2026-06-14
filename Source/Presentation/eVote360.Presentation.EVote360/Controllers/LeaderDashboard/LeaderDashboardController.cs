@@ -1,4 +1,5 @@
-﻿using eVote360.Core.Application.Contracts.LeaderDashboard.Query;
+﻿using eVote360.Core.Application.Contracts.Authentication.Command;
+using eVote360.Core.Application.Contracts.LeaderDashboard.Query;
 using eVote360.Core.Application.ViewModels.LeaderDashboard;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -8,19 +9,20 @@ namespace eVote360.Presentation.EVote360.Controllers.LeaderDashboard
     public class LeaderDashboardController : Controller
     {
         private readonly ILeaderDashboardGetQuery _leaderDashboardGetQuery;
+        private readonly ISessionUser _sessionUser;
 
-        // TODO: Obtener el ID del usuario desde la sesión/cookie del dirigente autenticado
-        // Por ahora hardcodeamos 1 para mantener el flujo funcional y seguro.
-        private readonly int _currentUserId = 1;
+        private int GetUserId() => _sessionUser.GetUserId();
+        private int GetPartyId() => _sessionUser.GetPoliticalParty();
 
-        public LeaderDashboardController(ILeaderDashboardGetQuery leaderDashboardGetQuery)
+        public LeaderDashboardController(ILeaderDashboardGetQuery leaderDashboardGetQuery, ISessionUser sessionUser)
         {
             _leaderDashboardGetQuery = leaderDashboardGetQuery;
+            _sessionUser = sessionUser;
         }
 
         public async Task<IActionResult> Index()
         {
-            var result = await _leaderDashboardGetQuery.GetDashboardDataAsync(_currentUserId);
+            var result = await _leaderDashboardGetQuery.GetDashboardDataAsync(GetUserId());
 
             // Si falla (ej. el usuario no es dirigente o no tiene partido asignado)
             if (!result.IsValid)
