@@ -1,4 +1,5 @@
-﻿using eVote360.Core.Application.Contracts.PoliticalLeaderAssignment.Commands;
+﻿using eVote360.Core.Application.Contracts.Authentication.Command;
+using eVote360.Core.Application.Contracts.PoliticalLeaderAssignment.Commands;
 using eVote360.Core.Application.DTOs.PoliticalLeaderAssignment;
 using eVote360.Core.Domain.Common.CodeErrors;
 using eVote360.Core.Domain.Common.Errors;
@@ -15,11 +16,14 @@ namespace eVote360.Core.Application.Services.PoliticalLeaderAssignment.CommandHa
     {
        private readonly IPoliticalAssignmentRepository _repository;
        private readonly IPoliticalAssignmentValidator _validator;
+        private readonly ISessionUser _sessionUser;
 
-        public LeaderAssignmentUpdate(IPoliticalAssignmentRepository repository, IPoliticalAssignmentValidator validator)
+
+        public LeaderAssignmentUpdate(IPoliticalAssignmentRepository repository, IPoliticalAssignmentValidator validator, ISessionUser sessionUser)
         {
             _repository = repository;
             _validator = validator;
+            _sessionUser = sessionUser;
         }
 
         public async Task<ValidationResult> ExecuteAsync(LeaderAssignmentDto dto)
@@ -42,7 +46,7 @@ namespace eVote360.Core.Application.Services.PoliticalLeaderAssignment.CommandHa
                     CreateUserId = dto.CreateUserId,
 
                     UpdateAt = DateTime.UtcNow,
-                    UpdateUserId = dto.UpdateUserId,
+                    UpdateUserId = _sessionUser.GetUserId(),
 
                     Name = dto.Name ?? "Asignacion Actualizada",
 

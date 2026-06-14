@@ -24,6 +24,24 @@ using eVote360.Infraestructure.Persistence.Repositories.Admin;
 using eVote360.Core.Domain.Contracts.ServiceValidates.Admin;
 using eVote360.Infraestructure.Persistence.ServicesValidators.Admin;
 
+using eVote360.Core.Domain.Validators.UserValidator;
+using eVote360.Core.Domain.Contracts.ServiceValidates.User;
+using eVote360.Infraestructure.Persistence.ServicesValidators.User;
+using eVote360.Core.Domain.Contracts.Repositories.UserRepository;
+using eVote360.Infraestructure.Persistence.Repositories.User;
+using eVote360.Core.Domain.Contracts.ServiceValidates.PoliticalParty;
+using eVote360.Infraestructure.Persistence.ServicesValidators.PoliticalParty;
+using eVote360.Core.Domain.Contracts.Repositories.PoliticalParty;
+using eVote360.Infraestructure.Persistence.Repositories.PoliticalParty;
+using eVote360.Core.Domain.Contracts.Repositories.ElectionRepository;
+using eVote360.Core.Domain.Contracts.ServiceValidates.Election;
+using eVote360.Infraestructure.Persistence.Repositories.Election;
+using eVote360.Core.Domain.Validators.ElectionValidator;
+using eVote360.Infraestructure.Persistence.ServicesValidators.Election;
+using eVote360.Core.Domain.Contracts.Repositories.PoliticalAssignment;
+using eVote360.Infraestructure.Persistence.Repositories.PoliticalAssignment;
+using eVote360.Core.Domain.Contracts.ServiceValidates.PoliticalAssignment;
+using eVote360.Infraestructure.Persistence.ServicesValidators.PoliticalAssignment;
 
 namespace eVote360.IOC.Dependencies
 {
@@ -52,6 +70,19 @@ namespace eVote360.IOC.Dependencies
             services.AddScoped<ICandidateRepository, CandidateRepository>();
             services.AddScoped<ICandidateDomainService, CandidateServiceValidator>();
 
+            //Users
+            services.AddScoped<IUserValidator, UserValidator>();
+            services.AddScoped<IUserDomainService, UserServiceValidator>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            //Election
+            services.AddScoped<IElectionRepository, ElectionRepository>();
+            services.AddScoped<IElectionDomainService, ElectionServiceValidator>();
+
+            //LeaderAssignment
+            services.AddScoped<IPoliticalAssignmentRepository, PoliticalAssignmentRepository>();
+            services.AddScoped<IPoliticalAssignmentDomainService, PoliticalAssignmentServiceValidator>();
+
+
             //Common Services
             services.AddScoped<IFileStorageService, LocalFileStorageService>();
 
@@ -63,6 +94,10 @@ namespace eVote360.IOC.Dependencies
 
             services.AddScoped<IAdminManagerRepository, AdminRepository>();
             services.AddScoped<IAdminFunctionalitysValidate, AdminServiceValidator>();
+
+            //Political Parties
+            services.AddScoped<IPoliticalPartyRepository, PoliticalPartyRepository>();
+            services.AddScoped<IPoliticalPartyDomainService, PoliticalPartyServiceValidator>();
 
             return services;
         }

@@ -8,6 +8,7 @@ using ElectionEnum = eVote360.Core.Domain.Common.Enums.ElectionState;
 using ElectionDate = eVote360.Core.Domain.Settings.ValueObjects.ElectionDate.ElectionDate;
 using eVote360.Core.Domain.Validators.ElectionValidator;
 using eVote360.Core.Domain.Common.Errors;
+using eVote360.Core.Application.Contracts.Authentication.Command;
 
 namespace eVote360.Core.Application.Services.Election.CommandHandler
 {
@@ -15,11 +16,13 @@ namespace eVote360.Core.Application.Services.Election.CommandHandler
     {
         private readonly IElectionRepository _repository;
         private readonly IElectionValidator _validator;
+        private readonly ISessionUser _sessionUser;
 
-        public ElectionCreate(IElectionRepository repository, IElectionValidator validator)
+        public ElectionCreate(IElectionRepository repository, IElectionValidator validator, ISessionUser sessionUser)
         {
             _repository = repository;
             _validator = validator;
+            _sessionUser = sessionUser;
         }
 
         public async Task<ValidationResult> ExecuteAsync(ElectionDto dto)
@@ -33,7 +36,7 @@ namespace eVote360.Core.Application.Services.Election.CommandHandler
                 {
                     Id = 0,
                     CreateAt = DateTime.UtcNow,
-                    CreateUserId = 1,
+                    CreateUserId = _sessionUser.GetUserId(),
                     State = true,
 
                     Name = dto.Name,

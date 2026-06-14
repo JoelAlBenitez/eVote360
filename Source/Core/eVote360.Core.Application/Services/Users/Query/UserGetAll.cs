@@ -23,10 +23,6 @@ namespace eVote360.Core.Application.Services.Users.Query
                 Name = u.Name,
                 State = u.State,
 
-                CreateAt = u.CreateAt,
-                UpdateAt = u.UpdateAt,
-                CreateUserId = u.CreateUserId,
-                UpdateUserId = u.UpdateUserId,
                 UserFirstName = u.UserFirstName,
                 UserLastName = u.UserLastName,
                 UserRole = u.UserRole,

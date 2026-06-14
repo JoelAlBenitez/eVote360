@@ -42,7 +42,7 @@ namespace eVote360.Infraestructure.Persistence.Repositories.Admin
                     NameElection = e.Name,
                     DateRealized = e.ElectionDate.Value,
                     NumberCandidactesParticipating =  0,
-                    /*_context.Votes
+     /*_context.Votes
                        .AsNoTracking()
                        .Where(v => v.IdElection  == e.Id &&  e.IdCandidate  != null)
                         .Distinct()

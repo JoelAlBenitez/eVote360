@@ -25,6 +25,7 @@ namespace eVote360.Infraestructure.Persistence.Context
         public DbSet<Election> Elections { get; set; }
         public DbSet<PoliticalParty> PoliticalParties { get; set; }
 
+    
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
