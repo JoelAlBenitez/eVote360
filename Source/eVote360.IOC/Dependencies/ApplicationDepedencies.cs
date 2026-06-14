@@ -1,27 +1,31 @@
+using eVote360.Core.Application.Contracts.Alliance.Commands;
+using eVote360.Core.Application.Contracts.Alliance.Query;
+using eVote360.Core.Application.Contracts.Authentication.Query;
+using eVote360.Core.Application.Contracts.Candidate.Commands;
+using eVote360.Core.Application.Contracts.Candidate.Query;
+using eVote360.Core.Application.Contracts.Citizens.Command;
+using eVote360.Core.Application.Contracts.Citizens.Query;
 using eVote360.Core.Application.Contracts.ElectivePosictions.Commands;
 using eVote360.Core.Application.Contracts.ElectivePosictions.Query;
 using eVote360.Core.Application.Contracts.ElectivePosictions.QueryServices;
-using eVote360.Core.Application.Services.ElectivePosiction.CommandHandler;
-using eVote360.Core.Application.Services.ElectivePosiction.Query;
-using eVote360.Core.Application.Contracts.Alliance.Commands;
-using eVote360.Core.Application.Contracts.Alliance.Query;
+using eVote360.Core.Application.Contracts.PoliticalParty.Commands;
+using eVote360.Core.Application.Contracts.PoliticalParty.Query;
+using eVote360.Core.Application.Contracts.Users.Commands;
+using eVote360.Core.Application.Contracts.Users.Query;
 using eVote360.Core.Application.Services.Alliance.CommandHandler;
 using eVote360.Core.Application.Services.Alliance.QueryHandler;
-using eVote360.Core.Application.Services.Citizens.CommandHandler;
-using eVote360.Core.Application.Services.Citizens.Query;
-using Microsoft.Extensions.DependencyInjection;
-using eVote360.Core.Application.Contracts.Citizens.Command;
-using eVote360.Core.Application.Contracts.Citizens.Query;
-using eVote360.Core.Application.Contracts.Candidate.Commands;
-using eVote360.Core.Application.Contracts.Candidate.Query;
+using eVote360.Core.Application.Services.Authentication_Autorization.Query;
 using eVote360.Core.Application.Services.Candidate.CommandHandler;
 using eVote360.Core.Application.Services.Candidate.Query;
-using eVote360.Core.Application.Contracts.Authentication.Query;
-using eVote360.Core.Application.Services.Authentication_Autorization.Query;
-using eVote360.Core.Application.Contracts.Users.Commands;
+using eVote360.Core.Application.Services.Citizens.CommandHandler;
+using eVote360.Core.Application.Services.Citizens.Query;
+using eVote360.Core.Application.Services.ElectivePosiction.CommandHandler;
+using eVote360.Core.Application.Services.ElectivePosiction.Query;
+using eVote360.Core.Application.Services.PoliticalParty.CommandHandler;
+using eVote360.Core.Application.Services.PoliticalParty.Query;
 using eVote360.Core.Application.Services.Users.CommandHandler;
-using eVote360.Core.Application.Contracts.Users.Query;
 using eVote360.Core.Application.Services.Users.Query;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace eVote360.IOC.Dependencies
 {
@@ -79,6 +83,15 @@ namespace eVote360.IOC.Dependencies
             services.AddScoped<IUserGetByIdQuery, UserGetById>();
             services.AddScoped<IUserGetAllActivesQuery, UserGetAllActives>();
 
+
+            //Political Parties
+            services.AddScoped<IPoliticalPartyCreateCommand, PoliticalPartyCreate>();
+            services.AddScoped<IPoliticalPartyUpdateCommand, PoliticalPartyUpdate>();
+            services.AddScoped<IPoliticalPartyStateCommand, PoliticalPartyState>();
+
+            services.AddScoped<IPoliticalPartyGetAllQuery, PoliticalPartyGetAll>();
+            services.AddScoped<IPoliticalPartyGetByIdQuery, PoliticalPartyGetById>();
+            services.AddScoped<IPoliticalPartyGetActiveQuery, PoliticalPartyGetActive>();
 
             //Authentication
 
