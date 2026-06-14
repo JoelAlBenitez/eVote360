@@ -18,6 +18,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using eVote360.Infraestructure.Persistence.ServicesValidators.Candidatess;
 using eVote360.Core.Domain.Contracts.ServiceValidates.Candidate;
+using eVote360.Core.Domain.Contracts.Repositories.AuthenticationAndAutorization;
+using eVote360.Infraestructure.Persistence.Repositories.Authentication;
 
 
 namespace eVote360.IOC.Dependencies
@@ -49,6 +51,10 @@ namespace eVote360.IOC.Dependencies
 
             //Common Services
             services.AddScoped<IFileStorageService, LocalFileStorageService>();
+
+            //Authentication
+
+            services.AddScoped<IAuthenticationRepository, AuthenticationRepository>();
 
             return services;
         }

@@ -16,6 +16,8 @@ using eVote360.Core.Application.Contracts.Candidate.Commands;
 using eVote360.Core.Application.Contracts.Candidate.Query;
 using eVote360.Core.Application.Services.Candidate.CommandHandler;
 using eVote360.Core.Application.Services.Candidate.Query;
+using eVote360.Core.Application.Contracts.Authentication.Query;
+using eVote360.Core.Application.Services.Authentication_Autorization.Query;
 
 namespace eVote360.IOC.Dependencies
 {
@@ -63,6 +65,10 @@ namespace eVote360.IOC.Dependencies
 
             services.AddScoped<ICandidateGetAllPartyQuery, CandidateGetAllParty>();
             services.AddScoped<ICandidateGetByIdQuery, CandidateGetById>();
+
+            //Authentication
+
+            services.AddScoped<ILoginQuery, AuthenticationLoggedUserQuery>();
 
             return services;
         }
