@@ -1,3 +1,6 @@
+using eVote360.Core.Application.Contracts.Authentication.Command;
+using eVote360.Presentation.EVote360.Middleware;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -13,10 +16,24 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseHttpsRedirection();
-app.UseRouting();
+builder.Services.AddAuthentication("CookieAuth")
+    .AddCookie("CookieAuth", options =>
+    {
+        options.Cookie.Name = "eVote360.AuthCookie";
+        options.LoginPath = "/Account/Login";
+        options.AccessDeniedPath = "/Account/Login";
+        options.ExpireTimeSpan = TimeSpan.FromHours(2);
+    });
 
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+builder.Services.AddScoped<ISessionUser, UserSession>();
+builder.Services.AddAuthorization();
+app.UseRouting();
+app.UseAuthentication();
 app.UseAuthorization();
+app.UseHttpsRedirection();
+
+
 
 app.MapStaticAssets();
 

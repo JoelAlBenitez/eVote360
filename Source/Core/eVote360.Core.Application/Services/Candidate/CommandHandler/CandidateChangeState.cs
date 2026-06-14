@@ -32,7 +32,7 @@ namespace eVote360.Core.Application.Services.Candidate.CommandHandler
                 var validation = await _candidateValidator.ValidateChangeStateAsync(candidateId);
                 if (!validation.IsValid) return validation;
 
-                var change = await _candidateRepository.AlterState(candidateId, false);
+                var change = await _candidateRepository.AlterState(candidateId, !candidateById.State);
                 if (!change) 
                 {
                     _errors.Add(CandidatesError.DataInvalid);
