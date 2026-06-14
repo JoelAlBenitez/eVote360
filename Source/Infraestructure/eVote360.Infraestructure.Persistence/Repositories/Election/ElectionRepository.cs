@@ -70,7 +70,13 @@ namespace eVote360.Infraestructure.Persistence.Repositories.Election
             return await _context.SaveChangesAsync() > 0;
         }
 
-
+        public async Task<IReadOnlyCollection<ElectionEntity>> GetElectionsByYearAsync(int year)
+        {
+            return await _context.Elections
+                .AsNoTracking()
+                .Where(x =>x.ElectionDate.Value.Year == year)
+                .ToListAsync();
+        }
 
     }
 }

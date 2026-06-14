@@ -79,6 +79,7 @@ namespace eVote360.IOC.Dependencies
 
             services.AddScoped<IElectionGetAllQuery, ElectionGetAll>();
             services.AddScoped<IElectionGetByIdQuery, ElectionGetById>();
+            services.AddScoped<IElectionByYearQuery, ElectionGetByYear>();
 
             //Authentication
 
