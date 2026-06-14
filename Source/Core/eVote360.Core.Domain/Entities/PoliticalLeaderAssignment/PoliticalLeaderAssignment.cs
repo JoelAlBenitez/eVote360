@@ -9,5 +9,9 @@ namespace eVote360.Core.Domain.Entities.PoliticalLeaderAssignment
         public int PoliticalPartyId { get; set; }
         public DateTimeOffset CreateAt { get; set; }
         public int CreateUserId { get; set; }
+
+        // Propiedades de navegación - descomentar cuando todos los módulos estén en development
+        // public User Leader { get; set; }
+        // public PoliticalParty Party { get; set; }
     }
 }
