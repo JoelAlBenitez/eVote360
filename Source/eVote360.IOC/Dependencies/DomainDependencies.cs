@@ -2,6 +2,7 @@
 using eVote360.Core.Domain.Validators.ElectivePositionValidator;
 using eVote360.Core.Domain.Validators.CandidateValidator;
 using Microsoft.Extensions.DependencyInjection;
+using eVote360.Core.Domain.Validators.UserValidator;
 
 namespace eVote360.IOC.Dependencies
 {
@@ -19,6 +20,9 @@ namespace eVote360.IOC.Dependencies
 
             //Candidates
             services.AddScoped<ICandidateValidator, CandidateValidator>();
+
+            //Users
+            services.AddScoped<IUserValidator, UserValidator>();
 
             return services;
         }

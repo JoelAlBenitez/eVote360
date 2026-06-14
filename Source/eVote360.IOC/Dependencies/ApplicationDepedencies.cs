@@ -18,6 +18,10 @@ using eVote360.Core.Application.Services.Candidate.CommandHandler;
 using eVote360.Core.Application.Services.Candidate.Query;
 using eVote360.Core.Application.Contracts.Authentication.Query;
 using eVote360.Core.Application.Services.Authentication_Autorization.Query;
+using eVote360.Core.Application.Contracts.Users.Commands;
+using eVote360.Core.Application.Services.Users.CommandHandler;
+using eVote360.Core.Application.Contracts.Users.Query;
+using eVote360.Core.Application.Services.Users.Query;
 
 namespace eVote360.IOC.Dependencies
 {
@@ -65,6 +69,16 @@ namespace eVote360.IOC.Dependencies
 
             services.AddScoped<ICandidateGetAllPartyQuery, CandidateGetAllParty>();
             services.AddScoped<ICandidateGetByIdQuery, CandidateGetById>();
+
+            //Users
+            services.AddScoped<IUserCreateCommand, UserCreate>();
+            services.AddScoped<IUserEditCommand, UserEdit>();
+            services.AddScoped<IUserAlterStateCommand, UserAlterState>();
+
+            services.AddScoped<IUserGetAllQuery, UserGetAll>();
+            services.AddScoped<IUserGetByIdQuery, UserGetById>();
+            services.AddScoped<IUserGetAllActivesQuery, UserGetAllActives>();
+
 
             //Authentication
 
