@@ -7,8 +7,10 @@ using eVote360.Core.Domain.Contracts.Repositories.UserRepository;
 using eVote360.Core.Domain.Validators.UserValidator;
 using eVote360.Core.Domain.Settings.ValueObjects;
 using UserEntity = eVote360.Core.Domain.Entities.User.User;
-using eVote360.Core.Domain.Settings.ValueObjects.UserEmail;
+using eVote360.Core.Domain.Settings.ValueObjects.Emails;
 using eVote360.Core.Domain.Settings.ValueObjects.UserPassword;
+using eVote360.Core.Application.Contracts.Authentication.Command;
+using PasswordVO = eVote360.Core.Domain.Settings.ValueObjects.UserPassword.UserPassword;
 
 
 namespace eVote360.Core.Application.Services.Users.CommandHandler
@@ -18,12 +20,14 @@ namespace eVote360.Core.Application.Services.Users.CommandHandler
         private readonly IUserRepository _repository;
         private readonly IUserValidator _validator;
         private readonly IUserPasswordService _passwordService;
+        private readonly ISessionUser _sessionUser;
 
-        public UserEdit(IUserRepository userRepository, IUserValidator userValidator, IUserPasswordService passwordService)
+        public UserEdit(IUserRepository userRepository, IUserValidator userValidator, IUserPasswordService passwordService, ISessionUser sessionUser)
         {
             _repository = userRepository;
             _validator = userValidator;
             _passwordService = passwordService;
+            _sessionUser = sessionUser;
         }
 
         public async Task<ValidationResult> ExecuteAsync(UsersDto dto)
@@ -44,22 +48,18 @@ namespace eVote360.Core.Application.Services.Users.CommandHandler
                 {
 
                     Id = dto.Id,
-                    CreateAt = dto.CreateAt,
-                    CreateUserId = dto.CreateUserId,
                     State = dto.State,
-                    UpdateAt = dto.UpdateAt,
-                    UpdateUserId = dto.UpdateUserId,
 
                     UserFirstName = dto.UserFirstName,
                     UserLastName = dto.UserLastName,
                     UserRole = dto.UserRole,
                     Name = dto.Name,
 
-                    UserEmail = new UserEmail(dto.UserEmail),
-                    UserPassword = new UserPassword(hashedPassword)
+                    UserEmail = new Email(dto.UserEmail),
+                    UserPassword = new PasswordVO(hashedPassword)
                 };
 
-                var result = await _validator.ValidateUser(user, dto.UserPassword, 1);
+                var result = await _validator.ValidateUser(user, dto.UserPassword, _sessionUser.GetUserId());
 
                 if (!result.IsValid)
                     return result;

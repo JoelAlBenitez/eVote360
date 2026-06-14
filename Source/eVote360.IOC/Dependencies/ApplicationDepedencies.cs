@@ -10,6 +10,8 @@ using eVote360.Core.Application.Contracts.ElectivePosictions.Query;
 using eVote360.Core.Application.Contracts.ElectivePosictions.QueryServices;
 using eVote360.Core.Application.Contracts.PoliticalParty.Commands;
 using eVote360.Core.Application.Contracts.PoliticalParty.Query;
+using eVote360.Core.Application.Contracts.Users.Commands;
+using eVote360.Core.Application.Contracts.Users.Query;
 using eVote360.Core.Application.Services.Alliance.CommandHandler;
 using eVote360.Core.Application.Services.Alliance.QueryHandler;
 using eVote360.Core.Application.Services.Authentication_Autorization.Query;
@@ -21,6 +23,8 @@ using eVote360.Core.Application.Services.ElectivePosiction.CommandHandler;
 using eVote360.Core.Application.Services.ElectivePosiction.Query;
 using eVote360.Core.Application.Services.PoliticalParty.CommandHandler;
 using eVote360.Core.Application.Services.PoliticalParty.Query;
+using eVote360.Core.Application.Services.Users.CommandHandler;
+using eVote360.Core.Application.Services.Users.Query;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace eVote360.IOC.Dependencies
@@ -69,6 +73,16 @@ namespace eVote360.IOC.Dependencies
 
             services.AddScoped<ICandidateGetAllPartyQuery, CandidateGetAllParty>();
             services.AddScoped<ICandidateGetByIdQuery, CandidateGetById>();
+
+            //Users
+            services.AddScoped<IUserCreateCommand, UserCreate>();
+            services.AddScoped<IUserEditCommand, UserEdit>();
+            services.AddScoped<IUserAlterStateCommand, UserAlterState>();
+
+            services.AddScoped<IUserGetAllQuery, UserGetAll>();
+            services.AddScoped<IUserGetByIdQuery, UserGetById>();
+            services.AddScoped<IUserGetAllActivesQuery, UserGetAllActives>();
+
 
             //Political Parties
             services.AddScoped<IPoliticalPartyCreateCommand, PoliticalPartyCreate>();
