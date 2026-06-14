@@ -7,7 +7,7 @@ using eVote360.Core.Domain.Contracts.Repositories.UserRepository;
 using eVote360.Core.Domain.Validators.UserValidator;
 using eVote360.Core.Domain.Settings.ValueObjects;
 using UserEntity = eVote360.Core.Domain.Entities.User.User;
-using eVote360.Core.Domain.Settings.ValueObjects.UserEmail;
+using eVote360.Core.Domain.Settings.ValueObjects.Emails;
 using eVote360.Core.Domain.Settings.ValueObjects.UserPassword;
 using eVote360.Core.Application.Contracts.Authentication.Command;
 
@@ -58,7 +58,7 @@ namespace eVote360.Core.Application.Services.Users.CommandHandler
                     UserRole = dto.UserRole,
                     Name = dto.Name,
 
-                    UserEmail = new UserEmail(dto.UserEmail),
+                    UserEmail = new Email(dto.UserEmail),
                     UserPassword = new UserPassword(hashedPassword)
                 };
 
