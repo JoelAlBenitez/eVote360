@@ -39,7 +39,7 @@ namespace eVote360.Core.Application.Services.PoliticalParty.CommandHandler
                 {
                     Id = dto.Id,
                     CreateAt = dto.CreateAt,
-                    CreateUserId = _sessionUser.GetUserId(),
+                    CreateUserId = dto.CreateUserId,
 
                     Name = dto.Name!,
                     PoliticalPartyDescription = dto.PoliticalPartyDescription,
