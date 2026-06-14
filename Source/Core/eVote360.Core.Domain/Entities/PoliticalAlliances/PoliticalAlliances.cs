@@ -1,4 +1,5 @@
 using eVote360.Core.Domain.Common.Enums;
+using PoliticalPartyEntity = eVote360.Core.Domain.Entities.PoliticalParty.PoliticalParty;
 using System;
 
 namespace eVote360.Core.Domain.Entities.PoliticalAlliances
@@ -32,7 +33,7 @@ namespace eVote360.Core.Domain.Entities.PoliticalAlliances
 
         // Propiedades de navegación - descomentar cuando todos los módulos estén en development
 
-        // public PoliticalParty RequestingParty { get; set; }
-        // public PoliticalParty ReceivingParty { get; set; }
+        public PoliticalPartyEntity RequestingParty { get; set; }
+        public PoliticalPartyEntity ReceivingParty { get; set; }
     }
 }
