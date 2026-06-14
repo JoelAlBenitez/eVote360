@@ -14,6 +14,20 @@ namespace eVote360.Core.Domain.Entities.PoliticalAlliances
         public DateTimeOffset CreateAt { get; set; }
         public int CreateUserId { get; set; }
 
-      
+        public void Accept()
+        {
+            Status = AllianceStatus.Accepted;
+            ResponseDate = DateTimeOffset.Now;
+        }
+
+        public void Reject()
+        {
+            Status = AllianceStatus.Rejected;
+            ResponseDate = DateTimeOffset.Now;
+        }
+
+        // Propiedades de navegación - descomentar cuando todos los módulos estén en development
+        // public PoliticalParty RequestingParty { get; set; }
+        // public PoliticalParty ReceivingParty { get; set; }
     }
 }
