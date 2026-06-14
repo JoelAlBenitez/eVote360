@@ -1,3 +1,4 @@
+using eVote360.Core.Domain.Common.Enums;
 using System;
 
 namespace eVote360.Core.Domain.Entities.PoliticalAlliances
@@ -7,7 +8,7 @@ namespace eVote360.Core.Domain.Entities.PoliticalAlliances
         public int Id { get; set; }
         public int RequestingPartyId { get; set; }
         public int ReceivingPartyId { get; set; }
-        public AllianceStatus Status { get; set; }
+        public ElectionState Status { get; set; }
 
         public DateTimeOffset RequestDate { get; set; }
         public DateTimeOffset? ResponseDate { get; set; }
@@ -16,13 +17,13 @@ namespace eVote360.Core.Domain.Entities.PoliticalAlliances
 
         public void Accept()
         {
-            Status = AllianceStatus.Accepted;
+            Status = ElectionState.Accepted;
             ResponseDate = DateTimeOffset.Now;
         }
 
         public void Reject()
         {
-            Status = AllianceStatus.Rejected;
+            Status = ElectionState.Rejected;
             ResponseDate = DateTimeOffset.Now;
         }
 
