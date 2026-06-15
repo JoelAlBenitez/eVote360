@@ -37,11 +37,6 @@ namespace eVote360.Infraestructure.Persistence.Configurations.Citizens
                .WithMany()
                .HasForeignKey(u => u.UpdateUserId)
                .OnDelete(DeleteBehavior.Restrict);
-
-
-
-
-
         }
     }
 }

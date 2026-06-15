@@ -14,19 +14,13 @@ namespace eVote360.Infraestructure.Persistence.ServicesValidators.Citizens
             _context = context;
         }
 
-        public Task<bool> CitizenParticipatedInElection(Guid Id, string Identification)
+        public async Task<bool> CitizenParticipatedInElection(Guid Id, string Identification)
         {
 
-            /*
-                    
-                 var result  = await _context.AuditVotes
-                 .AsNoTracking()
-                .FirstOrDefaultAsync(c => c.IdCitizen == Id && c.Citizens.Identification == Identification);
-            
-                return result != null;
-             */
-
-            throw new NotImplementedException(); //en espera de la entidad de elecciones y votos 
+             return await _context.AuditVote
+            .AsNoTracking()
+            .AnyAsync(c => c.IdCitizen == Id && c.Citizens!.IdentificationNumber.Value == Identification); 
+             
         }
 
         public async Task<bool> CitizentHasAssociatedEmail(Guid Id)

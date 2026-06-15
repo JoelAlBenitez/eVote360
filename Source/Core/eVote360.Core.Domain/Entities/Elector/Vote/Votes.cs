@@ -1,4 +1,6 @@
-﻿using eVote360.Core.Domain.Entities.ElectivePosition;
+﻿using eVote360.Core.Domain.Entities.Candidate;
+using eVote360.Core.Domain.Entities.Election;
+using eVote360.Core.Domain.Entities.ElectivePosition;
 
 namespace eVote360.Core.Domain.Entities.Elector.Vote
 {
@@ -9,7 +11,9 @@ namespace eVote360.Core.Domain.Entities.Elector.Vote
         public required int IdElectivePosiction { get; init; }
         public required int IdCandidate { get; init; }
         public ElectivePositions? ElectivePosition { get; init; }
+        public Entities.Election.Election? Elections { get; init; }
+        public Candidates? Candidacte {  get; init; }
 
-        //agregar entidad virtual de elecciones y candidatos -> agregar IColleccion en puestos electivos
+
     }
 }
