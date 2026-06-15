@@ -1,0 +1,30 @@
+@model eVote360.Core.Application.ViewModels.Candidates.CandidateViewModelAlterState
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Confirmar Cambio de Estado";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-5">
+            <div class="card border-warning shadow-sm">
+                <div class="card-body text-center">
+                    <h5 class="card-title text-warning mb-4">Confirmación</h5>
+                    
+                    <p class="card-text mb-4 fs-5">
+                        ¿Está seguro que desea cambiar el estado de <strong>@Model.FullName</strong>?
+                    </p>
+
+                    <form method="post" asp-action="AlterState">
+                        <input type="hidden" asp-for="Id" />
+                        <div class="d-flex justify-content-center gap-3">
+                            <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+                            <button type="submit" class="btn btn-warning">Aceptar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

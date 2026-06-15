@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="CandidateAssignment\**" />
+    <EmbeddedResource Remove="CandidateAssignment\**" />
+    <None Remove="CandidateAssignment\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
   <ItemGroup>
@@ -14,7 +20,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="CandidateAssignment\" />
     <Folder Include="Services\Candidate\CommandHandler\" />
     <Folder Include="Services\Candidate\Query\" />
   </ItemGroup>
