@@ -6,6 +6,7 @@ using eVote360.Core.Domain.Settings.ValueObjects.PoliticalPartyAcronym;
 using PartyEntity = eVote360.Core.Domain.Entities.PoliticalParty.PoliticalParty;
 using eVote360.Core.Domain.Common.ValidationResult;
 using eVote360.Core.Domain.Common.Errors;
+using eVote360.Core.Application.Contracts.Authentication.Command;
 
 namespace eVote360.Core.Application.Services.PoliticalParty.CommandHandler
 {
@@ -13,13 +14,15 @@ namespace eVote360.Core.Application.Services.PoliticalParty.CommandHandler
     {
         private readonly IPoliticalPartyRepository _repository;
         private readonly IPoliticalPartyValidator _validator;
+        private readonly ISessionUser _sessionUser;
 
 
 
-        public PoliticalPartyCreate(IPoliticalPartyRepository repository, IPoliticalPartyValidator validator)
+        public PoliticalPartyCreate(IPoliticalPartyRepository repository, IPoliticalPartyValidator validator, ISessionUser sessionUser)
         {
             _repository = repository;
             _validator = validator;
+            _sessionUser = sessionUser;
         }
 
         public async Task<ValidationResult> ExecuteAsync(PoliticalPartyDto dto)
@@ -32,7 +35,7 @@ namespace eVote360.Core.Application.Services.PoliticalParty.CommandHandler
                 {
                     Id = 0,
                     CreateAt = DateTime.UtcNow,
-                    CreateUserId = 1,
+                    CreateUserId = _sessionUser.GetUserId(),
 
                     Name = dto.Name!,
                     PoliticalPartyDescription = dto.PoliticalPartyDescription,

@@ -25,32 +25,22 @@ namespace eVote360.Infraestructure.Persistence.ServicesValidators.ElectivePoscti
         {
 
 
-            /*
-                return await _context.Candidactes
-                .AsNoTracking()
-                .AnyAsync(e => e.IdElectivePosiction == Id);
-             
-             */
+           
 
-            var elective =  await 
-                _context.ElectivePosition
-                .AsNoTracking()
-                .FirstOrDefaultAsync(x => x.Id == Id); 
-
-            return elective != null;
+            return await _context.Candidates.AsNoTracking()
+                    .AnyAsync(c => c.electivePositions.Id == Id);
+                
         }
 
-        public Task<bool> ElectivePositionUsedInElections(int Id)
+        public async Task<bool> ElectivePositionUsedInElections(int Id)
         {
 
-            /*
-              return  await _context.Votes
+            
+              return  await _context.Vote
                 .AsNoTracking()
                 .AnyAsync(e => e.IdElectivePosiction  == Id);
              
-             */
-
-            throw new NotImplementedException(); //metodo en espera de la entidad de elecciones 
+           
         }
 
         public async Task<bool> ExistById(int Id)

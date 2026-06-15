@@ -28,11 +28,6 @@ namespace eVote360.Core.Application.Services.Users.Query
                 Name = userEntity.Name,
                 State = userEntity.State,
 
-                CreateAt = userEntity.CreateAt,
-                UpdateAt = userEntity.UpdateAt,
-                CreateUserId = userEntity.CreateUserId,
-                UpdateUserId = userEntity.UpdateUserId,
-
                 UserFirstName = userEntity.UserFirstName,
                 UserLastName = userEntity.UserLastName,
                 UserRole = userEntity.UserRole,

@@ -12,8 +12,8 @@ namespace eVote360.Core.Domain.Entities.Election
     public class Election : BaseEntitie<int, string>
     {
 
-        public ElectionDate ElectionDate { get; set; }
+        public required ElectionDate ElectionDate { get; set; }
 
-        public ElectionState ElectionState { get; set; }
+        public required ElectionState ElectionState { get; set; }
     }
 }

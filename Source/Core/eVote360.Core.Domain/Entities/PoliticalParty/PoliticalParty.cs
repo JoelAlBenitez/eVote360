@@ -1,12 +1,7 @@
 ﻿using eVote360.Core.Domain.Commom.BaseEntity;
 using eVote360.Core.Domain.Settings.ValueObjects.PoliticalPartyAcronym;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
+using AssignmentEntitie = eVote360.Core.Domain.Entities.PoliticalAssignment.PoliticalAssignment;
+using CandidateEntitie = eVote360.Core.Domain.Entities.Candidate.Candidates;
 
 namespace eVote360.Core.Domain.Entities.PoliticalParty
 {
@@ -15,5 +10,10 @@ namespace eVote360.Core.Domain.Entities.PoliticalParty
         public required string PoliticalPartyDescription { get; set; }
         public required PoliticalPartyAcronym PoliticalPartyAcronym { get; set; }
         public required string PoliticalPartyLogo { get; set; }
+
+        //NavigationProperty
+        public virtual IReadOnlyCollection<AssignmentEntitie> Assignments { get; set; } = new List<AssignmentEntitie>();
+        public virtual IReadOnlyCollection<CandidateEntitie> Candidates { get; set; } = new List<CandidateEntitie>();
+
     }
 }

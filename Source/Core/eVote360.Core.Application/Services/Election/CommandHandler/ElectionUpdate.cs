@@ -8,6 +8,7 @@ using ElectionEnum = eVote360.Core.Domain.Common.Enums.ElectionState;
 using ElectionDate = eVote360.Core.Domain.Settings.ValueObjects.ElectionDate.ElectionDate;
 using eVote360.Core.Domain.Validators.ElectionValidator;
 using eVote360.Core.Domain.Common.Errors;
+using eVote360.Core.Application.Contracts.Authentication.Command;
 
 namespace eVote360.Core.Application.Services.Election.CommandHandler
 {
@@ -15,11 +16,13 @@ namespace eVote360.Core.Application.Services.Election.CommandHandler
     {
         private readonly IElectionRepository _repository;
         private readonly IElectionValidator _validator;
+        private readonly ISessionUser _sessionUser;
 
-        public ElectionUpdate(IElectionRepository repository, IElectionValidator validator)
+        public ElectionUpdate(IElectionRepository repository, IElectionValidator validator, ISessionUser sessionUser)
         {
             _repository = repository;
             _validator = validator;
+            _sessionUser = sessionUser;
         }
 
         public async Task<ValidationResult> ExecuteAsync(ElectionDto dto)
@@ -27,7 +30,7 @@ namespace eVote360.Core.Application.Services.Election.CommandHandler
             var errors = new List<Error>();
             try
             {
-                if (dto.Id < 0)
+                if (dto.Id <= 0)
                 {
                     errors.Add(new Error("ELEC ID", "El id de eleccion es requerido para actualizar la eleccion"));
                     return ValidationResult.Failure(errors);
@@ -40,7 +43,7 @@ namespace eVote360.Core.Application.Services.Election.CommandHandler
                     CreateUserId = dto.CreateUserId,
                     State = dto.State,
                     UpdateAt = DateTime.UtcNow,
-                    UpdateUserId = dto.UpdateUserId,
+                    UpdateUserId = _sessionUser.GetUserId(),
 
                     Name = dto.Name,
                     ElectionDate = new ElectionDate(dto.ElectionDate),

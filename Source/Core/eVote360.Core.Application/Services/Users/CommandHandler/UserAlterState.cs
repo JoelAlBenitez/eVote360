@@ -1,4 +1,5 @@
-﻿using eVote360.Core.Application.Contracts.Users.Commands;
+﻿using eVote360.Core.Application.Contracts.Authentication.Command;
+using eVote360.Core.Application.Contracts.Users.Commands;
 using eVote360.Core.Application.DTOs.Users;
 using eVote360.Core.Domain.Common.Errors;
 using eVote360.Core.Domain.Common.ValidationResult;
@@ -16,11 +17,13 @@ namespace eVote360.Core.Application.Services.Users.CommandHandler
     {
         private readonly IUserRepository _repository;
         private readonly IUserValidator _validator;
+        public readonly ISessionUser _sessionUser;
 
-        public UserAlterState(IUserRepository repository, IUserValidator validator)
+        public UserAlterState(IUserRepository repository, IUserValidator validator, ISessionUser sessionUser)
         {
             _repository = repository;
             _validator = validator;
+            _sessionUser = sessionUser;
         }
 
         public async Task<ValidationResult> ExecuteAsync(int id, bool state)
@@ -35,7 +38,7 @@ namespace eVote360.Core.Application.Services.Users.CommandHandler
 
             user.State = false;
 
-            var validationResult = await _validator.ValidateUser(user, "Contrasena123!", 1);
+            var validationResult = await _validator.ValidateUser(user, "Contrasena123!",_sessionUser.GetUserId());
 
             if (!validationResult.IsValid)
             {

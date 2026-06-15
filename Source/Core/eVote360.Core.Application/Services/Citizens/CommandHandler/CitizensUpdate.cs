@@ -7,6 +7,7 @@ using eVote360.Core.Domain.Common.ValidationResult;
 using eVote360.Core.Domain.Settings.ValueObjects.Identifications;
 using eVote360.Core.Application.DTOs.Citizens;
 using eVote360.Core.Domain.Settings.ValueObjects.Emails;
+using eVote360.Core.Application.Contracts.Authentication.Command;
 namespace eVote360.Core.Application.Services.Citizens.CommandHandler
 {
     public sealed class CitizensUpdate : ICitizensEditCommand
@@ -14,13 +15,18 @@ namespace eVote360.Core.Application.Services.Citizens.CommandHandler
 
         private readonly ICitizenRepository _citizenRepository;
         private readonly ICitizensValidator _citizensValidator;
+        private readonly ISessionUser _sessionUser;
         private List<Error> _errors = new List<Error>();
 
         public CitizensUpdate(ICitizenRepository citizenRepository,
-            ICitizensValidator citizensValidator)
+            ICitizensValidator citizensValidator,
+            ISessionUser sessionUser
+            )
         {
             _citizenRepository = citizenRepository;
             _citizensValidator = citizensValidator;
+            _sessionUser = sessionUser;
+
         }
 
         public async Task<ValidationResult> UpdateAsync(CitizensDto citizen)
@@ -38,7 +44,7 @@ namespace eVote360.Core.Application.Services.Citizens.CommandHandler
                     LastName = citizen.LastName,
                     State = citizen.State,
                     UpdateAt = DateTimeOffset.Now,
-                    UpdateUserId = 0 //cambiar por el obtenido de la cookies session
+                    UpdateUserId = _sessionUser.GetUserId()
 
                 };
                 var validate = await _citizensValidator.UpdateCitizen(citizenE);
