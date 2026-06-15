@@ -2,9 +2,7 @@
 using eVote360.Core.Application.Contracts.PoliticalParty.Query;
 using eVote360.Core.Application.Contracts.Services;
 using eVote360.Core.Application.DTOs.PoliticalParty;
-using eVote360.Core.Application.DTOs.PoliticalParty;
 using eVote360.Core.Application.Services.PoliticalParty.CommandHandler;
-using eVote360.Core.Application.ViewModels.PoliticalParty;
 using eVote360.Core.Application.ViewModels.PoliticalParty;
 using eVote360.Core.Domain.Settings.ValueObjects.PoliticalPartyAcronym;
 using Microsoft.AspNetCore.Authorization;
@@ -127,7 +125,7 @@ using System.Xml.Linq;
             LogoFile = null 
         };
 
-        return View("Edit", vm);
+        return View("Save", vm);
  }
    
    [HttpPost]
@@ -162,42 +160,31 @@ using System.Xml.Linq;
         if (!result.IsValid)
              {
                  foreach (var error in result.errors) ModelState.AddModelError(error.Code, error.Description);
-                 return View("Edit", vm);
+                 return View("Save", vm);
              }
     
         TempData["Message"] = "Partido Político actualizado con éxito";
          return RedirectToAction(nameof(Index));
-    }
+        }
 
 
+        [HttpPost]
         public async Task<IActionResult> AlterState(int id)
-     {
-         var result = await _getByIdQuery.ExecuteAsync(id);
-    
-         if (result == null) return RedirectToAction(nameof(Index));
-    
-         var vm = new PoliticalPartyViewModelDelete 
         {
-            Id = result!.Id,
-            Name = result.Name
-        };
-   
-        return View("AlterState", vm);
-    }
+         var result = await _stateCommand.ExecuteAsync(id);
 
-   [HttpPost]
-    public async Task<IActionResult> AlterState(PoliticalPartyViewModelDelete vm)
-    {
-         var result = await _stateCommand.ExecuteAsync(vm.Id);
-    
         if (!result.IsValid)
-             {
-                 foreach (var error in result.errors) ModelState.AddModelError(error.Code, error.Description);
-                 return View("AlterState", vm);
-             }
-    
-        TempData["Message"] = "Estado del partido modificado con éxito";
-         return RedirectToAction(nameof(Index));
-     }
+        {
+         foreach (var error in result.errors) ModelState.AddModelError(error.Code, error.Description);
+         TempData["TypeAlert"] = "error";
+         TempData["Message"] = "Error al intentar cambiar el estado.";
+        }
+        else
+        {
+         TempData["TypeAlert"] = "success";
+         TempData["Message"] = "Estado del partido modificado con éxito.";
+        }
+        return RedirectToAction(nameof(Index));
+        }
         }
     }

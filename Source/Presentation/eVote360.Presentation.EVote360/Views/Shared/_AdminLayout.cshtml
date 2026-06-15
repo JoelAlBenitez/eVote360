@@ -65,6 +65,16 @@
                     </a>
                 </li>
 
+                <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "PoliticalParty" ? "active" : "")">
+                    <a asp-controller="PoliticalParty" asp-action="Index">
+                        <i class="bi bi-flag-fill"></i>
+                         <span>Partidos Políticos</span>
+                        
+                    </a>
+                    6
+                </li>
+
+
                 <li class="menu-divider"></li>
 
                 <li class="menu-section-label">Electoral</li>

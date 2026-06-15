@@ -25,6 +25,7 @@ namespace eVote360.Core.Application.Services.PoliticalParty.Query
 
             return new PoliticalPartyDto
             {
+                Id = p.Id,
                 Name = p.Name,
                 State = p.State,
                 PoliticalPartyDescription = p.PoliticalPartyDescription,
