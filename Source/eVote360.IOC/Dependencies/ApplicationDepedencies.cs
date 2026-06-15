@@ -5,22 +5,8 @@ using eVote360.Core.Application.Contracts.Candidate.Commands;
 using eVote360.Core.Application.Contracts.Candidate.Query;
 using eVote360.Core.Application.Contracts.Citizens.Command;
 using eVote360.Core.Application.Contracts.Citizens.Query;
-using eVote360.Core.Application.Contracts.Alliance.Commands;
-using eVote360.Core.Application.Contracts.Alliance.Query;
-using eVote360.Core.Application.Contracts.Authentication.Query;
-using eVote360.Core.Application.Contracts.Candidate.Commands;
-using eVote360.Core.Application.Contracts.Candidate.Query;
-using eVote360.Core.Application.Contracts.Citizens.Command;
-using eVote360.Core.Application.Contracts.Citizens.Query;
 using eVote360.Core.Application.Contracts.Election.Commands;
 using eVote360.Core.Application.Contracts.Election.Query;
-using eVote360.Core.Application.Contracts.Alliance.Commands;
-using eVote360.Core.Application.Contracts.Alliance.Query;
-using eVote360.Core.Application.Contracts.Authentication.Query;
-using eVote360.Core.Application.Contracts.Candidate.Commands;
-using eVote360.Core.Application.Contracts.Candidate.Query;
-using eVote360.Core.Application.Contracts.Citizens.Command;
-using eVote360.Core.Application.Contracts.Citizens.Query;
 using eVote360.Core.Application.Contracts.ElectivePosictions.Commands;
 using eVote360.Core.Application.Contracts.ElectivePosictions.Query;
 using eVote360.Core.Application.Contracts.ElectivePosictions.QueryServices;
@@ -31,6 +17,7 @@ using eVote360.Core.Application.Services.Alliance.QueryHandler;
 using eVote360.Core.Application.Services.Authentication_Autorization.Query;
 using eVote360.Core.Application.Services.Candidate.CommandHandler;
 using eVote360.Core.Application.Services.Candidate.Query;
+using eVote360.Core.Application.Services.Admin;
 using eVote360.Core.Application.Services.Citizens.CommandHandler;
 using eVote360.Core.Application.Services.Citizens.Query;
 using eVote360.Core.Application.Services.ElectivePosiction.CommandHandler;
@@ -41,21 +28,14 @@ using eVote360.Core.Application.Services.Users.CommandHandler;
 using eVote360.Core.Application.Services.Users.Query;
 using eVote360.Core.Application.Services.Election.CommandHandler;
 using eVote360.Core.Application.Services.Election.Query;
-using eVote360.Core.Application.Services.ElectivePosiction.CommandHandler;
-using eVote360.Core.Application.Services.ElectivePosiction.Query;
-using eVote360.Core.Domain.Contracts.ServiceValidates.Candidate;
-using eVote360.Infraestructure.Persistence.ServicesValidators.Candidatess;
-using eVote360.Core.Application.Services.ElectivePosiction.CommandHandler;
-using eVote360.Core.Application.Services.ElectivePosiction.Query;
 using eVote360.Core.Application.Services.PoliticalLeaderAssignment.CommandHandler;
 using eVote360.Core.Application.Services.PoliticalLeaderAssignment.Query;
-using eVote360.Core.Domain.Contracts.ServiceValidates.Candidate;
-using eVote360.Infraestructure.Persistence.ServicesValidators.Candidatess;
 using Microsoft.Extensions.DependencyInjection;
 using eVote360.Core.Application.Contracts.Users.Commands;
 using eVote360.Core.Application.Contracts.Users.Query;
 using eVote360.Core.Application.Contracts.PoliticalParty.Commands;
 using eVote360.Core.Application.Contracts.PoliticalParty.Query;
+using eVote360.Core.Application.Contracts.Admin.Query;
 
 using eVote360.Core.Application.Contracts.CandidateAssignment.Commands;
 using eVote360.Core.Application.Contracts.CandidateAssignment.Query;
@@ -145,7 +125,6 @@ namespace eVote360.IOC.Dependencies
 
             services.AddScoped<IElectionGetAllQuery, ElectionGetAll>();
             services.AddScoped<IElectionGetByIdQuery, ElectionGetById>();
-            services.AddScoped<IElectionByYearQuery, ElectionGetByYear>();
 
             //Leader assignment
             services.AddScoped<ILeaderAssignmentCreateCommand, LeaderAssignmentCreate>();
@@ -157,6 +136,11 @@ namespace eVote360.IOC.Dependencies
             //Authentication
 
             services.AddScoped<ILoginQuery, AuthenticationLoggedUserQuery>();
+
+            //admin
+            services.AddScoped<ICountRegisterAdminQuery, CountRegisterQueryHandler>();
+            services.AddScoped<Core.Application.Contracts.Admin.Query.IElectionByYearQuery, ElectionByYear>();
+            services.AddScoped<IAvailableYearsQuery, AvailableYearQuery>();
 
             return services;
         }
