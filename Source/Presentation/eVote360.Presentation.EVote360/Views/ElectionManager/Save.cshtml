@@ -1,0 +1,68 @@
+@using eVote360.Core.Application.ViewModels.Election
+@model ElectionCreateViewModel
+@{
+    ViewData["Title"] = "Nueva Elección";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/admin-views.css" asp-append-version="true" />
+}
+
+@await Html.PartialAsync("_Notifications")
+
+<div class="page-header">
+    <div class="page-header__left">
+        <div class="page-header__icon" style="background-color: #e8f5e9; color: #2e7d32; padding: 12px; border-radius: 12px;">
+            <i class="bi bi-calendar-plus-fill" style="font-size: 1.5rem;" aria-hidden="true"></i>
+        </div>
+        <div>
+            <h1 class="page-header__title">Programar Nueva Elección</h1>
+            <p class="page-header__subtitle">Configura los parámetros iniciales para un nuevo proceso de votación</p>
+        </div>
+    </div>
+    <a asp-action="Index" class="btn-back">
+        <i class="bi bi-arrow-left" aria-hidden="true"></i>
+        <span>Volver al listado</span>
+    </a>
+</div>
+
+<div class="form-card">
+    <form asp-action="Create" method="post" novalidate>
+        @Html.AntiForgeryToken()
+        
+        <div class="form-field">
+            <label class="form-label" asp-for="ElectionName">Nombre de la Elección</label>
+            <input asp-for="ElectionName" 
+                   class="form-input" 
+                   placeholder="Ej. Elecciones Generales 2026" 
+                   autocomplete="off" />
+            <span class="form-hint">Nombre descriptivo del proceso (5-30 caracteres).</span>
+            <span asp-validation-for="ElectionName" class="form-error"></span>
+        </div>
+
+        <div class="form-field">
+            <label class="form-label" asp-for="ElectionDate">Fecha de Ejecución</label>
+            <input asp-for="ElectionDate" 
+                   type="date" 
+                   class="form-input" />
+            <span class="form-hint">Fecha en la que se llevará a cabo el sufragio. Debe ser una fecha futura.</span>
+            <span asp-validation-for="ElectionDate" class="form-error"></span>
+        </div>
+
+        <div class="form-footer">
+            <a asp-action="Index" class="btn-cancel">
+                <i class="bi bi-x-lg" aria-hidden="true"></i>
+                Cancelar
+            </a>
+            <button type="submit" class="btn-submit">
+                <i class="bi bi-floppy-fill" aria-hidden="true"></i>
+                <span>Guardar Elección</span>
+            </button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,4 +1,5 @@
 ﻿using eVote360.Core.Domain.Entities.Citizens;
+using ElectionEntitie = eVote360.Core.Domain.Entities.Election.Election;
 
 namespace eVote360.Core.Domain.Entities.Elector.AuditVote
 {
@@ -12,5 +13,7 @@ namespace eVote360.Core.Domain.Entities.Elector.AuditVote
         public Citizen? Citizens { get; init; }
 
         //agregar entidad vitual de elecciones
+
+        public ElectionEntitie? ElectionEntitie { get; init; }
     }
 }
