@@ -194,6 +194,47 @@
     window.initTablePagination = initTablePagination;
     window.initCardPagination  = initCardPagination;
 
+
+    function initTableSearch(inputId, tbodyId, paginationWrapId, cardContainerId, cardClass, mobileWrapId) {
+        var input = document.getElementById(inputId);
+        if (!input) return;
+
+        input.addEventListener('input', function () {
+            var term  = this.value.toLowerCase().trim();
+            var pWrap = paginationWrapId ? document.getElementById(paginationWrapId) : null;
+            var mWrap = mobileWrapId     ? document.getElementById(mobileWrapId)     : null;
+
+            if (tbodyId) {
+                var tbody = document.getElementById(tbodyId);
+                if (tbody) {
+                    Array.from(tbody.querySelectorAll('tr')).forEach(function (row) {
+                        row.style.display = !term || row.textContent.toLowerCase().indexOf(term) !== -1 ? '' : 'none';
+                    });
+                }
+            }
+
+            if (cardContainerId && cardClass) {
+                var container = document.getElementById(cardContainerId);
+                if (container) {
+                    Array.from(container.querySelectorAll(cardClass)).forEach(function (card) {
+                        card.style.display = !term || card.textContent.toLowerCase().indexOf(term) !== -1 ? '' : 'none';
+                    });
+                }
+            }
+
+            if (pWrap) pWrap.style.display = term ? 'none' : '';
+            if (mWrap) mWrap.style.display = term ? 'none' : '';
+
+            if (!term) {
+                if (_paginators[tbodyId])        _paginators[tbodyId](1);
+                if (_paginators[cardContainerId]) _paginators[cardContainerId](1);
+            }
+        });
+    }
+
+    window.initTableSearch = initTableSearch;
+
+
     function initYearCardAnimations() {
         document.querySelectorAll('.year-card').forEach(function (card, i) {
             card.style.animationDelay = (i * 0.055) + 's';

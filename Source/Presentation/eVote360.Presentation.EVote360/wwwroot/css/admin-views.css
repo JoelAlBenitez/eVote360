@@ -255,6 +255,8 @@
     box-shadow: 0 6px 18px rgba(26,35,126,0.28);
 }
 
+
+
 .page-header__title {
     font-size: 1.45rem;
     font-weight: 700;
@@ -1159,6 +1161,11 @@
                 color      var(--transition-fast),
                 transform  var(--transition-fast);
 }
+.btn-table-action--view             { background: var(--col-info-bg);    color: var(--col-info);    }
+.btn-table-action--view:hover       { background: var(--col-info);       color: #fff; transform: scale(1.08); }
+
+.btn-table-action--edit             { background: var(--stat-p-bg);      color: var(--stat-p);      }
+.btn-table-action--edit:hover       { background: var(--stat-p);         color: #fff; transform: scale(1.08); }
 
 .btn-table-action--view       { background: var(--col-info-bg);    color: var(--col-info);    }
 .btn-table-action--view:hover { background: var(--col-info);       color: #fff; transform: scale(1.08); }
@@ -1166,11 +1173,17 @@
 .btn-table-action--edit       { background: var(--stat-p-bg);      color: var(--stat-p);      }
 .btn-table-action--edit:hover { background: var(--stat-p);         color: #fff; transform: scale(1.08); }
 
+
 .btn-table-action--deactivate       { background: var(--col-warning-bg); color: var(--col-warning); }
 .btn-table-action--deactivate:hover { background: var(--col-warning);    color: #fff; transform: scale(1.08); }
 
+
+.btn-table-action--activate         { background: var(--col-success-bg); color: var(--col-success); }
+.btn-table-action--activate:hover   { background: var(--col-success);    color: #fff; transform: scale(1.08); }
+
 .btn-table-action--activate       { background: var(--col-success-bg); color: var(--col-success); }
 .btn-table-action--activate:hover { background: var(--col-success);    color: #fff; transform: scale(1.08); }
+
 
 
 .filters-bar {
@@ -1272,6 +1285,7 @@
 .btn-filter-outline--active:hover     { background: var(--col-success); color: #fff; border-color: var(--col-success); }
 
 
+
 .btn-add {
     display: inline-flex;
     align-items: center;
@@ -1351,6 +1365,10 @@
     font-size: 0.78rem;
     color: var(--col-error);
     margin-top: 5px;
+
+    display: block;
+
+
 }
 
 .form-footer {
@@ -1362,6 +1380,7 @@
     padding-top: 24px;
     border-top: 1px solid var(--border);
 }
+
 
 .btn-submit {
     display: inline-flex;
@@ -1503,9 +1522,12 @@
 }
 .ep-modal__close:hover { background: rgba(255,255,255,0.28); }
 
+.ep-modal__body { padding: 28px 24px; }
+
 .ep-modal__body {
     padding: 28px 24px;
 }
+
 
 .ep-modal__loading {
     display: flex;
