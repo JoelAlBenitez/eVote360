@@ -21,13 +21,6 @@ namespace eVote360.Infraestructure.Persistence.ServicesValidators.ElectivePoscti
             return result!.State;
         }
 
-        public async Task<bool> ElectivePositionHasAssociatedByCandidates(int Id)
-        {
-            return await _context.CandidateAssignments.AsNoTracking()
-                .AnyAsync(x => x.ElectivePositionId == Id);
-                
-        }
-
      
         public async Task<bool> ExistById(int Id)
         {
