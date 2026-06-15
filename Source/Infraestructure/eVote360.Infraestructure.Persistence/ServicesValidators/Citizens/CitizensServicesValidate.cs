@@ -14,14 +14,6 @@ namespace eVote360.Infraestructure.Persistence.ServicesValidators.Citizens
             _context = context;
         }
 
-        public async Task<bool> CitizenParticipatedInElection(Guid Id, string Identification)
-        {
-
-             return await _context.AuditVote
-            .AsNoTracking()
-            .AnyAsync(c => c.IdCitizen == Id && c.Citizens!.IdentificationNumber.Value == Identification); 
-             
-        }
 
         public async Task<bool> CitizentHasAssociatedEmail(Guid Id)
         {

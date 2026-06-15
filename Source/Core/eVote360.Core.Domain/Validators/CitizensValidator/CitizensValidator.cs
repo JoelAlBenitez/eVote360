@@ -3,6 +3,7 @@ using eVote360.Core.Domain.Common.Errors;
 using eVote360.Core.Domain.Common.ValidationResult;
 using eVote360.Core.Domain.Contracts.ServiceValidates.Citizens;
 using eVote360.Core.Domain.Contracts.ServiceValidates.Election;
+using eVote360.Core.Domain.Contracts.ServiceValidates.Elector.Votes;
 using eVote360.Core.Domain.Entities.Citizens;
 using System.Text.RegularExpressions;
 
@@ -13,15 +14,18 @@ namespace eVote360.Core.Domain.Validators.CitizensValidator
 
         private readonly ICitizensServiceValidate _citizensServiceValidate;
         private readonly IElectionDomainService _electionDomainService;
+        private readonly IVotesValidate _votesValidate;
         private List<Error> _errors = new List<Error>();
 
         public CitizensValidator(ICitizensServiceValidate citizensServiceValidate,
-            IElectionDomainService electionDomainService
+            IElectionDomainService electionDomainService,
+            IVotesValidate votesValidate
             
             )
         {
             _citizensServiceValidate = citizensServiceValidate;
             _electionDomainService = electionDomainService;
+            _votesValidate = votesValidate;
         }
         private Error ValidateName(string name)
         {
@@ -131,7 +135,7 @@ namespace eVote360.Core.Domain.Validators.CitizensValidator
             var existOtherCitizen = await _citizensServiceValidate.ExistOtherCitizens(citizen.Id, citizen.IdentificationNumber.Value);
             if(existOtherCitizen) _errors.Add(CitizenErrors.ExistCitizen);
 
-            var parcitedInEletions = await _citizensServiceValidate.CitizenParticipatedInElection(citizen.Id, citizen.IdentificationNumber.Value);
+            var parcitedInEletions = await _votesValidate.CitizenParticipatedInElection(citizen.Id, citizen.IdentificationNumber.Value);
             if (parcitedInEletions) _errors.Add(CitizenErrors.ChangeIdentificationNoValid);
 
             var validateName = ValidateName(citizen.Name);
