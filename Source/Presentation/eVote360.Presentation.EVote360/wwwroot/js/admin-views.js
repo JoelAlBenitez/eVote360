@@ -194,6 +194,7 @@
     window.initTablePagination = initTablePagination;
     window.initCardPagination  = initCardPagination;
 
+
     function initTableSearch(inputId, tbodyId, paginationWrapId, cardContainerId, cardClass, mobileWrapId) {
         var input = document.getElementById(inputId);
         if (!input) return;
@@ -232,6 +233,7 @@
     }
 
     window.initTableSearch = initTableSearch;
+
 
     function initYearCardAnimations() {
         document.querySelectorAll('.year-card').forEach(function (card, i) {
