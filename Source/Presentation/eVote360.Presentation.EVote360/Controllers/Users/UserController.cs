@@ -156,24 +156,25 @@ using Microsoft.AspNetCore.Mvc;
          return RedirectToAction(nameof(Index));
      }
 
-     [HttpPost]
-        public async Task<IActionResult> AlterState(int id)
+        [HttpPost]
+        public async Task<IActionResult> AlterState(int id, bool state)
         {
-          var result = await _stateCommand.ExecuteAsync(id, false);
+            var result = await _stateCommand.ExecuteAsync(id, !state);
+            if (!result.IsValid) {
 
-         if (!result.IsValid)
-         {
-          foreach (var error in result.errors) ModelState.AddModelError(error.Code, error.Description);
-          TempData["TypeAlert"] = "error";
-          TempData["Message"] = "Error al intentar cambiar el estado.";
-         }
-         else
-         {
-          TempData["TypeAlert"] = "success";
-          TempData["Message"] = "Estado del usuario modificado con éxito.";
-         }
+                var firstError = result.errors.FirstOrDefault();
+                TempData["Type Alert"] = "error";
 
-         return RedirectToAction(nameof(Index));
+                TempData["Message"] = firstError != null ? firstError.Description : "Error al intentar cambiar el estado";
+            }
+
+            else
+            {
+                TempData["TypeAlert"] = "success";
+                TempData["Message"] = "Estado del usuario modificado con éxito.";
+            }
+
+            return RedirectToAction(nameof(Index));
  }
         }
      }
