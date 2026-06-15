@@ -1,0 +1,31 @@
+@model eVote360.Core.Application.ViewModels.PoliticalAlliances.AllianceConfirmationViewModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Rechazar Solicitud";
+}
+
+<div class="container-fluid px-4 mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-5">
+            <div class="card shadow-sm border-danger border-2">
+                <div class="card-body text-center p-5">
+                    <i class="bi bi-x-circle text-danger" style="font-size: 3rem;"></i>
+                    <h3 class="fw-light text-danger mt-3 mb-4">Rechazar Solicitud</h3>
+                    
+                    <p class="fs-5 text-secondary mb-5">
+                        ¿Está seguro que desea rechazar la solicitud de alianza de <strong>@Model.PartyName (@Model.PartySiglas)</strong>?
+                    </p>
+
+                    <form method="post" asp-action="Reject">
+                        <input type="hidden" asp-for="AllianceId" />
+                        <div class="d-flex justify-content-center gap-3">
+                            <a asp-action="Index" class="btn btn-secondary rounded-pill px-4">Cancelar</a>
+                            <button type="submit" class="btn btn-danger rounded-pill px-4">Sí, rechazar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
