@@ -160,13 +160,14 @@
         if (_paginators[id]) _paginators[id](page);
     };
 
-    function initCardPagination(containerId, wrapId, pageSize) {
+    function initCardPagination(containerId, wrapId, pageSize, cardSelector) {
         pageSize = pageSize || 5;
+        cardSelector = cardSelector || '.summary-card';
         var container = document.getElementById(containerId);
         var wrap      = document.getElementById(wrapId);
         if (!container || !wrap) return;
 
-        var cards = Array.from(container.querySelectorAll('.summary-card'));
+        var cards = Array.from(container.querySelectorAll(cardSelector));
         var total = cards.length;
         if (total <= pageSize) return;
 
@@ -189,6 +190,9 @@
     window._evCardPage = function (id, page) {
         if (_paginators[id]) _paginators[id](page);
     };
+
+    window.initTablePagination = initTablePagination;
+    window.initCardPagination  = initCardPagination;
 
     function initYearCardAnimations() {
         document.querySelectorAll('.year-card').forEach(function (card, i) {

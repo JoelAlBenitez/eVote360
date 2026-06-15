@@ -12,8 +12,7 @@ namespace eVote360.Core.Domain.Entities.Candidate
         public int PoliticalPartyId { get; set; }
         public bool HasParticipatedInElection { get; set; }
 
-        // Propiedades de navegación
-        public PoliticalPartyEntity Partido { get; set; }
+        public PoliticalPartyEntity? Partido { get; set; }
         public ICollection<CandidateAssignmentEntity> AsignacionesPuestos { get; set; } = new List<CandidateAssignmentEntity>();
     }
 }
