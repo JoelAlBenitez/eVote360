@@ -4,22 +4,12 @@ using eVote360.Core.Application.Contracts.PoliticalParty.Query;
 using eVote360.Core.Application.Contracts.Users.Query;
 using eVote360.Core.Application.DTOs.PoliticalLeaderAssignment;
 using eVote360.Core.Application.ViewModels.PoliticalLeaderAssignment;
-using eVote360.Core.Domain.Entities.PoliticalParty;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ViewEngines;
-using System.Reflection;
-using System.Xml.Linq;
+using Microsoft.AspNetCore.Authorization;
 
-using eVote360.Core.Application.Contracts.PoliticalLeaderAssignment.Commands;
-using eVote360.Core.Application.Contracts.PoliticalLeaderAssignment.Query;
-using eVote360.Core.Application.Contracts.PoliticalParty.Query;
-using eVote360.Core.Application.Contracts.Users.Query;
-using eVote360.Core.Application.DTOs.PoliticalLeaderAssignment;
-using eVote360.Core.Application.ViewModels.PoliticalLeaderAssignment;
-using Microsoft.AspNetCore.Mvc;
-
- namespace eVote360.Presentation.EVote360.Controllers.PoliticalLeaderAssignment
+namespace eVote360.Presentation.EVote360.Controllers.PoliticalLeaderAssignment
  {
+    [Authorize(Roles = "Admin")]
      public class PoliticalLeaderAssignmentController : Controller
      {
          private readonly ILeaderAssignmentCreateCommand _createCommand;
@@ -177,21 +167,31 @@ using Microsoft.AspNetCore.Mvc;
 
 
 [HttpPost]
-            public async Task<IActionResult> AlterState(int id, bool state)
-            {
-                 var result = await _alterStateCommand.ExecuteAsync(id, state);
-                 if (!result.IsValid)
-                     {
-                         TempData["Message"] = "Error al intentar cambiar el estado.";
-                     }
+        public async Task<IActionResult> AlterState(int id, bool state)
+        {
+         var result = await _alterStateCommand.ExecuteAsync(id, !state);
     
-    return RedirectToAction(nameof(Index));
-             }
+         if (!result.IsValid)
+         {
+             var primerError = result.errors.FirstOrDefault();
+            TempData["TypeAlert"] = "error";
+            TempData["Message"] = primerError != null ? primerError.Description : "Error al intentar cambiar el estado de la asignación.";
+         }
+         else
+         {
+            TempData["TypeAlert"] = "success";
+            TempData["Message"] = "Estado de la asignación modificado con éxito.";
+         }
 
-            private async Task LoadCatalogs()
-            {
-                ViewBag.Parties = await _partyGetActiveQuery.ExecuteAsync();
-                 ViewBag.Users = await _userGetActiveQuery.ExecuteAsync();
-             }
-     }
-    }
+         return RedirectToAction(nameof(Index));
+        }
+
+        private async Task LoadCatalogs()
+        {
+          ViewBag.Parties = await _partyGetActiveQuery.ExecuteAsync();
+          ViewBag.Users = await _userGetActiveQuery.ExecuteAsync();
+        }
+
+
+}
+}
