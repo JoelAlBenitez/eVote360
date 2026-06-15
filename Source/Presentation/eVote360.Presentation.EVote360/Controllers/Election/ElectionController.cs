@@ -8,13 +8,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
 using System.Reflection;
 using System.Xml.Linq;
-using eVote360.Core.Application.Contracts.Election.Query;
-using eVote360.Core.Application.DTOs.Election;
-using eVote360.Core.Application.ViewModels.Election;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
      
       namespace eVote360.Presentation.EVote360.Controllers.Election
       {
+    [Authorize(Roles = "Admin")]
+
           public class ElectionController : Controller
          {
              private readonly IElectionCreateCommand _createCommand;
@@ -114,12 +113,12 @@ using Microsoft.AspNetCore.Mvc;
                 TempData["Message"] = "Elección creada con éxito";
                  return RedirectToAction(nameof(Index));
              }
-
+        [HttpGet]
             public async Task<IActionResult> Edit(int id)
             {
                  var result = await _getByIdQuery.ExecuteAsync(id);
             
-                 if (!result.IsValid)
+                 if (result== null ||result.Value == null)
                  {
                  return RedirectToAction(nameof(Index));
                  }
@@ -163,18 +162,25 @@ using Microsoft.AspNetCore.Mvc;
                 return RedirectToAction(nameof(Index));
              }
 
-   [HttpPost]
-            public async Task<IActionResult> AlterState(int id)
+        [HttpPost]
+        public async Task<IActionResult> AlterState(int id)
+        {
+            var result = await _alterStateCommand.ExecuteAsync(id);
+
+            if (!result.IsValid)
             {
-                 var result = await _alterStateCommand.ExecuteAsync(id);
-    
-               if (!result.IsValid)
-                     {
-                         TempData["Message"] = "Error al intentar cambiar el estado de la elección.";
-                     }
-   
-                return RedirectToAction(nameof(Index));
-             }
+                var primerError = result.errors.FirstOrDefault();
+                TempData["TypeAlert"] = "error";
+                TempData["Message"] = primerError != null ? primerError.Description : "Error al intentar cambiar el estado.";
+            }
+            else
+            {
+                TempData["TypeAlert"] = "success";
+                TempData["Message"] = "Estado modificado con éxito.";
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
 
             public async Task<IActionResult> Results(int id)
             {
