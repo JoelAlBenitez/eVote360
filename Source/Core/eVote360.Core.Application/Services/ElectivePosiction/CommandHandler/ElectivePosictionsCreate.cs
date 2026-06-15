@@ -1,4 +1,5 @@
-﻿using eVote360.Core.Application.Contracts.ElectivePosictions.Commands;
+﻿using eVote360.Core.Application.Contracts.Authentication.Command;
+using eVote360.Core.Application.Contracts.ElectivePosictions.Commands;
 using eVote360.Core.Application.DTOs.ElectivePositions;
 using eVote360.Core.Domain.Common.CodeErrors;
 using eVote360.Core.Domain.Common.Errors;
@@ -14,13 +15,17 @@ namespace eVote360.Core.Application.Services.ElectivePosiction.CommandHandler
 
         private readonly IElectivePositionsRepository _electivePositionsRepository;
         private readonly IElectivePositionsValidator _electivePositionsValidator;
+        private readonly ISessionUser _sessionUser;
         public List<Error> _errors = new List<Error>();
 
         public ElectivePosictionsCreate(IElectivePositionsRepository electivePositionsRepository,
-            IElectivePositionsValidator electivePositionsValidator)
+            IElectivePositionsValidator electivePositionsValidator,
+            ISessionUser sessionUser
+            )
         {
             _electivePositionsRepository = electivePositionsRepository;
             _electivePositionsValidator = electivePositionsValidator;
+            _sessionUser = sessionUser;
         }
 
         public async Task<ValidationResult> CreateAsync(ElectivePosictionsDto dto)
@@ -32,7 +37,7 @@ namespace eVote360.Core.Application.Services.ElectivePosiction.CommandHandler
                     Name = dto.Name.Trim().ToLower(),
                     State = dto.State,
                     CreateAt = DateTimeOffset.Now,
-                    CreateUserId = 0, //modificar para que este valor venga de la cookie
+                    CreateUserId = _sessionUser.GetUserId(), 
                     Description = dto.Descriptions,
                 };
 

@@ -1,4 +1,5 @@
 ﻿
+using eVote360.Core.Application.Contracts.Authentication.Command;
 using eVote360.Core.Application.Contracts.ElectivePosictions.Commands;
 using eVote360.Core.Application.DTOs.ElectivePositions;
 using eVote360.Core.Domain.Commom;
@@ -14,13 +15,17 @@ namespace eVote360.Core.Application.Services.ElectivePosiction.CommandHandler
     {
         private readonly IElectivePositionsRepository _electivePositionsRepository;
         private readonly IElectivePositionsValidator _electivePositionsValidator;
+        private readonly ISessionUser _sessionUser;
         public List<Error> _errors = new List<Error>();
 
         public ElectivePosictionsUpdate(IElectivePositionsRepository electivePositionsRepository,
-            IElectivePositionsValidator electivePositionsValidator)
+            IElectivePositionsValidator electivePositionsValidator,
+            ISessionUser sessionUser
+            )
         {
             _electivePositionsRepository = electivePositionsRepository;
             _electivePositionsValidator = electivePositionsValidator;
+            _sessionUser = sessionUser;
 
         }
 
@@ -28,7 +33,7 @@ namespace eVote360.Core.Application.Services.ElectivePosiction.CommandHandler
         {
             try
             {
-                //agregar validaciones de autorizacion
+                
 
                 var eleccion = new ElectivePositions()
                 {
@@ -36,7 +41,7 @@ namespace eVote360.Core.Application.Services.ElectivePosiction.CommandHandler
                     Name = dto.Name,
                     Description = dto.Descriptions,
                     State = dto.State,
-                    UpdateUserId = 0,//agregar desde el usuario de la cookie que esta haciendo la operacion
+                    UpdateUserId = _sessionUser.GetUserId(),
                     UpdateAt = DateTimeOffset.Now
                 };
 

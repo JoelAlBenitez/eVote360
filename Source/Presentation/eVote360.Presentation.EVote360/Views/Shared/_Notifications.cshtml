@@ -1,0 +1,116 @@
+@{
+    var tempMessage  = TempData["Message"]   as string;
+    var tempType     = (TempData["TypeAlert"] as string ?? "info").ToLowerInvariant();
+
+    var modelErrors = ViewData.ModelState
+        .Where(e => e.Value != null && e.Value.Errors.Count > 0)
+        .SelectMany(e => e.Value!.Errors.Select(err => new
+        {
+            Code        = e.Key,
+            Description = err.ErrorMessage
+        }))
+        .Where(e => !string.IsNullOrWhiteSpace(e.Description))
+        .ToList();
+}
+
+@if (!string.IsNullOrWhiteSpace(tempMessage))
+{
+    <div class="ev-notification ev-notification--@tempType" id="evTempNotification" role="alert" aria-live="assertive">
+        <div class="ev-notification__icon">
+            @if (tempType == "success")
+            {
+                <i class="bi bi-check-circle-fill"></i>
+            }
+            else if (tempType == "error")
+            {
+                <i class="bi bi-x-circle-fill"></i>
+            }
+            else if (tempType == "warning")
+            {
+                <i class="bi bi-exclamation-triangle-fill"></i>
+            }
+            else
+            {
+                <i class="bi bi-info-circle-fill"></i>
+            }
+        </div>
+        <div class="ev-notification__body">
+            <span class="ev-notification__message">@tempMessage</span>
+        </div>
+        <button type="button"
+                class="ev-notification__close"
+                onclick="this.closest('.ev-notification').remove()"
+                aria-label="Cerrar notificación">
+            <i class="bi bi-x"></i>
+        </button>
+    </div>
+}
+
+@if (modelErrors.Any())
+{
+    <div class="ev-errors-panel" id="evErrorsPanel" role="alert" aria-live="assertive">
+
+        <div class="ev-errors-panel__header">
+            <div class="ev-errors-panel__title">
+                <i class="bi bi-shield-exclamation"></i>
+                <span>
+                    Se @(modelErrors.Count == 1 ? "encontró" : "encontraron")
+                    <strong>@modelErrors.Count</strong>
+                    error@(modelErrors.Count != 1 ? "es" : "")
+                </span>
+            </div>
+            <button type="button"
+                    class="ev-errors-panel__close"
+                    onclick="this.closest('.ev-errors-panel').remove()"
+                    aria-label="Cerrar panel de errores">
+                <i class="bi bi-x-lg"></i>
+            </button>
+        </div>
+
+        <div class="ev-errors-panel__body">
+            @if (modelErrors.Count > 1)
+            {
+                <div class="ev-errors-panel__counter">
+                    Error <span id="evErrorCurrent">1</span> de <span id="evErrorTotal">@modelErrors.Count</span>
+                </div>
+            }
+
+            <div id="evErrorSlides">
+                @for (int i = 0; i < modelErrors.Count; i++)
+                {
+                    <div class="ev-error-slide @(i == 0 ? "active" : "")" data-index="@i">
+                        @{
+                            var code = modelErrors[i].Code;
+                            var showCode = !string.IsNullOrWhiteSpace(code) && code != string.Empty;
+                        }
+                        @if (showCode)
+                        {
+                            <span class="ev-error-slide__code">@code</span>
+                        }
+                        <p class="ev-error-slide__description">@modelErrors[i].Description</p>
+                    </div>
+                }
+            </div>
+        </div>
+
+        @if (modelErrors.Count > 1)
+        {
+            <div class="ev-errors-panel__footer">
+                <button type="button"
+                        class="ev-errors-panel__nav"
+                        id="evErrorPrev"
+                        onclick="evNavigateError(-1)"
+                        disabled>
+                    <i class="bi bi-chevron-left"></i> Anterior
+                </button>
+                <button type="button"
+                        class="ev-errors-panel__nav"
+                        id="evErrorNext"
+                        onclick="evNavigateError(1)">
+                    Siguiente <i class="bi bi-chevron-right"></i>
+                </button>
+            </div>
+        }
+
+    </div>
+}

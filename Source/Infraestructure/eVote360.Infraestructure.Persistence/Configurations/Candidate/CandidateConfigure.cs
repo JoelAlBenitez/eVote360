@@ -44,6 +44,12 @@ namespace eVote360.Infraestructure.Persistence.Configurations.Candidate
 
             // Índices para rendimiento y reglas de negocio
             builder.HasIndex(x => x.PoliticalPartyId);
+
+            // Relaciones
+            builder.HasOne(x => x.Partido)
+                .WithMany(p => p.Candidates)
+                .HasForeignKey(x => x.PoliticalPartyId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

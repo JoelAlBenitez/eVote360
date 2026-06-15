@@ -1,0 +1,30 @@
+@model eVote360.Core.Application.ViewModels.CandidateAssignment.DeleteAssignmentViewModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Confirmar Remoción";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-5">
+            <div class="card border-danger shadow-sm">
+                <div class="card-body text-center">
+                    <h5 class="card-title text-danger mb-4">Confirmar Remoción</h5>
+                    
+                    <p class="card-text mb-4 fs-5">
+                        ¿Está seguro que desea remover a <strong>@Model.CandidateName</strong> del puesto <strong>@Model.ElectivePositionName</strong>?
+                    </p>
+
+                    <form method="post" asp-action="DeleteAssignment">
+                        <input type="hidden" asp-for="AssignmentId" />
+                        <div class="d-flex justify-content-center gap-3">
+                            <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+                            <button type="submit" class="btn btn-danger">Sí, remover</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -48,6 +48,14 @@ namespace eVote360.Infraestructure.Persistence.Repositories.Citizens
             return citizens;
         }
 
+        public async Task<Citizen> GetByIdentification(string Identification)
+        {
+            var result = await _context.Citzens
+                .AsNoTracking()
+                .FirstOrDefaultAsync(c => c.IdentificationNumber.Value == Identification);
+            return result!;
+        }
+
         public async Task<Citizen> GetByIdEntitie(Guid tkey)
         {
             var citizen  = await _context.Citzens.AsNoTracking().FirstOrDefaultAsync(x => x.Id == tkey);

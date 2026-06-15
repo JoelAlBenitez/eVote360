@@ -5,20 +5,29 @@ using eVote360.Core.Domain.Validators.PoliticalAlliancesValidator;
 using eVote360.Core.Domain.Contracts.Repositories.Citizens;
 using eVote360.Core.Domain.Contracts.Repositories.Candidate;
 using eVote360.Core.Application.Contracts.Services;
+using eVote360.Core.Domain.Contracts.Repositories.CandidateAssignment;
+using eVote360.Core.Domain.Contracts.ServiceValidates.CandidateAssignment;
 using eVote360.Infraestructure.Persistence.Context;
 using eVote360.Infraestructure.Persistence.Repositories.Citizens;
 using eVote360.Infraestructure.Persistence.Repositories.ElectivePosiction;
 using eVote360.Infraestructure.Persistence.Repositories.PoliticalAlliances;
 using eVote360.Infraestructure.Persistence.Repositories.Candidate;
+using eVote360.Infraestructure.Persistence.Repositories.CandidateAssignment;
+using eVote360.Infraestructure.Persistence.ServicesValidators.CandidateAssignment;
 using eVote360.Infraestructure.Persistence.Services;
 using eVote360.Infraestructure.Persistence.ServicesValidators;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection; 
+using Microsoft.Extensions.DependencyInjection;
 using eVote360.Infraestructure.Persistence.ServicesValidators.Candidatess;
 using eVote360.Core.Domain.Contracts.ServiceValidates.Candidate;
 using eVote360.Core.Domain.Contracts.Repositories.AuthenticationAndAutorization;
 using eVote360.Infraestructure.Persistence.Repositories.Authentication;
+using eVote360.Core.Domain.Contracts.Repositories.AdminManager;
+using eVote360.Infraestructure.Persistence.Repositories.Admin;
+using eVote360.Core.Domain.Contracts.ServiceValidates.Admin;
+using eVote360.Infraestructure.Persistence.ServicesValidators.Admin;
+
 using eVote360.Core.Domain.Validators.UserValidator;
 using eVote360.Core.Domain.Contracts.ServiceValidates.User;
 using eVote360.Infraestructure.Persistence.ServicesValidators.User;
@@ -37,7 +46,6 @@ using eVote360.Core.Domain.Contracts.Repositories.PoliticalAssignment;
 using eVote360.Infraestructure.Persistence.Repositories.PoliticalAssignment;
 using eVote360.Core.Domain.Contracts.ServiceValidates.PoliticalAssignment;
 using eVote360.Infraestructure.Persistence.ServicesValidators.PoliticalAssignment;
-
 
 namespace eVote360.IOC.Dependencies
 {
@@ -58,6 +66,10 @@ namespace eVote360.IOC.Dependencies
             services.AddScoped<IPoliticalAllienceRepository, PoliticalAlliancesRepository>();
             services.AddScoped<IPoliticalAlliancesValidate, PoliticalAlliancesServiceValidator>();
             services.AddScoped<IAllianceValidator, AllianceValidator>();
+
+            //CandidateAssignment
+            services.AddScoped<ICandidateAssignmentRepository, CandidateAssignmentRepository>();
+            services.AddScoped<ICandidateAssignmentDomainService, CandidateAssignmentServiceValidator>();
 
             //Citizens
             services.AddScoped<ICitizenRepository, CitizensRepository>();
@@ -85,6 +97,11 @@ namespace eVote360.IOC.Dependencies
             //Authentication
 
             services.AddScoped<IAuthenticationRepository, AuthenticationRepository>();
+
+            //admin
+
+            services.AddScoped<IAdminManagerRepository, AdminRepository>();
+            services.AddScoped<IAdminFunctionalitysValidate, AdminServiceValidator>();
 
             //Political Parties
             services.AddScoped<IPoliticalPartyRepository, PoliticalPartyRepository>();

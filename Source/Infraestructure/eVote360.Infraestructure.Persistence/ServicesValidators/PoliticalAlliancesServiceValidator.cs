@@ -1,7 +1,10 @@
+using eVote360.Core.Domain.Common.Enums;
 using eVote360.Core.Domain.Contracts.ServiceValidates.PoliticalAlliance;
+
 using eVote360.Core.Domain.Entities.PoliticalAlliances;
 using eVote360.Infraestructure.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace eVote360.Infraestructure.Persistence.ServicesValidators
@@ -17,14 +20,16 @@ namespace eVote360.Infraestructure.Persistence.ServicesValidators
 
         public async Task<bool> IsElectionProcessActive()
         {
-            // pendiente hasta traer entidad de elecciones
-            return await Task.FromResult(false);
+            return await _context.Elections
+                .AsNoTracking()
+                .AnyAsync(x => x.ElectionState == ElectionState.Activa);
         }
 
         public async Task<bool> IsPartyActive(int partyId)
         {
-            // pendiente hasta traer entidad de partidos
-            return await Task.FromResult(true);
+            return await _context.PoliticalParties
+                .AsNoTracking()
+                .AnyAsync(x => x.Id == partyId && x.State == true);
         }
 
         public async Task<bool> HasActiveAlliance(int requestingPartyId, int receivingPartyId)
@@ -47,8 +52,14 @@ namespace eVote360.Infraestructure.Persistence.ServicesValidators
 
         public async Task<bool> HasAssignedCandidatesBetweenParties(int requestingPartyId, int receivingPartyId)
         {
-            // pendiente hasta traer mdulo de asignacioon
-            return await Task.FromResult(false);
+            return await _context.CandidateAssignments
+                .AsNoTracking()
+                .AnyAsync(x =>
+                    (x.AssigningPartyId == requestingPartyId &&
+                     _context.Candidates.Any(c => c.Id == x.CandidateId && c.PoliticalPartyId == receivingPartyId))
+                    ||
+                    (x.AssigningPartyId == receivingPartyId &&
+                     _context.Candidates.Any(c => c.Id == x.CandidateId && c.PoliticalPartyId == requestingPartyId)));
         }
     }
 }

@@ -2,6 +2,8 @@
 using eVote360.Core.Domain.Common.Errors;
 using eVote360.Core.Domain.Common.ValidationResult;
 using eVote360.Core.Domain.Contracts.ServiceValidates.Citizens;
+using eVote360.Core.Domain.Contracts.ServiceValidates.Election;
+using eVote360.Core.Domain.Contracts.ServiceValidates.Elector.Votes;
 using eVote360.Core.Domain.Entities.Citizens;
 using System.Text.RegularExpressions;
 
@@ -11,11 +13,19 @@ namespace eVote360.Core.Domain.Validators.CitizensValidator
     {
 
         private readonly ICitizensServiceValidate _citizensServiceValidate;
+        private readonly IElectionDomainService _electionDomainService;
+        private readonly IVotesValidate _votesValidate;
         private List<Error> _errors = new List<Error>();
 
-        public CitizensValidator(ICitizensServiceValidate citizensServiceValidate)
+        public CitizensValidator(ICitizensServiceValidate citizensServiceValidate,
+            IElectionDomainService electionDomainService,
+            IVotesValidate votesValidate
+            
+            )
         {
             _citizensServiceValidate = citizensServiceValidate;
+            _electionDomainService = electionDomainService;
+            _votesValidate = votesValidate;
         }
         private Error ValidateName(string name)
         {
@@ -40,7 +50,12 @@ namespace eVote360.Core.Domain.Validators.CitizensValidator
         public async Task<ValidationResult> ActiveCitizen(Guid Id, string Identification)
         {
 
-            //agregar validaciones de elecciones activas del modulo de elecciones 
+            var existElectionActive = await _electionDomainService.ExistActiveElection();
+            if (existElectionActive)
+            {
+                _errors.Add(ElectionError.ElectionActive);
+                return ValidationResult.Failure(_errors);
+            }
 
             var valid = await _citizensServiceValidate.ExistCitizensByIdentification(Identification);
             if (!valid) _errors.Add(CitizenErrors.NoExtisCitizen);
@@ -56,11 +71,16 @@ namespace eVote360.Core.Domain.Validators.CitizensValidator
 
         public async Task<ValidationResult> CreateCitizen(Citizen citizen)
         {
-            //agregar validaciones de elecciones activas del modulo de elecciones 
+            var existElectionActive = await _electionDomainService.ExistActiveElection();
+            if (existElectionActive)
+            {
+                _errors.Add(ElectionError.ElectionActive);
+                return ValidationResult.Failure(_errors);
+            }
 
             if (citizen == null) _errors.Add(CitizenErrors.DataInvalid);
             var exitsCitizenByIdentification = await _citizensServiceValidate.ExistCitizensByIdentification(citizen!.IdentificationNumber.Value);
-            var exitsCitizenByEmail = await _citizensServiceValidate.ExistCitizensByEmail(citizen.Email.Value);
+            var exitsCitizenByEmail = await _citizensServiceValidate.ExistCitizensByEmail(citizen.Email.Value, null);
             if(exitsCitizenByEmail || exitsCitizenByIdentification) _errors.Add(CitizenErrors.ExistCitizen);
             if (exitsCitizenByEmail) _errors.Add(CitizenErrors.ExistEmail);
             if (exitsCitizenByIdentification) _errors.Add(CitizenErrors.ExistIdentification);
@@ -76,6 +96,14 @@ namespace eVote360.Core.Domain.Validators.CitizensValidator
 
         public async Task<ValidationResult> DesactiveCitizen(Guid Id, string Identification)
         {
+
+            var existElectionActive = await _electionDomainService.ExistActiveElection();
+            if (existElectionActive)
+            {
+                _errors.Add(ElectionError.ElectionActive);
+                return ValidationResult.Failure(_errors);
+            }
+
             var valid = await _citizensServiceValidate.ExistCitizensByIdentification(Identification);
             if (!valid) _errors.Add(CitizenErrors.NoExtisCitizen);
 
@@ -83,14 +111,22 @@ namespace eVote360.Core.Domain.Validators.CitizensValidator
             if (validActive) _errors.Add(CitizenErrors.DesactiveNoValid);
 
             var stateValidOfModif = await _citizensServiceValidate.CurrentStateOfTheCitizen(Id);
-            if (stateValidOfModif) _errors.Add(CitizenErrors.StateNoValidOfModifie);
+            if (!stateValidOfModif) _errors.Add(CitizenErrors.StateNoValidOfModifie);
 
             return _errors.Any() ? ValidationResult.Failure(_errors) : ValidationResult.Success();
         }
 
         public async Task<ValidationResult> UpdateCitizen(Citizen citizen)
         {
-            //agregar validacion de elecciones activas
+
+            var existElectionActive = await _electionDomainService.ExistActiveElection();
+            if (existElectionActive)
+            {
+                _errors.Add(ElectionError.ElectionActive);
+                return ValidationResult.Failure(_errors);
+            }
+
+
             if (citizen == null) _errors.Add(CitizenErrors.DataInvalid);
 
             var exits = await _citizensServiceValidate.ExistCitizensByIdentification(citizen!.IdentificationNumber.Value);
@@ -99,7 +135,7 @@ namespace eVote360.Core.Domain.Validators.CitizensValidator
             var existOtherCitizen = await _citizensServiceValidate.ExistOtherCitizens(citizen.Id, citizen.IdentificationNumber.Value);
             if(existOtherCitizen) _errors.Add(CitizenErrors.ExistCitizen);
 
-            var parcitedInEletions = await _citizensServiceValidate.CitizenParticipatedInElection(citizen.Id, citizen.IdentificationNumber.Value);
+            var parcitedInEletions = await _votesValidate.CitizenParticipatedInElection(citizen.Id, citizen.IdentificationNumber.Value);
             if (parcitedInEletions) _errors.Add(CitizenErrors.ChangeIdentificationNoValid);
 
             var validateName = ValidateName(citizen.Name);
@@ -108,7 +144,7 @@ namespace eVote360.Core.Domain.Validators.CitizensValidator
             var validateLastName = ValidateLastName(citizen.LastName);
             if (validateLastName != null) _errors.Add(CitizenErrors.LastNameNoValid);
 
-            var exitsCitizenByEmail = await _citizensServiceValidate.ExistCitizensByEmail(citizen.Email.Value);
+            var exitsCitizenByEmail = await _citizensServiceValidate.ExistCitizensByEmail(citizen.Email.Value, citizen.Id);
             if (exitsCitizenByEmail) _errors.Add(CitizenErrors.ExistEmail);
 
 

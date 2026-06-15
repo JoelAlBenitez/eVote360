@@ -7,6 +7,7 @@ namespace eVote360.Core.Domain.Contracts.Repositories.Citizens
     {
         Task<IReadOnlyCollection<Citizen>> GetActiveCitizensByActive();
         Task<IReadOnlyCollection<Citizen>> GetAll();
+        Task<Citizen> GetByIdentification(string Identification);
 
     }
 }
