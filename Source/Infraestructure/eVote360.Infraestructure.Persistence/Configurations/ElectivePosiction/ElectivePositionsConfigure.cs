@@ -26,15 +26,15 @@ namespace eVote360.Infraestructure.Persistence.Configurations.ElectivePosictions
             builder.Property(x => x.CreateUserId).IsRequired();
 
 
-            //builder.HasOne(u => u.Users).
-            //    WithMany(x => x.ElectivePosictions).
-            //    HasForeignKey(u => u.CreateUserId).
-            //    OnDelete(DeleteBehavior.Restrict);
+            builder.HasOne(u => u.UserCreate).
+                WithMany().
+                HasForeignKey(u => u.CreateUserId).
+                OnDelete(DeleteBehavior.Restrict);
 
-            //builder.HasOne(u => u.Users).
-            // WithMany(x => x.ElectivePosictions).
-            // HasForeignKey(u => u.UpdateUserId).
-            // OnDelete(DeleteBehavior.Restrict);
+            builder.HasOne(u => u.UserUpdate).
+             WithMany().
+             HasForeignKey(u => u.UpdateUserId).
+             OnDelete(DeleteBehavior.Restrict);
 
         }
     }

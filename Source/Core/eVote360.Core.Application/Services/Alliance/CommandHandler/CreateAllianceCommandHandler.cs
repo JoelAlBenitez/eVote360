@@ -1,5 +1,6 @@
 using eVote360.Core.Application.Alliances.DTOs;
 using eVote360.Core.Application.Contracts.Alliance.Commands;
+using eVote360.Core.Domain.Common.Enums;
 using eVote360.Core.Domain.Common.Errors;
 using eVote360.Core.Domain.Common.ValidationResult;
 using eVote360.Core.Domain.Contracts.Repositories.PoliticalAlliences;

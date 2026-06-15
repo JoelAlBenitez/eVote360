@@ -5,8 +5,10 @@ namespace eVote360.Core.Domain.Entities.Candidate
 {
     public class Candidates : BaseEntitie<int, FullName>
     {
-        public CandidatePhoto? PhotoUrl { get; set; }
+        public required CandidatePhoto PhotoUrl { get; set; }
         public int PoliticalPartyId { get; set; }
         public bool HasParticipatedInElection { get; set; }
+
+        public ElectivePosition.ElectivePositions electivePositions { get; set; }
     }
 }
