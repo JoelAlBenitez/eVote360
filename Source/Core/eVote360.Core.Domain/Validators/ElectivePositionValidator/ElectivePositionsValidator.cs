@@ -2,7 +2,9 @@
 using eVote360.Core.Domain.Common.Errors;
 using eVote360.Core.Domain.Common.ValidationResult;
 using eVote360.Core.Domain.Contracts.DomainService.ElectivePosition;
+using eVote360.Core.Domain.Contracts.ServiceValidates.CandidateAssignment;
 using eVote360.Core.Domain.Contracts.ServiceValidates.Election;
+using eVote360.Core.Domain.Contracts.ServiceValidates.Elector.Votes;
 using eVote360.Core.Domain.Entities.ElectivePosition;
 using System.Text.RegularExpressions;
 
@@ -12,16 +14,23 @@ namespace eVote360.Core.Domain.Validators.ElectivePositionValidator
     {
         private readonly IElectivePositionValidate _electivePositionDomainService;
         private readonly IElectionDomainService _electionDomainService;
+        private readonly IVotesValidate _votesValidate;
+        private readonly ICandidateAssignmentDomainService _candidateAssignmentDomainService;
         private List<Error> _errors = new List<Error>();
         
        
 
-        public ElectivePositionsValidator(IElectivePositionValidate electivePositionDomainService,
-            IElectionDomainService electionDomainService
+        public ElectivePositionsValidator(
+            IElectivePositionValidate electivePositionDomainService,
+            IElectionDomainService electionDomainService,
+            IVotesValidate votesValidate,
+            ICandidateAssignmentDomainService candidateAssignmentDomainService
             )
         {
             _electivePositionDomainService = electivePositionDomainService;
             _electionDomainService = electionDomainService;
+            _votesValidate = votesValidate;
+            _candidateAssignmentDomainService = candidateAssignmentDomainService;
         }
       
         private Error ValidateName(string name)
@@ -84,7 +93,7 @@ namespace eVote360.Core.Domain.Validators.ElectivePositionValidator
             }
             if (electivePositions == null) _errors.Add(ElectivePosictionsError.DataInvalid);
 
-            var validate = await _electivePositionDomainService.ElectivePositionUsedInElections(electivePositions!.Id);
+            var validate = await  _votesValidate.ElectivePositionUsedInElections(electivePositions!.Id);
             if (validate) _errors.Add(ElectivePosictionsError.NameCannotChange);
 
             var validateName = await _electivePositionDomainService.ExistsAnotherElectivePositionWithName(electivePositions.Id, electivePositions.Name);
@@ -134,7 +143,7 @@ namespace eVote360.Core.Domain.Validators.ElectivePositionValidator
             var validate = await _electivePositionDomainService.ExistElectivePositionByState(Id, name, false);
             if (validate) _errors.Add(ElectivePosictionsError.DesactiveElectivePosiction);
 
-            var electivePositionHasCandidates = await _electivePositionDomainService.ElectivePositionHasAssociatedByCandidates(Id);
+            var electivePositionHasCandidates = await _candidateAssignmentDomainService.ElectivePositionHasAssociatedByCandidates(Id);
             if (electivePositionHasCandidates) _errors.Add(ElectivePosictionsError.ElectivePosictionHasAssociatedByCandidates);
       
             return _errors.Any() ? ValidationResult.Failure(_errors) : ValidationResult.Success();
