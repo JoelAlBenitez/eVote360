@@ -1,0 +1,80 @@
+@model IEnumerable<eVote360.Core.Application.ViewModels.CandidateAssignment.CandidateAssignmentViewModel>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Asignación de Candidatos a Puestos";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4">Asignación de Candidatos a Puestos</h2>
+
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["Message"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        @foreach (var item in Model)
+        {
+            <div class="col">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-header fw-bold bg-light">
+                        @item.ElectivePositionName
+                    </div>
+                    <div class="card-body d-flex flex-column align-items-center text-center">
+                        @if (item.HasCandidate)
+                        {
+                            @if (!string.IsNullOrEmpty(item.PhotoUrl))
+                            {
+                                <img src="~/img/candidates/@item.PhotoUrl" alt="Foto de @item.CandidateName" class="rounded-circle mb-3" style="width: 60px; height: 60px; object-fit: cover;" />
+                            }
+                            else
+                            {
+                                <img src="~/img/evote360-logo.png" alt="Sin foto" class="rounded-circle mb-3" style="width: 60px; height: 60px; object-fit: cover;" />
+                            }
+                            
+                            <h5 class="card-title">@item.CandidateName @item.CandidateLastName</h5>
+                            
+                            <div class="mb-2">
+                                @if (item.CandidateType == "Propio")
+                                {
+                                    <span class="badge bg-primary">Propio</span>
+                                }
+                                else if (item.CandidateType == "Aliado")
+                                {
+                                    <span class="badge bg-warning text-dark">Aliado</span>
+                                }
+                            </div>
+                            
+                            @if (item.CandidateType == "Aliado")
+                            {
+                                <p class="card-text text-muted small mt-auto">
+                                    Origen: @item.OriginPartyName (@item.OriginPartySiglas)
+                                </p>
+                            }
+                        }
+                        else
+                        {
+                            <div class="d-flex flex-column justify-content-center h-100 w-100">
+                                <h5 class="text-muted fst-italic m-0">Puesto Vacante</h5>
+                            </div>
+                        }
+                    </div>
+                    <div class="card-footer bg-white border-top-0 text-center">
+                        @if (item.HasCandidate)
+                        {
+                            <a asp-action="DeleteAssignment" asp-route-assignmentId="@item.AssignmentId" class="btn btn-danger btn-sm w-100">Remover</a>
+                        }
+                        else
+                        {
+                            <a asp-action="Create" asp-route-electivePositionId="@item.ElectivePositionId" asp-route-electivePositionName="@item.ElectivePositionName" class="btn btn-success btn-sm w-100">Asignar Candidato</a>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

@@ -1,4 +1,6 @@
-﻿namespace eVote360.Core.Domain.Commom.BaseEntity
+﻿using eVote360.Core.Domain.Entities.User;
+
+namespace eVote360.Core.Domain.Commom.BaseEntity
 {
     public abstract class BaseEntitie<Tkey, TName>
     {
@@ -9,6 +11,8 @@
         public int? CreateUserId { get; set; }
         public int? UpdateUserId { get; set; }
         public required bool State { get; set; }
+        public User? UserCreate { get; set; }
+        public User? UserUpdate { get; set; }
 
     }
 }

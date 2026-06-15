@@ -3,11 +3,14 @@ using eVote360.Core.Application.Contracts.ElectivePosictions.Query;
 using eVote360.Core.Application.Contracts.ElectivePosictions.QueryServices;
 using eVote360.Core.Application.DTOs.ElectivePositions;
 using eVote360.Core.Application.ViewModels.ElectivePositions;
-using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace eVote360.Presentation.EVote360.Controllers.ElectivePosictions
 {
+
+
+    [Authorize(Roles = "Admin")]
     public class ElectivePosictionsController : Controller
     {
 
@@ -78,7 +81,7 @@ namespace eVote360.Presentation.EVote360.Controllers.ElectivePosictions
 
                 electivePViewModel.Add(elective);
             }
-            return RedirectToAction("Index", electivePViewModel);
+            return View("Index", electivePViewModel);
         }
 
         [HttpGet]
@@ -98,15 +101,14 @@ namespace eVote360.Presentation.EVote360.Controllers.ElectivePosictions
 
                 electivePViewModel.Add(elective);
             }
-            return RedirectToAction("Index", electivePViewModel);
+            return View("Index", electivePViewModel);
         }
 
         [HttpGet]
         public async Task<IActionResult> GetElectivePosiction(int Id)
         {
             var elective = await _electivePosictionsGetByIdQuery.GetAllById(Id);
-            if (!elective.IsValid)
-            {
+          
                 if (!elective.IsValid)
                 {
                     foreach (var item in elective.errors)
@@ -115,7 +117,7 @@ namespace eVote360.Presentation.EVote360.Controllers.ElectivePosictions
                     }
                     return RedirectToAction(nameof(Index));
                 }
-            }
+            
 
             var vm = new ElectivePosictionsViewModel { 
                 Id = elective.Value!.Id,
@@ -195,8 +197,7 @@ namespace eVote360.Presentation.EVote360.Controllers.ElectivePosictions
                 State = electiveVM.State
             };
             var create = await _electivePosictionsCreateCommand.CreateAsync(dto);
-            if (!create.IsValid)
-            {
+          
                 if (!create.IsValid)
                 {
                     foreach (var item in create.errors)
@@ -204,8 +205,8 @@ namespace eVote360.Presentation.EVote360.Controllers.ElectivePosictions
                         ModelState.AddModelError(item.Code, item.Description);
                     }
                     return RedirectToAction(nameof(Create));
-                }
-            }
+               }
+            
 
             TempData["Message"] = "Posición electiva creada exitosamente";
             return RedirectToAction(nameof(Index));
@@ -228,9 +229,7 @@ namespace eVote360.Presentation.EVote360.Controllers.ElectivePosictions
             };
 
             var edit = await _electivePosictionsUpdate.UpdateAsync(dto);
-            if(!edit.IsValid)
-            {
-                if (!edit.IsValid)
+            if (!edit.IsValid)
                 {
                     foreach (var item in edit.errors)
                     {
@@ -239,7 +238,7 @@ namespace eVote360.Presentation.EVote360.Controllers.ElectivePosictions
                     return RedirectToAction(nameof(Edit));
                 }
 
-            }
+            
             TempData["Message"] = "Posición electiva editada exitosamente";
             return RedirectToAction(nameof(Index));
         }
@@ -255,21 +254,17 @@ namespace eVote360.Presentation.EVote360.Controllers.ElectivePosictions
 
             var dto = new ElectivePosictionsDesactiveOrActive(electiveVM.IdElectivePosition);
             var alter = await _electivePosictionsAlterState.AlterState(dto);
-            if (!alter.IsValid)
-            {
+          
                 if (!alter.IsValid)
                 { 
                     foreach (var item in alter.errors)
                     {
                         ModelState.AddModelError(item.Code, item.Description);
                     }
-
-                    return RedirectToAction(nameof(Edit));
-
                     return RedirectToAction(nameof(Index));
                 }
-                return RedirectToAction(nameof(AlterState));
-            }
+               
+            
 
             
             TempData["Message"] = "Se modifico el estado de la posición exitosamente";
