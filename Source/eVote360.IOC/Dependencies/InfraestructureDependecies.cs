@@ -5,11 +5,15 @@ using eVote360.Core.Domain.Validators.PoliticalAlliancesValidator;
 using eVote360.Core.Domain.Contracts.Repositories.Citizens;
 using eVote360.Core.Domain.Contracts.Repositories.Candidate;
 using eVote360.Core.Application.Contracts.Services;
+using eVote360.Core.Domain.Contracts.Repositories.CandidateAssignment;
+using eVote360.Core.Domain.Contracts.ServiceValidates.CandidateAssignment;
 using eVote360.Infraestructure.Persistence.Context;
 using eVote360.Infraestructure.Persistence.Repositories.Citizens;
 using eVote360.Infraestructure.Persistence.Repositories.ElectivePosiction;
 using eVote360.Infraestructure.Persistence.Repositories.PoliticalAlliances;
 using eVote360.Infraestructure.Persistence.Repositories.Candidate;
+using eVote360.Infraestructure.Persistence.Repositories.CandidateAssignment;
+using eVote360.Infraestructure.Persistence.ServicesValidators.CandidateAssignment;
 using eVote360.Infraestructure.Persistence.Services;
 using eVote360.Infraestructure.Persistence.ServicesValidators;
 using Microsoft.EntityFrameworkCore;
@@ -62,6 +66,10 @@ namespace eVote360.IOC.Dependencies
             services.AddScoped<IPoliticalAllienceRepository, PoliticalAlliancesRepository>();
             services.AddScoped<IPoliticalAlliancesValidate, PoliticalAlliancesServiceValidator>();
             services.AddScoped<IAllianceValidator, AllianceValidator>();
+
+            //CandidateAssignment
+            services.AddScoped<ICandidateAssignmentRepository, CandidateAssignmentRepository>();
+            services.AddScoped<ICandidateAssignmentDomainService, CandidateAssignmentServiceValidator>();
 
             //Citizens
             services.AddScoped<ICitizenRepository, CitizensRepository>();

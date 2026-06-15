@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using eVote360.Core.Domain.Common.Enums;
 using PoliticalAllianceEntity = eVote360.Core.Domain.Entities.PoliticalAlliances.PoliticalAlliances;
 using eVote360.Core.Domain.Entities.PoliticalAlliances;
 

@@ -1,5 +1,5 @@
 using System;
-using eVote360.Core.Domain.Entities.PoliticalAlliances;
+using eVote360.Core.Domain.Common.Enums;
 
 namespace eVote360.Core.Application.Alliances.DTOs
 {

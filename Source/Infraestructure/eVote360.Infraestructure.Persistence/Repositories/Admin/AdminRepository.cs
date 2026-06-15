@@ -38,27 +38,29 @@ namespace eVote360.Infraestructure.Persistence.Repositories.Admin
                 .AsNoTracking().Where(e => e.ElectionDate.Value.Year == year.Year)
                 .Select(e => new Core.Domain.Entities.Admin.Admin
                 {
-
                     NameElection = e.Name,
                     DateRealized = e.ElectionDate.Value,
-                    NumberCandidactesParticipating =  0,
-     /*_context.Votes
-                       .AsNoTracking()
-                       .Where(v => v.IdElection  == e.Id &&  e.IdCandidate  != null)
-                        .Distinct()
-                        .Count(),
-                                                          
-                     */
-                    NumberCitizenParticipating = 0,
-                    /*
-                        _context.AuditVotes
-                        .AsNoTracking()
-                        .Where(v => v.IdElection == e.Id && IdCitizen != null)
-                        .Distinct()
-                        .Count(),
-                     */
 
-                    NumberParticipatingMatches = 0, //modificar cuando se traigan los cambios del elector
+                    NumberCandidactesParticipating =   _context.Vote
+                       .AsNoTracking()
+                       .Where(v => v.IdElection == e.Id)
+                       .Select(v => v.IdCandidate)
+                        .Distinct()
+                        .Count(),
+
+                    NumberCitizenParticipating = _context.AuditVote
+                        .AsNoTracking()
+                        .Where(v => v.IdElection == e.Id)
+                        .Select(v => v.IdCitizen)
+                        .Distinct()
+                        .Count(),
+                   
+                    NumberParticipatingMatches =  _context.Vote.
+                     AsNoTracking()
+                    .Where(v => v.IdElection == e.Id)
+                    .Select(v => v.Candidacte!.PoliticalPartyId)
+                    .Distinct()
+                    .Count()
                 }).ToListAsync();
 
             return resum;

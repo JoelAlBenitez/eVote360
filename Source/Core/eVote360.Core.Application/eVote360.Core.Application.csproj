@@ -14,6 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="CandidateAssignment\" />
     <Folder Include="Services\Candidate\CommandHandler\" />
     <Folder Include="Services\Candidate\Query\" />
   </ItemGroup>
