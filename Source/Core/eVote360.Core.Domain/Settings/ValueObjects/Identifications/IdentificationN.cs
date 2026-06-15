@@ -9,10 +9,10 @@ namespace eVote360.Core.Domain.Settings.ValueObjects.Identifications
 
         public IdentificationN(string value)
         {
-            if(string.IsNullOrEmpty(value.Trim())) 
+            if(string.IsNullOrEmpty(value)) 
                 throw new ArgumentNullException("Identificación ingresada no valida.");
 
-            var valueValid = Regex.Replace(value, "/[-.\\s]/g", "").Trim();
+            var valueValid = Regex.Replace(value, "[-.\\s]", "").Trim();
             if (valueValid.Length > 11)
                 throw new ArgumentException("Identificación ingresada con longitud no valida.");
 

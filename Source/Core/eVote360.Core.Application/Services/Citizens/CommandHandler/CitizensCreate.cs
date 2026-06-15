@@ -7,6 +7,7 @@ using eVote360.Core.Domain.Common.Errors;
 using eVote360.Core.Application.DTOs.Citizens;
 using eVote360.Core.Domain.Settings.ValueObjects.Identifications;
 using eVote360.Core.Domain.Settings.ValueObjects.Emails;
+using eVote360.Core.Application.Contracts.Authentication.Command;
 
 namespace eVote360.Core.Application.Services.Citizens.CommandHandler
 {
@@ -15,14 +16,17 @@ namespace eVote360.Core.Application.Services.Citizens.CommandHandler
        
         private readonly ICitizenRepository _citizenRepository;
         private readonly ICitizensValidator _citizensValidator;
+        private readonly ISessionUser _sessionUser;
         private List<Error> _errors = new List<Error>();
 
         public CitizensCreate(ICitizenRepository citizenRepository,
-            ICitizensValidator citizensValidator
+            ICitizensValidator citizensValidator,
+            ISessionUser sessionUser
             
             ) { 
             _citizenRepository = citizenRepository;
             _citizensValidator = citizensValidator;
+            _sessionUser = sessionUser;
         }
 
         public async Task<ValidationResult> CreateAsync(CitizensDto citizen)
@@ -38,7 +42,7 @@ namespace eVote360.Core.Application.Services.Citizens.CommandHandler
                     Email = email,
                     State = citizen.State,   
                     CreateAt = DateTimeOffset.Now,
-                    CreateUserId = 0 //cambiar por el id de la cookie session
+                    CreateUserId = _sessionUser.GetUserId(),
                 };
 
                 var validate = await _citizensValidator.CreateCitizen(citizenEntitie);

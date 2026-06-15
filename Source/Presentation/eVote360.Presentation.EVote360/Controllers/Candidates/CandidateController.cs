@@ -1,13 +1,16 @@
-﻿using eVote360.Core.Application.Contracts.Candidate.Commands;
+﻿using eVote360.Core.Application.Contracts.Authentication.Command;
+using eVote360.Core.Application.Contracts.Candidate.Commands;
 using eVote360.Core.Application.Contracts.Candidate.Query;
 using eVote360.Core.Application.DTOs.Candidates;
 using eVote360.Core.Application.ViewModels.Candidates;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace eVote360.Presentation.EVote360.Controllers.Candidates
 {
+    [Authorize(Roles = "DirigentePolitico")]
     public class CandidateController : Controller
     {
         private readonly ICandidateCreateCommand _candidateCreateCommand;
@@ -15,38 +18,30 @@ namespace eVote360.Presentation.EVote360.Controllers.Candidates
         private readonly ICandidateChangeStateCommand _candidateChangeStateCommand;
         private readonly ICandidateGetByIdQuery _candidateGetByIdQuery;
         private readonly ICandidateGetAllPartyQuery _candidateGetAllPartyQuery;
+        private readonly ISessionUser _sessionUser;
 
-        private int _currentPartyId
-        {
-            get
-            {
-                var partyIdValue =
-                    User.FindFirst("PartyId")?.Value ??
-                    User.FindFirst("partyId")?.Value ??
-                    Request.Cookies["PartyId"] ??
-                    Request.Cookies["partyId"];
-
-                return int.TryParse(partyIdValue, out var partyId) ? partyId : 0;
-            }
-        }
+        private int GetPartyId() => _sessionUser.GetPoliticalParty();
+        private int GetUserId() => _sessionUser.GetUserId();
 
         public CandidateController(
             ICandidateCreateCommand candidateCreateCommand,
             ICandidateUpdateCommand candidateUpdateCommand,
             ICandidateChangeStateCommand candidateChangeStateCommand,
             ICandidateGetByIdQuery candidateGetByIdQuery,
-            ICandidateGetAllPartyQuery candidateGetAllPartyQuery)
+            ICandidateGetAllPartyQuery candidateGetAllPartyQuery,
+            ISessionUser sessionUser)
         {
             _candidateCreateCommand = candidateCreateCommand;
             _candidateUpdateCommand = candidateUpdateCommand;
             _candidateChangeStateCommand = candidateChangeStateCommand;
             _candidateGetByIdQuery = candidateGetByIdQuery;
             _candidateGetAllPartyQuery = candidateGetAllPartyQuery;
+            _sessionUser = sessionUser;
         }
 
         public async Task<IActionResult> Index()
         {
-            var candidates = await _candidateGetAllPartyQuery.GetAllPartyAsync(_currentPartyId);
+            var candidates = await _candidateGetAllPartyQuery.GetAllPartyAsync(GetPartyId());
             var candidateViewModels = new List<CandidateViewModel>();
 
             if (candidates != null)
@@ -73,7 +68,7 @@ namespace eVote360.Presentation.EVote360.Controllers.Candidates
         [HttpGet]
         public async Task<IActionResult> GetCandidate(int Id)
         {
-            var result = await _candidateGetByIdQuery.GetByIdAsync(Id, _currentPartyId);
+            var result = await _candidateGetByIdQuery.GetByIdAsync(Id, GetPartyId());
             
             if (!result.IsValid)
             {
@@ -123,7 +118,7 @@ namespace eVote360.Presentation.EVote360.Controllers.Candidates
                 PhotoUrl = candidateVm.PhotoFile
             };
 
-            var createResult = await _candidateCreateCommand.CreateCandidateAsync(dto, _currentPartyId);
+            var createResult = await _candidateCreateCommand.CreateCandidateAsync(dto, GetPartyId());
 
             if (!createResult.IsValid)
             {
@@ -140,7 +135,7 @@ namespace eVote360.Presentation.EVote360.Controllers.Candidates
 
         public async Task<IActionResult> Edit(int Id)
         {
-            var result = await _candidateGetByIdQuery.GetByIdAsync(Id, _currentPartyId);
+            var result = await _candidateGetByIdQuery.GetByIdAsync(Id, GetPartyId());
             
             if (!result.IsValid)
             {
@@ -179,7 +174,7 @@ namespace eVote360.Presentation.EVote360.Controllers.Candidates
                 PhotoUrl = candidateVm.PhotoFile
             };
 
-            var editResult = await _candidateUpdateCommand.UpdateCandidateAsync(dto, _currentPartyId);
+            var editResult = await _candidateUpdateCommand.UpdateCandidateAsync(dto, GetPartyId());
 
             if (!editResult.IsValid)
             {
@@ -196,7 +191,7 @@ namespace eVote360.Presentation.EVote360.Controllers.Candidates
 
         public async Task<IActionResult> AlterState(int Id)
         {
-            var result = await _candidateGetByIdQuery.GetByIdAsync(Id, _currentPartyId);
+            var result = await _candidateGetByIdQuery.GetByIdAsync(Id, GetPartyId());
             
             if (!result.IsValid)
             {
@@ -225,7 +220,7 @@ namespace eVote360.Presentation.EVote360.Controllers.Candidates
                 return RedirectToAction(nameof(Index));
             }
 
-            var alterResult = await _candidateChangeStateCommand.ChangeStateAsync(candidateVm.Id, _currentPartyId);
+            var alterResult = await _candidateChangeStateCommand.ChangeStateAsync(candidateVm.Id, GetPartyId());
 
             if (!alterResult.IsValid)
             {

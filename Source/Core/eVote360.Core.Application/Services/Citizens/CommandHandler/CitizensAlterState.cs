@@ -12,6 +12,7 @@ namespace eVote360.Core.Application.Services.Citizens.CommandHandler
 
         private readonly ICitizenRepository _citizenRepository;
         private readonly ICitizensValidator _citizensValidator;
+      
         private List<Error> _errors = new List<Error>();
 
         public CitizensAlterState(ICitizenRepository citizenRepository, 

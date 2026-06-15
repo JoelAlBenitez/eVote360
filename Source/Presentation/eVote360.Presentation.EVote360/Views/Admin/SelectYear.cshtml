@@ -1,0 +1,79 @@
+@using eVote360.Core.Application.ViewModels.Admin
+@model AdminSearchDateViewModel
+@{
+    ViewData["Title"] = "Historial Electoral";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/admin-views.css" asp-append-version="true" />
+}
+
+@await Html.PartialAsync("_Notifications")
+
+<div class="page-header">
+    <div class="page-header__left">
+        <div class="page-header__icon page-header__icon--elections">
+            <i class="bi bi-calendar-event-fill" aria-hidden="true"></i>
+        </div>
+        <div>
+            <h1 class="page-header__title">Historial Electoral</h1>
+            <p class="page-header__subtitle">Selecciona un año para consultar el resumen de elecciones</p>
+        </div>
+    </div>
+    <a asp-controller="Admin" asp-action="Index" class="btn-back">
+        <i class="bi bi-arrow-left" aria-hidden="true"></i>
+        <span>Volver al Dashboard</span>
+    </a>
+</div>
+
+@if (Model != null && Model.YearAvaible != null && Model.YearAvaible.Any())
+{
+    <div class="year-selector__meta" role="status">
+        <i class="bi bi-calendar3" aria-hidden="true"></i>
+        <span>Años con procesos electorales registrados</span>
+        <span class="year-selector__count">
+            @Model.YearAvaible.Count año@(Model.YearAvaible.Count != 1 ? "s" : "")
+        </span>
+    </div>
+
+    <div class="year-cards-grid" role="list" aria-label="Seleccionar año electoral">
+        @foreach (var year in Model.YearAvaible.OrderByDescending(y => y))
+        {
+            <a href="@Url.Action("SummayElection", "Admin", new { year = year })"
+               class="year-card"
+               role="listitem"
+               aria-label="Ver resumen electoral del año @year">
+                <div class="year-card__inner">
+                    <i class="bi bi-ballot-fill year-card__icon" aria-hidden="true"></i>
+                    <span class="year-card__year">@year</span>
+                    <span class="year-card__label">Proceso Electoral</span>
+                    <span class="year-card__cta">
+                        Ver resumen <i class="bi bi-arrow-right" aria-hidden="true"></i>
+                    </span>
+                </div>
+                <div class="year-card__bg" aria-hidden="true"></div>
+            </a>
+        }
+    </div>
+}
+else
+{
+    <div class="empty-state" role="status">
+        <div class="empty-state__icon" aria-hidden="true">
+            <i class="bi bi-calendar-x-fill"></i>
+        </div>
+        <h2 class="empty-state__title">Sin procesos electorales</h2>
+        <p class="empty-state__desc">
+            No existen años con procesos electorales registrados en el sistema.
+        </p>
+        <a asp-controller="Admin" asp-action="Index" class="btn-primary-outline">
+            <i class="bi bi-arrow-left" aria-hidden="true"></i>
+            Regresar al Dashboard
+        </a>
+    </div>
+}
+
+@section Scripts {
+    <script src="~/js/admin-views.js" asp-append-version="true"></script>
+}
