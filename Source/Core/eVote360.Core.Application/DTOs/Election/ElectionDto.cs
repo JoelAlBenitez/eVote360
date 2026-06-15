@@ -10,12 +10,12 @@ namespace eVote360.Core.Application.DTOs.Election
 
         public ElectionState ElectionState { get; set; }
 
-        public DateTime CreateAt { get; set; }
+        public DateTimeOffset? CreateAt { get; set; }
 
-        public int CreateUserId { get; set; }
+        public int? CreateUserId { get; set; }
 
-        public DateTime UpdateAt { get; set; }
+        public DateTimeOffset? UpdateAt { get; set; }
 
-        public int UpdateUserId { get; set; }
+        public int? UpdateUserId { get; set; }
     }
 }

@@ -14,8 +14,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="CandidateAssignment\" />
     <Folder Include="Services\Candidate\CommandHandler\" />
     <Folder Include="Services\Candidate\Query\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BCrypt.Net-Next" Version="4.2.0" />
   </ItemGroup>
 
 </Project>

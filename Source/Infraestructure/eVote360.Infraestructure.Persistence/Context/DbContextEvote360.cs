@@ -6,6 +6,12 @@ using eVote360.Core.Domain.Entities.CandidateAssignment;
 using System.Reflection;
 using eVote360.Core.Domain.Entities.Citizens;
 using eVote360.Core.Domain.Entities.User;
+using eVote360.Core.Domain.Entities.PoliticalAssignment;
+using eVote360.Core.Domain.Entities.Election;
+using eVote360.Core.Domain.Entities.PoliticalParty;
+
+
+
 
 namespace eVote360.Infraestructure.Persistence.Context
 {
@@ -19,6 +25,12 @@ namespace eVote360.Infraestructure.Persistence.Context
         public DbSet<PoliticalAlliances> PoliticalAlliances { get; set; }
         public DbSet<CandidateAssignment> CandidateAssignments { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<PoliticalAssignment> PoliticalAssignments { get; set; }
+        public DbSet<Election> Elections { get; set; }
+        public DbSet<PoliticalParty> PoliticalParties { get; set; }
+
+
+      
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
