@@ -27,9 +27,7 @@ namespace eVote360.Infraestructure.Persistence.ServicesValidators.ElectivePoscti
 
 
 
-            return await _context.CandidateAssignments
-         .AsNoTracking()
-         .AnyAsync(ca => ca.ElectivePositionId == Id);
+            return await _context.Candidates.AsNoTracking().AnyAsync(c => c.electivePositions.Id == Id);
 
         }
 
