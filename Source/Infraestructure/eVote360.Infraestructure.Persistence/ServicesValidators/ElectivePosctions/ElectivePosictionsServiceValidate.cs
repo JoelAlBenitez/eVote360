@@ -13,19 +13,41 @@ namespace eVote360.Infraestructure.Persistence.ServicesValidators.ElectivePoscti
             _context = context;
         }
 
-        public async Task<bool> ElectivePositionHasAssociatedByCandidates(int Id, string Name)
+        public async Task<bool> CurrentStateElectivePosiction(int Id)
         {
-            var elective =  await 
-                _context.ElectivePosition
-                .AsNoTracking()
-                .FirstOrDefaultAsync(x => x.Id == Id); //metodo preventivo hasta que se traigan los cambios de candidatos
-
-            return elective != null;
+            var result = await _context.ElectivePosition
+               .AsNoTracking()
+               .FirstOrDefaultAsync(x => x.Id == Id);
+            return result!.State;
         }
 
-        public Task<bool> ElectivePositionUsedInElections(int Id, string Name)
+        public async Task<bool> ElectivePositionHasAssociatedByCandidates(int Id)
         {
-            throw new NotImplementedException(); //metodo en espera de la entidad de elecciones 
+
+
+           
+
+            return await _context.Candidates.AsNoTracking()
+                    .AnyAsync(c => c.electivePositions.Id == Id);
+                
+        }
+
+        public async Task<bool> ElectivePositionUsedInElections(int Id)
+        {
+
+            
+              return  await _context.Vote
+                .AsNoTracking()
+                .AnyAsync(e => e.IdElectivePosiction  == Id);
+             
+           
+        }
+
+        public async Task<bool> ExistById(int Id)
+        {
+            return await _context.ElectivePosition
+                .AsNoTracking()
+                .AnyAsync(x => x.Id == Id);
         }
 
         public async Task<bool> ExistElectivePositionByName(string Name)
@@ -41,17 +63,16 @@ namespace eVote360.Infraestructure.Persistence.ServicesValidators.ElectivePoscti
             var elective = await _context.ElectivePosition
                 .AsNoTracking()
                 .FirstOrDefaultAsync(e => e.Name == Name && e.Id != Id && e.State != State);
-            //mejorar metodo para agregar actividad de elecciones
            return elective != null;
         }
 
         public async Task<bool> ExistsAnotherElectivePositionWithName(int Id, string Name)
         {
-            var elective =  await _context.ElectivePosition
+            return await _context.ElectivePosition
                 .AsNoTracking()
-                .FirstOrDefaultAsync(e => e.Name == Name &&  e.Id != Id);
+                .AnyAsync(e => e.Name == Name &&  e.Id != Id);
 
-            return elective != null;
+           
         }
     }
 }

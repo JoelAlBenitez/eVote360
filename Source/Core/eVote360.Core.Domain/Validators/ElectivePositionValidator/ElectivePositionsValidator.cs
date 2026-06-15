@@ -1,7 +1,8 @@
-﻿    using eVote360.Core.Domain.Common.CodeErrors;
+﻿using eVote360.Core.Domain.Common.CodeErrors;
 using eVote360.Core.Domain.Common.Errors;
 using eVote360.Core.Domain.Common.ValidationResult;
 using eVote360.Core.Domain.Contracts.DomainService.ElectivePosition;
+using eVote360.Core.Domain.Contracts.ServiceValidates.Election;
 using eVote360.Core.Domain.Entities.ElectivePosition;
 using System.Text.RegularExpressions;
 
@@ -10,13 +11,17 @@ namespace eVote360.Core.Domain.Validators.ElectivePositionValidator
     public class ElectivePositionsValidator : IElectivePositionsValidator
     {
         private readonly IElectivePositionValidate _electivePositionDomainService;
-        private List<Error> errrors = new List<Error>();
+        private readonly IElectionDomainService _electionDomainService;
+        private List<Error> _errors = new List<Error>();
         
-        //agregar llamanda de domain service de elecciones 
+       
 
-        public ElectivePositionsValidator(IElectivePositionValidate electivePositionDomainService)
+        public ElectivePositionsValidator(IElectivePositionValidate electivePositionDomainService,
+            IElectionDomainService electionDomainService
+            )
         {
             _electivePositionDomainService = electivePositionDomainService;
+            _electionDomainService = electionDomainService;
         }
       
         private Error ValidateName(string name)
@@ -43,69 +48,96 @@ namespace eVote360.Core.Domain.Validators.ElectivePositionValidator
         public async Task<ValidationResult> ValidateCreateElectivePositions(ElectivePositions electivePositions)
         {
 
-            if (electivePositions == null) errrors.Add(ElectivePosictionsError.DataInvalid);
+            var exitsActiveElection = await _electionDomainService.ExistActiveElection();
+
+            if (exitsActiveElection)
+            {
+                _errors.Add(ElectionError.ElectionActive);
+                return ValidationResult.Failure(_errors);
+            }
+
+            if (electivePositions == null) _errors.Add(ElectivePosictionsError.DataInvalid);
 
             var validate = await _electivePositionDomainService.ExistElectivePositionByName(electivePositions!.Name.Trim());
-            if (validate) errrors.Add(ElectivePosictionsError.ExistElectivePosictions);
+            if (validate) _errors.Add(ElectivePosictionsError.ExistElectivePosictions);
 
             var vName = ValidateName(electivePositions.Name);
-            if (vName != null) errrors.Add(vName);
+            if (vName != null) _errors.Add(vName);
               
             var vDescription = ValidateDescription(electivePositions.Description);
-            if(vDescription != null) errrors.Add(vDescription);
+            if(vDescription != null) _errors.Add(vDescription);
 
-            if (!electivePositions.State) errrors.Add(ElectivePosictionsError.StateNotValid);
+            if (!electivePositions.State) _errors.Add(ElectivePosictionsError.StateNotValid);
 
-            return errrors.Any() ? ValidationResult.Failure(errrors) : ValidationResult.Success();
+            return _errors.Any() ? ValidationResult.Failure(_errors) : ValidationResult.Success();
         }
 
         public async Task<ValidationResult> ValidateUpdateElectivePosition(ElectivePositions electivePositions)
         {
 
-            //aregagr metodo de elecctiones activas llamando de domains service de eleciones
+            var exitsActiveElection = await _electionDomainService.ExistActiveElection();
 
-            if (electivePositions == null) errrors.Add(ElectivePosictionsError.DataInvalid);
+            if (exitsActiveElection)
+            {
+                _errors.Add(ElectionError.ElectionActive);
+                return ValidationResult.Failure(_errors);
+            }
+            if (electivePositions == null) _errors.Add(ElectivePosictionsError.DataInvalid);
 
-            var validate = await _electivePositionDomainService.ElectivePositionUsedInElections(electivePositions!.Id, electivePositions.Name);
-            if (validate) errrors.Add(ElectivePosictionsError.NameCannotChange);
+            var validate = await _electivePositionDomainService.ElectivePositionUsedInElections(electivePositions!.Id);
+            if (validate) _errors.Add(ElectivePosictionsError.NameCannotChange);
 
             var validateName = await _electivePositionDomainService.ExistsAnotherElectivePositionWithName(electivePositions.Id, electivePositions.Name);
-            if (validateName) errrors.Add(ElectivePosictionsError.ExistsAnotherElectivePositionWithName);
+            if (validateName) _errors.Add(ElectivePosictionsError.ExistsAnotherElectivePositionWithName);
 
             var exitsElectiveP = await _electivePositionDomainService.ExistElectivePositionByName(electivePositions.Name.Trim());
-            if (!exitsElectiveP) errrors.Add(ElectivePosictionsError.NonExistentElectivePosition);
+            if (!exitsElectiveP) _errors.Add(ElectivePosictionsError.NonExistentElectivePosition);
 
             var vName = ValidateName(electivePositions.Name);
-            if (vName != null) errrors.Add(vName);
+            if (vName != null) _errors.Add(vName);
 
             var vDescription = ValidateDescription(electivePositions.Description);
-            if (vDescription != null) errrors.Add(vDescription);
+            if (vDescription != null) _errors.Add(vDescription);
 
-            return errrors.Any() ? ValidationResult.Failure(errrors) : ValidationResult.Success();
+            return _errors.Any() ? ValidationResult.Failure(_errors) : ValidationResult.Success();
         }
 
         public async Task<ValidationResult> ValidateActiveElectivePostions(int Id, string name)
         {
+            var exitsActiveElection = await _electionDomainService.ExistActiveElection();
+
+            if (exitsActiveElection)
+            {
+                _errors.Add(ElectionError.ElectionActive);
+                return ValidationResult.Failure(_errors);
+            }
 
             var exitsElectiveP = await _electivePositionDomainService.ExistElectivePositionByName(name.Trim());
-            if (!exitsElectiveP) errrors.Add(ElectivePosictionsError.NonExistentElectivePosition);
+            if (!exitsElectiveP) _errors.Add(ElectivePosictionsError.NonExistentElectivePosition);
 
             var validate = await _electivePositionDomainService.ExistElectivePositionByState(Id, name, true);
-            if (validate) errrors.Add(ElectivePosictionsError.ActivedElectivePosiction);
+            if (validate) _errors.Add(ElectivePosictionsError.ActivedElectivePosiction);
 
-            return errrors.Any() ? ValidationResult.Failure(errrors) : ValidationResult.Success();
+            return _errors.Any() ? ValidationResult.Failure(_errors) : ValidationResult.Success();
         }   
 
         public async Task<ValidationResult> ValidateDesactiveElectivePositions(int Id, string name)
         {
-           
-            var validate = await _electivePositionDomainService.ExistElectivePositionByState(Id, name, false);
-            if (validate) errrors.Add(ElectivePosictionsError.DesactiveElectivePosiction);
 
-            var electivePositionHasCandidates = await _electivePositionDomainService.ElectivePositionHasAssociatedByCandidates(Id, name);
-            if (electivePositionHasCandidates) errrors.Add(ElectivePosictionsError.ElectivePosictionHasAssociatedByCandidates);
+            var exitsActiveElection = await _electionDomainService.ExistActiveElection();
+
+            if (exitsActiveElection)
+            {
+                _errors.Add(ElectionError.ElectionActive);
+                return ValidationResult.Failure(_errors);
+            }
+            var validate = await _electivePositionDomainService.ExistElectivePositionByState(Id, name, false);
+            if (validate) _errors.Add(ElectivePosictionsError.DesactiveElectivePosiction);
+
+            var electivePositionHasCandidates = await _electivePositionDomainService.ElectivePositionHasAssociatedByCandidates(Id);
+            if (electivePositionHasCandidates) _errors.Add(ElectivePosictionsError.ElectivePosictionHasAssociatedByCandidates);
       
-            return errrors.Any() ? ValidationResult.Failure(errrors) : ValidationResult.Success();
+            return _errors.Any() ? ValidationResult.Failure(_errors) : ValidationResult.Success();
         }
     }
 }

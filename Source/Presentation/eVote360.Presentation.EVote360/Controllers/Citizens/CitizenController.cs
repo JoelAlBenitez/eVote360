@@ -2,12 +2,13 @@
 using eVote360.Core.Application.Contracts.Citizens.Command;
 using eVote360.Core.Application.Contracts.Citizens.Query;
 using eVote360.Core.Application.ViewModels.Citizens;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using eVote360.Core.Application.DTOs.Citizens;
+using Microsoft.AspNetCore.Authorization;
 
 
 namespace eVote360.Presentation.EVote360.Controllers.Citizens
 {
+    [Authorize(Roles = "Admin")]
     public class CitizenController : Controller
     {
 
@@ -34,6 +35,7 @@ namespace eVote360.Presentation.EVote360.Controllers.Citizens
             _citizensGetByIdQuery = citizensGetByIdQuery;
         }
 
+        
         public async Task<IActionResult> Index()
         {
             var citizens = await _citizensGetAllQuery.GetAllAsync();
