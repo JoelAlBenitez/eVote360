@@ -4,7 +4,6 @@ using AssignmentEntitie = eVote360.Core.Domain.Entities.PoliticalAssignment.Poli
 using CandidateEntitie = eVote360.Core.Domain.Entities.Candidate.Candidates;
 using CandidateEntity = eVote360.Core.Domain.Entities.Candidate.Candidates;
 using AllianceEntity = eVote360.Core.Domain.Entities.PoliticalAlliances.PoliticalAlliances;
-using AssignmentEntity = eVote360.Core.Domain.Entities.PoliticalAssignment.PoliticalAssignment;
 
 namespace eVote360.Core.Domain.Entities.PoliticalParty
 {
