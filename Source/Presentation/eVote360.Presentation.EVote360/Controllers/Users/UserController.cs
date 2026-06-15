@@ -107,18 +107,18 @@ using Microsoft.AspNetCore.Mvc;
     
          var vm = new UsersViewModelEdit
          {
-                 Id = id,
-            UserFirstName = result.Value?.UserFirstName,
-            UserLastName = result.Value.UserLastName,
-            UserEmail = result.Value.UserEmail,
-            UserRole = result.Value.UserRole,
-            Name = result.Value.Name,
-            State = result.Value.State,
+            Id = id,
+            UserFirstName = result.Value!.UserFirstName,
+            UserLastName = result.Value!.UserLastName,
+            UserEmail = result.Value!.UserEmail,
+            UserRole = result.Value!.UserRole,
+            Name = result.Value!.Name,
+            State = result.Value!.State,
             UserPassword = ""
         }
     ;
     
-        return View("Edit", vm);
+        return View("Save", vm);
      }
 
    [HttpPost]
@@ -149,39 +149,31 @@ using Microsoft.AspNetCore.Mvc;
         if (!result.IsValid)
              {
                  foreach (var error in result.errors) ModelState.AddModelError(error.Code, error.Description);
-                 return View("Edit", vm);
+                 return View("Save", vm);
              }
     
         TempData["Message"] = "Usuario actualizado con éxito";
          return RedirectToAction(nameof(Index));
      }
 
+     [HttpPost]
         public async Task<IActionResult> AlterState(int id)
-          {
-              var result = await _getByIdQuery.ExecuteAsync(id);
-              if (result == null || !result.IsValid) return RedirectToAction(nameof(Index));
-    
-              var vm = new UserViewModelDetele
-              {
-                  Id = id,
-                  Name = result.Value.Name
-             };
-             return View("AlterState", vm);
+        {
+          var result = await _stateCommand.ExecuteAsync(id, false);
+
+         if (!result.IsValid)
+         {
+          foreach (var error in result.errors) ModelState.AddModelError(error.Code, error.Description);
+          TempData["TypeAlert"] = "error";
+          TempData["Message"] = "Error al intentar cambiar el estado.";
+         }
+         else
+         {
+          TempData["TypeAlert"] = "success";
+          TempData["Message"] = "Estado del usuario modificado con éxito.";
          }
 
-   [HttpPost]
-         public async Task<IActionResult> AlterState(UserViewModelDetele vm)
-         {
-              var result = await _stateCommand.ExecuteAsync(vm.Id, false); // o el estado que corresponda
-   
-             if (!result.IsValid)
-                  {
-                      foreach (var error in result.errors) ModelState.AddModelError(error.Code, error.Description);
-                      return View("AlterState", vm);
-                  }
-   
-             TempData["Message"] = "Estado del usuario modificado con éxito";
-              return RedirectToAction(nameof(Index));
-          }
+         return RedirectToAction(nameof(Index));
+ }
         }
      }
