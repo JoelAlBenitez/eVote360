@@ -1,0 +1,166 @@
+@using eVote360.Core.Application.ViewModels.Admin;
+@model AdminViewModel;
+@{
+    ViewData["Title"] = "Dashboard";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/admin-views.css" asp-append-version="true" />
+}
+
+@await Html.PartialAsync("_Notifications")
+
+<div class="admin-hero">
+    <div class="admin-hero__bg">
+        <div class="admin-hero__orb admin-hero__orb--1"></div>
+        <div class="admin-hero__orb admin-hero__orb--2"></div>
+        <div class="admin-hero__orb admin-hero__orb--3"></div>
+    </div>
+
+    <div class="admin-hero__content">
+        <div class="admin-hero__greeting">
+            <span class="admin-hero__salute">Bienvenido de vuelta,</span>
+            <h1 class="admin-hero__name">
+                @Model.UserName
+                <span class="admin-hero__wave" aria-hidden="true">&#128075;</span>
+            </h1>
+        </div>
+        <div class="admin-hero__meta">
+            <span class="admin-hero__badge">
+                <i class="bi bi-shield-check-fill" aria-hidden="true"></i>
+                Administrador del Sistema
+            </span>
+            <span class="admin-hero__date" id="adminHeroDate" aria-live="off"></span>
+        </div>
+    </div>
+
+    <div class="admin-hero__emblem" aria-hidden="true">
+        <div class="admin-hero__emblem-ring"></div>
+        <i class="bi bi-bar-chart-line-fill"></i>
+    </div>
+</div>
+
+
+<div class="admin-stats-grid" aria-label="Resumen del sistema">
+
+    <div class="stat-card stat-card--citizens">
+        <div class="stat-card__icon-wrap">
+            <i class="bi bi-people-fill" aria-hidden="true"></i>
+        </div>
+        <div class="stat-card__body">
+            <span class="stat-card__value"
+                  data-count="@Model.NumberOfRegisteredCitizens"
+                  aria-label="@Model.NumberOfRegisteredCitizens ciudadanos registrados">0</span>
+            <span class="stat-card__label">Ciudadanos Registrados</span>
+        </div>
+        <div class="stat-card__footer">
+            <a asp-controller="Citizen" asp-action="Index" class="stat-card__link">
+                Ver todos <i class="bi bi-arrow-right" aria-hidden="true"></i>
+            </a>
+        </div>
+        <div class="stat-card__glow" aria-hidden="true"></div>
+    </div>
+
+    <div class="stat-card stat-card--elections">
+        <div class="stat-card__icon-wrap">
+            <i class="bi bi-calendar2-event-fill" aria-hidden="true"></i>
+        </div>
+        <div class="stat-card__body">
+            <span class="stat-card__value"
+                  data-count="@Model.NumberOfElections"
+                  aria-label="@Model.NumberOfElections elecciones">0</span>
+            <span class="stat-card__label">Elecciones Realizadas</span>
+        </div>
+        <div class="stat-card__footer">
+            <a asp-controller="Admin" asp-action="SelectYear" class="stat-card__link">
+                Ver historial <i class="bi bi-arrow-right" aria-hidden="true"></i>
+            </a>
+        </div>
+        <div class="stat-card__glow" aria-hidden="true"></div>
+    </div>
+
+    <div class="stat-card stat-card--parties">
+        <div class="stat-card__icon-wrap">
+            <i class="bi bi-flag-fill" aria-hidden="true"></i>
+        </div>
+        <div class="stat-card__body">
+            <span class="stat-card__value"
+                  data-count="@Model.NumberOfMatches"
+                  aria-label="@Model.NumberOfMatches partidos políticos">0</span>
+            <span class="stat-card__label">Partidos Políticos</span>
+        </div>
+        <div class="stat-card__footer">
+            <span class="stat-card__link" style="color: var(--stat-p); pointer-events:none; gap:0;">
+                Activos en el sistema
+            </span>
+        </div>
+        <div class="stat-card__glow" aria-hidden="true"></div>
+    </div>
+
+    <div class="stat-card stat-card--candidates">
+        <div class="stat-card__icon-wrap">
+            <i class="bi bi-person-badge-fill" aria-hidden="true"></i>
+        </div>
+        <div class="stat-card__body">
+            <span class="stat-card__value"
+                  data-count="@Model.NumberOfCandidates"
+                  aria-label="@Model.NumberOfCandidates candidatos">0</span>
+            <span class="stat-card__label">Candidatos Activos</span>
+        </div>
+        <div class="stat-card__footer">
+            <span class="stat-card__link" style="color: var(--stat-cd); pointer-events:none; gap:0;">
+                En el padrón electoral
+            </span>
+        </div>
+        <div class="stat-card__glow" aria-hidden="true"></div>
+    </div>
+
+</div>
+
+<div class="admin-quick-access">
+    <h2 class="section-title">
+        <i class="bi bi-lightning-fill" aria-hidden="true"></i>
+        Acceso Rápido
+    </h2>
+    <div class="quick-cards-grid">
+
+        <a asp-controller="Admin" asp-action="SelectYear" class="quick-card quick-card--elections">
+            <div class="quick-card__icon">
+                <i class="bi bi-calendar-week-fill" aria-hidden="true"></i>
+            </div>
+            <div class="quick-card__body">
+                <span class="quick-card__title">Historial Electoral</span>
+                <span class="quick-card__desc">Consulta elecciones por año</span>
+            </div>
+            <i class="bi bi-arrow-right-circle quick-card__arrow" aria-hidden="true"></i>
+        </a>
+
+        <a asp-controller="Citizen" asp-action="Index" class="quick-card quick-card--citizens">
+            <div class="quick-card__icon">
+                <i class="bi bi-people-fill" aria-hidden="true"></i>
+            </div>
+            <div class="quick-card__body">
+                <span class="quick-card__title">Gestión de Ciudadanos</span>
+                <span class="quick-card__desc">Administra el padrón electoral</span>
+            </div>
+            <i class="bi bi-arrow-right-circle quick-card__arrow" aria-hidden="true"></i>
+        </a>
+
+        <a asp-controller="ElectivePosictions" asp-action="Index" class="quick-card quick-card--positions">
+            <div class="quick-card__icon">
+                <i class="bi bi-award-fill" aria-hidden="true"></i>
+            </div>
+            <div class="quick-card__body">
+                <span class="quick-card__title">Puestos Electivos</span>
+                <span class="quick-card__desc">Cargos disponibles para elección</span>
+            </div>
+            <i class="bi bi-arrow-right-circle quick-card__arrow" aria-hidden="true"></i>
+        </a>
+
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/admin-views.js" asp-append-version="true"></script>
+}
