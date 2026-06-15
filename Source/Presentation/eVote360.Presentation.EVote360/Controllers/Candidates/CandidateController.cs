@@ -3,12 +3,14 @@ using eVote360.Core.Application.Contracts.Candidate.Commands;
 using eVote360.Core.Application.Contracts.Candidate.Query;
 using eVote360.Core.Application.DTOs.Candidates;
 using eVote360.Core.Application.ViewModels.Candidates;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace eVote360.Presentation.EVote360.Controllers.Candidates
 {
+    [Authorize(Roles = "DirigentePolitico")]
     public class CandidateController : Controller
     {
         private readonly ICandidateCreateCommand _candidateCreateCommand;

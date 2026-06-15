@@ -1,0 +1,26 @@
+@using eVote360.Core.Application.ViewModels.ElectivePositions
+@model ElectivePosictionsViewModel
+
+<div class="ep-detail">
+    <div class="ep-detail__row">
+        <span class="ep-detail__label">Identificador</span>
+        <span class="ep-detail__id">
+            <i class="bi bi-hash" aria-hidden="true"></i>@Model.Id
+        </span>
+    </div>
+    <div class="ep-detail__row">
+        <span class="ep-detail__label">Nombre</span>
+        <span class="ep-detail__value">@Model.Name</span>
+    </div>
+    <div class="ep-detail__row">
+        <span class="ep-detail__label">Descripción</span>
+        <span class="ep-detail__value">@Model.Description</span>
+    </div>
+    <div class="ep-detail__row">
+        <span class="ep-detail__label">Estado</span>
+        <span class="data-badge @(Model.State ? "data-badge--active" : "data-badge--inactive")">
+            <i class="bi @(Model.State ? "bi-check-circle-fill" : "bi-x-circle-fill")" aria-hidden="true"></i>
+            @(Model.State ? "Activo" : "Inactivo")
+        </span>
+    </div>
+</div>

@@ -27,10 +27,9 @@ namespace eVote360.Infraestructure.Persistence.Configurations.CandidateAssignmen
             // Regla: Un candidato no puede estar en más de un puesto dentro del mismo partido
             builder.HasIndex(x => new { x.AssigningPartyId, x.CandidateId }).IsUnique();
 
-            // Relaciones (Comentadas al estilo Joel)
-            /*
+            // Relaciones
             builder.HasOne(x => x.Candidate)
-                .WithMany()
+                .WithMany(c => c.AsignacionesPuestos)
                 .HasForeignKey(x => x.CandidateId)
                 .OnDelete(DeleteBehavior.Restrict);
 
@@ -38,7 +37,11 @@ namespace eVote360.Infraestructure.Persistence.Configurations.CandidateAssignmen
                 .WithMany()
                 .HasForeignKey(x => x.ElectivePositionId)
                 .OnDelete(DeleteBehavior.Restrict);
-            */
+
+            builder.HasOne(x => x.AssigningParty)
+                .WithMany()
+                .HasForeignKey(x => x.AssigningPartyId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }
