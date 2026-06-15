@@ -1,4 +1,6 @@
 using System;
+using eVote360.Core.Domain.Entities.Candidate;
+using eVote360.Core.Domain.Entities.ElectivePosition;
 
 namespace eVote360.Core.Domain.Entities.CandidateAssignment
 {
@@ -11,9 +13,11 @@ namespace eVote360.Core.Domain.Entities.CandidateAssignment
         public DateTimeOffset CreateAt { get; set; }
         public int CreateUserId { get; set; }
 
-        // Propiedades de navegación - descomentar cuando todos los módulos estén en development
-        // public Candidates Candidate { get; set; }
-        // public ElectivePositions ElectivePosition { get; set; }
-        // public PoliticalParty AssigningParty { get; set; }
+     
+      
+
+        // Propiedades de navegación
+        public Candidates Candidate { get; set; }
+        public ElectivePositions ElectivePosition { get; set; }
     }
 }
