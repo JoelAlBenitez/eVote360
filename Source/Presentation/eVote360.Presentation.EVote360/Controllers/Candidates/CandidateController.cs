@@ -130,6 +130,7 @@ namespace eVote360.Presentation.EVote360.Controllers.Candidates
             }
 
             TempData["Message"] = "Candidato creado exitosamente";
+            TempData["TypeAlert"] = "success";
             return RedirectToAction(nameof(Index));
         }
 
