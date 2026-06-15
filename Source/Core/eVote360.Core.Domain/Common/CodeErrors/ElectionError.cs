@@ -19,5 +19,8 @@ namespace eVote360.Core.Domain.Common.CodeErrors
          public static Error ElectionCreationNotValid
            => new Error("Creacion de elecciones no valida", "La eleccion debe tener minimo 2 partidos politicos para poder comenzar.");
 
+        public static Error ElectionActive
+            => new Error("Elecciones ya iniciadas", "Hay un proceso electivo iniciado por lo que ninguna de estas operaciones se encuentra disponible de momento.");
+
     }
 }
