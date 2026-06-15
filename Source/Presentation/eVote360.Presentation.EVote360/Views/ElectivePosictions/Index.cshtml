@@ -1,0 +1,231 @@
+@using eVote360.Core.Application.ViewModels.ElectivePositions
+@model List<ElectivePosictionsViewModel>
+@{
+    ViewData["Title"] = "Puestos Electivos";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    var hasData = Model != null && Model.Any();
+    var count   = Model?.Count ?? 0;
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/admin-views.css" asp-append-version="true" />
+}
+
+@await Html.PartialAsync("_Notifications")
+
+<div class="page-header">
+    <div class="page-header__left">
+        <div class="page-header__icon page-header__icon--positions">
+            <i class="bi bi-award-fill" aria-hidden="true"></i>
+        </div>
+        <div>
+            <h1 class="page-header__title">Puestos Electivos</h1>
+            <p class="page-header__subtitle">
+                @count puesto@(count != 1 ? "s" : "") registrado@(count != 1 ? "s" : "")
+            </p>
+        </div>
+    </div>
+    <a asp-action="Create" class="btn-add">
+        <i class="bi bi-plus-lg" aria-hidden="true"></i>
+        <span>Nuevo Puesto</span>
+    </a>
+</div>
+
+<div class="filters-bar">
+    <form asp-controller="ElectivePosictions" asp-action="GetElectiveByDate" method="get" class="filters-bar__form">
+        <div class="filters-bar__field">
+            <label class="filters-bar__label" for="filterFrom">Desde</label>
+            <input type="date" id="filterFrom" name="From" class="filters-bar__input" />
+        </div>
+        <div class="filters-bar__field">
+            <label class="filters-bar__label" for="filterTo">Hasta</label>
+            <input type="date" id="filterTo" name="To" class="filters-bar__input" />
+        </div>
+        <button type="submit" class="btn-filter">
+            <i class="bi bi-search" aria-hidden="true"></i>
+            Filtrar
+        </button>
+    </form>
+    <div class="filters-bar__quick">
+        <a asp-action="GetElectivePosictionByActive" class="btn-filter-outline btn-filter-outline--active">
+            <i class="bi bi-check-circle-fill" aria-hidden="true"></i>
+            Solo Activos
+        </a>
+        <a asp-action="Index" class="btn-filter-outline">
+            <i class="bi bi-list-ul" aria-hidden="true"></i>
+            Todos
+        </a>
+    </div>
+</div>
+
+@if (hasData)
+{
+    <div class="data-table-wrap d-none d-md-block">
+        <table class="data-table" aria-label="Lista de puestos electivos">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">
+                        <i class="bi bi-award" aria-hidden="true"></i>Nombre
+                    </th>
+                    <th scope="col">
+                        <i class="bi bi-card-text" aria-hidden="true"></i>Descripción
+                    </th>
+                    <th scope="col">
+                        <i class="bi bi-toggle-on" aria-hidden="true"></i>Estado
+                    </th>
+                    <th scope="col">
+                        <i class="bi bi-gear-fill" aria-hidden="true"></i>Acciones
+                    </th>
+                </tr>
+            </thead>
+            <tbody id="positionsTableBody">
+                @foreach (var item in Model!)
+                {
+                    <tr>
+                        <td>@item.Id</td>
+                        <td class="data-table__name">@item.Name</td>
+                        <td>@item.Description</td>
+                        <td>
+                            <span class="data-badge @(item.State ? "data-badge--active" : "data-badge--inactive")">
+                                <i class="bi @(item.State ? "bi-check-circle-fill" : "bi-x-circle-fill")" aria-hidden="true"></i>
+                                @(item.State ? "Activo" : "Inactivo")
+                            </span>
+                        </td>
+                        <td>
+                            <div class="table-actions">
+                                <button type="button"
+                                        class="btn-table-action btn-table-action--view"
+                                        onclick="showEPDetail(@item.Id)"
+                                        title="Ver detalles"
+                                        aria-label="Ver detalles de @item.Name">
+                                    <i class="bi bi-eye-fill" aria-hidden="true"></i>
+                                </button>
+                                <a asp-action="Edit"
+                                   asp-route-Id="@item.Id"
+                                   class="btn-table-action btn-table-action--edit"
+                                   title="Editar"
+                                   aria-label="Editar @item.Name">
+                                    <i class="bi bi-pencil-fill" aria-hidden="true"></i>
+                                </a>
+                                <a asp-action="AlterState"
+                                   asp-route-Id="@item.Id"
+                                   class="btn-table-action @(item.State ? "btn-table-action--deactivate" : "btn-table-action--activate")"
+                                   title="@(item.State ? "Desactivar" : "Activar")"
+                                   aria-label="@(item.State ? "Desactivar" : "Activar") @item.Name">
+                                    <i class="bi @(item.State ? "bi-toggle-on" : "bi-toggle-off")" aria-hidden="true"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <div class="pagination-wrap" id="paginationWrap" aria-label="Paginación"></div>
+    </div>
+
+    <div class="ep-cards d-md-none" id="epCards" aria-label="Puestos electivos">
+        @foreach (var item in Model!)
+        {
+            <article class="ep-card">
+                <div class="ep-card__header">
+                    <span class="ep-card__name">@item.Name</span>
+                    <span class="data-badge @(item.State ? "data-badge--active" : "data-badge--inactive")">
+                        @(item.State ? "Activo" : "Inactivo")
+                    </span>
+                </div>
+                <p class="ep-card__desc">@item.Description</p>
+                <div class="ep-card__footer">
+                    <button type="button"
+                            class="btn-table-action btn-table-action--view"
+                            onclick="showEPDetail(@item.Id)"
+                            title="Ver detalles"
+                            aria-label="Ver detalles de @item.Name">
+                        <i class="bi bi-eye-fill" aria-hidden="true"></i>
+                    </button>
+                    <a asp-action="Edit"
+                       asp-route-Id="@item.Id"
+                       class="btn-table-action btn-table-action--edit"
+                       title="Editar"
+                       aria-label="Editar @item.Name">
+                        <i class="bi bi-pencil-fill" aria-hidden="true"></i>
+                    </a>
+                    <a asp-action="AlterState"
+                       asp-route-Id="@item.Id"
+                       class="btn-table-action @(item.State ? "btn-table-action--deactivate" : "btn-table-action--activate")"
+                       title="@(item.State ? "Desactivar" : "Activar")"
+                       aria-label="@(item.State ? "Desactivar" : "Activar") @item.Name">
+                        <i class="bi @(item.State ? "bi-toggle-on" : "bi-toggle-off")" aria-hidden="true"></i>
+                    </a>
+                </div>
+            </article>
+        }
+        <div class="pagination-wrap" id="paginationWrapMobile" aria-label="Paginación móvil"></div>
+    </div>
+}
+else
+{
+    <div class="empty-state" role="status">
+        <div class="empty-state__icon" aria-hidden="true">
+            <i class="bi bi-award"></i>
+        </div>
+        <h2 class="empty-state__title">Sin puestos electivos registrados</h2>
+        <p class="empty-state__desc">
+            Aún no se han registrado puestos electivos en el sistema.
+        </p>
+        <a asp-action="Create" class="btn-primary-outline">
+            <i class="bi bi-plus-lg" aria-hidden="true"></i>
+            Agregar Puesto Electivo
+        </a>
+    </div>
+}
+
+<div class="modal fade" id="epDetailModal" tabindex="-1" aria-labelledby="epDetailModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content ep-modal">
+            <div class="ep-modal__header">
+                <div class="ep-modal__title-wrap">
+                    <div class="ep-modal__icon">
+                        <i class="bi bi-award-fill" aria-hidden="true"></i>
+                    </div>
+                    <h5 class="ep-modal__title" id="epDetailModalLabel">Detalle de Puesto Electivo</h5>
+                </div>
+                <button type="button"
+                        class="ep-modal__close"
+                        data-bs-dismiss="modal"
+                        aria-label="Cerrar">
+                    <i class="bi bi-x-lg" aria-hidden="true"></i>
+                </button>
+            </div>
+            <div class="ep-modal__body" id="epDetailBody">
+                <div class="ep-modal__loading">
+                    <div class="spinner-border spinner-border-sm text-primary" role="status" aria-hidden="true"></div>
+                    <span>Cargando...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/admin-views.js" asp-append-version="true"></script>
+    <script>
+        function showEPDetail(id) {
+            var modal = new bootstrap.Modal(document.getElementById('epDetailModal'));
+            var body  = document.getElementById('epDetailBody');
+            body.innerHTML = '<div class="ep-modal__loading"><div class="spinner-border spinner-border-sm text-primary" role="status" aria-hidden="true"></div><span>Cargando...</span></div>';
+            modal.show();
+            fetch('/ElectivePosictions/GetElectivePosiction?Id=' + id)
+                .then(function (r) { return r.text(); })
+                .then(function (html) { body.innerHTML = html; })
+                .catch(function () {
+                    body.innerHTML = '<p class="ep-modal__error">No fue posible cargar los datos del registro.</p>';
+                });
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            window.initTablePagination('positionsTableBody', 'paginationWrap', 10);
+            window.initCardPagination('epCards', 'paginationWrapMobile', 5, '.ep-card');
+        });
+    </script>
+}

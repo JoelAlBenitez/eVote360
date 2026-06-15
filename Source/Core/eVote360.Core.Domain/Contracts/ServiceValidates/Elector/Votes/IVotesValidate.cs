@@ -3,6 +3,7 @@
     public interface IVotesValidate
     {
         Task<bool> ExistVoteByCitizen(Guid IdCitizen, int IdElection);
-        
+        Task<bool> ElectivePositionUsedInElections(int Id);
+
     }
 }

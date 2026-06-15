@@ -9,6 +9,6 @@ namespace eVote360.Core.Domain.Entities.Candidate
         public int PoliticalPartyId { get; set; }
         public bool HasParticipatedInElection { get; set; }
 
-        public ElectivePosition.ElectivePositions electivePositions { get; set; }
+      
     }
 }
