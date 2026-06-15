@@ -21,28 +21,6 @@ namespace eVote360.Infraestructure.Persistence.ServicesValidators.ElectivePoscti
             return result!.State;
         }
 
-        public async Task<bool> ElectivePositionHasAssociatedByCandidates(int Id)
-        {
-
-
-
-
-            return await _context.CandidateAssignments
-         .AsNoTracking()
-         .AnyAsync(ca => ca.ElectivePositionId == Id);
-
-        }
-
-        public async Task<bool> ElectivePositionUsedInElections(int Id)
-        {
-
-            
-              return  await _context.Vote
-                .AsNoTracking()
-                .AnyAsync(e => e.IdElectivePosiction  == Id);
-             
-           
-        }
 
         public async Task<bool> ExistById(int Id)
         {
@@ -55,7 +33,7 @@ namespace eVote360.Infraestructure.Persistence.ServicesValidators.ElectivePoscti
         {
             var elective = await _context.ElectivePosition
                 .AsNoTracking()
-                .FirstOrDefaultAsync (x => x.Name == Name);
+                .FirstOrDefaultAsync(x => x.Name == Name);
             return elective != null;
         }
 
@@ -64,16 +42,16 @@ namespace eVote360.Infraestructure.Persistence.ServicesValidators.ElectivePoscti
             var elective = await _context.ElectivePosition
                 .AsNoTracking()
                 .FirstOrDefaultAsync(e => e.Name == Name && e.Id != Id && e.State != State);
-           return elective != null;
+            return elective != null;
         }
 
         public async Task<bool> ExistsAnotherElectivePositionWithName(int Id, string Name)
         {
             return await _context.ElectivePosition
                 .AsNoTracking()
-                .AnyAsync(e => e.Name == Name &&  e.Id != Id);
+                .AnyAsync(e => e.Name == Name && e.Id != Id);
 
-           
+
         }
     }
 }

@@ -25,11 +25,22 @@ namespace eVote360.Core.Domain.Validators.ElectorValidator.IdentificationProcess
             _electionDomainService = electionDomainService;
         }
 
-        public Task<ValidationResult> ValidateComparadIdentificationByImg(string IdentificationImg,
+        public async Task<ValidationResult> ValidateComparadIdentificationByImg(string IdentificationImg,
             string IdentificationEntered)
         {
 
-            throw new NotImplementedException();
+            var errors = new List<Error>();
+            if(IdentificationImg == null && IdentificationEntered == null)
+            {
+                errors.Add(new Error("Identificación no valida", "La indentificación ingresada y procesada no es valida, favor intentelo de nuevo"));
+                return ValidationResult.Failure(errors);
+            }
+
+            var citizenExist = await _citizensServiceValidate.ExistCitizensByIdentification(IdentificationImg!);
+            if (!citizenExist) errors.Add(CitizenErrors.NoExtisCitizen);
+            if (IdentificationImg != IdentificationEntered) errors.Add(new Error("La identificación de la imagen no es valida", "La identificación de la imagen no coincide con la ingresada anteriormente."));
+        
+            return  errors.Any() ? ValidationResult.Failure(errors) : ValidationResult.Success();
         }
 
         public async Task<ValidationResult> ValidateEnteredIdentification(string Identification)
@@ -42,11 +53,15 @@ namespace eVote360.Core.Domain.Validators.ElectorValidator.IdentificationProcess
                 return ValidationResult.Failure(errors);
             }
 
-            //var citizenState = await _citizensServiceValidate.CurrentStateCitizen();
-            //if (!citizenState) _errors.Add(CitizenErrors.CitizentNoActiveOfVote);
-            
+            var citizenExits = await _citizensServiceValidate.ExistCitizensByIdentification(Identification);
+            if (!citizenExits) _errors.Add(CitizenErrors.NoExtisCitizen);
+            var citizenState = await _citizensServiceValidate.CurrentStateOfTheCitizen(null,Identification);
+            if (!citizenState) _errors.Add(CitizenErrors.CitizentNoActiveOfVote);
 
-            return ValidationResult.Success();
+            var citizenParticiped = await _votesValidate.ExistVoteByCitizen(Identification);
+            if (!citizenParticiped) _errors.Add(VotesError.ExistVotes);
+            
+            return errors.Any() ? ValidationResult.Failure() : ValidationResult.Success();
         }
     }
 }

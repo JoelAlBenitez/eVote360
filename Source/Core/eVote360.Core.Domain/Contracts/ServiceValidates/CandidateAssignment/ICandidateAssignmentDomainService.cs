@@ -9,6 +9,7 @@ namespace eVote360.Core.Domain.Contracts.ServiceValidates.CandidateAssignment
         Task<bool> CandidateIsActive(int candidateId);
         Task<bool> ElectivePositionIsActive(int electivePositionId);
         Task<bool> CandidateBelongsToParty(int candidateId, int partyId);
+        Task<bool> ElectivePositionHasAssociatedByCandidates(int Id);
         Task<bool> ExistsActiveAllianceBetweenParties(int partyId1, int partyId2);
         Task<bool> CandidateHasAssignmentInOriginParty(int candidateId, int originPartyId);
         Task<int?> GetCandidatePositionInOriginParty(int candidateId, int originPartyId);

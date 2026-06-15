@@ -14,14 +14,6 @@ namespace eVote360.Infraestructure.Persistence.ServicesValidators.Citizens
             _context = context;
         }
 
-        public async Task<bool> CitizenParticipatedInElection(Guid Id, string Identification)
-        {
-
-             return await _context.AuditVote
-            .AsNoTracking()
-            .AnyAsync(c => c.IdCitizen == Id && c.Citizens!.IdentificationNumber.Value == Identification); 
-             
-        }
 
         public async Task<bool> CitizentHasAssociatedEmail(Guid Id)
         {
@@ -41,8 +33,16 @@ namespace eVote360.Infraestructure.Persistence.ServicesValidators.Citizens
             return result.State;
         }
 
-        public async Task<bool> CurrentStateOfTheCitizen(Guid Id)
+        public async Task<bool> CurrentStateOfTheCitizen(Guid Id, string? Identification = null)
         {
+            if(Identification != null)
+            {
+                var state = await _context.Citzens
+               .AsNoTracking()
+               .FirstOrDefaultAsync(c => c.IdentificationNumber.Value == Identification);
+                return state!.State;
+            }
+
             var citizen = await _context.Citzens
                 .AsNoTracking()
                 .FirstOrDefaultAsync(c => c.Id == Id);
