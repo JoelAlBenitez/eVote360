@@ -6,6 +6,5 @@ namespace eVote360.Core.Domain.Contracts.Repositories.Elector.Otp
     {
         Task<bool> CreateAsync(CodeVerification codeVerification);
         Task<CodeVerification> GetByIdAndIdCitizens(Guid IdCitizens, int IdElection);
-        Task<bool> UpdateAsync(CodeVerification codeVerification);
     }
 }
