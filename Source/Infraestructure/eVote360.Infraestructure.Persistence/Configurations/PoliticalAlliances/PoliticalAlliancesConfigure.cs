@@ -34,8 +34,8 @@ namespace eVote360.Infraestructure.Persistence.Configurations.PoliticalAlliances
 
             builder.Property(x => x.CreateUserId).IsRequired();
 
-            // Relaciones comentadas hasta que la entidad de partidos esté disponible
-            /*
+            // Relaciones activadas
+            
             builder.HasOne(x => x.RequestingParty)
                 .WithMany()
                 .HasForeignKey(x => x.RequestingPartyId)
@@ -45,7 +45,7 @@ namespace eVote360.Infraestructure.Persistence.Configurations.PoliticalAlliances
                 .WithMany()
                 .HasForeignKey(x => x.ReceivingPartyId)
                 .OnDelete(DeleteBehavior.Restrict);
-            */
+            
 
             // Relación con el usuario que creó el registro (comentada al estilo Joel)
             //builder.HasOne(u => u.Users).
