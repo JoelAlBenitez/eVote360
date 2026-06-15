@@ -33,7 +33,7 @@ namespace eVote360.Infraestructure.Persistence.ServicesValidators.Citizens
             return result.State;
         }
 
-        public async Task<bool> CurrentStateOfTheCitizen(Guid Id, string? Identification = null)
+        public async Task<bool> CurrentStateOfTheCitizen(Guid? Id, string? Identification = null)
         {
             if(Identification != null)
             {
