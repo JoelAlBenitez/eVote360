@@ -31,7 +31,7 @@ namespace eVote360.Core.Application.Services.PoliticalParty.CommandHandler
             {
                 if (dto.Id == null || dto.Id <= 0)
                 {
-                    errors.Add(new Error("", ""));
+                    errors.Add(new Error("PARTY ID INVALID", "El Id del partido no es valido para edicion"));
                     return ValidationResult.Failure(errors);
                 }
 

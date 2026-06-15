@@ -42,12 +42,14 @@ namespace eVote360.Infraestructure.Persistence.Configurations.PoliticalParty
             
              builder.HasMany(x => x.RequestedAlliances)
                .WithOne() 
-               .HasForeignKey(x => x.RequestingPartyId);
+               .HasForeignKey(x => x.RequestingPartyId)
+               .OnDelete(DeleteBehavior.Restrict);
             
                
                 builder.HasMany(x => x.ReceiveAlliances)
                 .WithOne()
-                .HasForeignKey(x => x.ReceivingPartyId);
+                .HasForeignKey(x => x.ReceivingPartyId)
+                .OnDelete(DeleteBehavior.Restrict);
 
 
         }
