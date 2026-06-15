@@ -1,0 +1,83 @@
+@using eVote360.Core.Application.ViewModels.PoliticalLeaderAssignment
+@model LeaderAssignmentCreateViewModel
+@{
+    ViewData["Title"] = "Nueva Asignación de Dirigente";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/admin-views.css" asp-append-version="true" />
+}
+
+@await Html.PartialAsync("_Notifications")
+
+<div class="page-header">
+    <div class="page-header__left">
+        <div class="page-header__icon" style="background-color: #e3f2fd; color: #1976d2; padding: 12px; border-radius: 12px;">
+            <i class="bi bi-person-plus-fill" style="font-size: 1.5rem;" aria-hidden="true"></i>
+        </div>
+        <div>
+            <h1 class="page-header__title">Asignar Dirigente Político</h1>
+            <p class="page-header__subtitle">Vincula un usuario con rol "Dirigente Político" a un partido activo</p>
+        </div>
+    </div>
+    <a asp-action="Index" class="btn-back">
+        <i class="bi bi-arrow-left" aria-hidden="true"></i>
+        <span>Volver al listado</span>
+    </a>
+</div>
+
+<div class="form-card">
+    <form asp-action="Create" method="post" novalidate>
+        @Html.AntiForgeryToken()
+        
+        @* La validación de Elección Activa se maneja en el controlador/handler, pero aquí mostramos la UI del formulario *@
+
+        <div class="form-field">
+            <label class="form-label" asp-for="PoliticalLeaderId">Dirigente Político</label>
+            @* En el controlador, ViewBag.Leaders debe contener un SelectList con usuarios que cumplen la regla: 
+               Rol Dirigente, Activos y Sin Partido *@
+            <select asp-for="PoliticalLeaderId" class="form-input" asp-items="ViewBag.Leaders">
+                <option value="">-- Seleccione un Dirigente --</option>
+            </select>
+            <span class="form-hint">Solo se muestran usuarios activos con rol Dirigente Político sin partido asignado.</span>
+            <span asp-validation-for="PoliticalLeaderId" class="form-error"></span>
+        </div>
+
+        <div class="form-field">
+            <label class="form-label" asp-for="PoliticalPartyId">Partido Político</label>
+            @* En el controlador, ViewBag.Parties debe contener un SelectList con partidos que cumplen la regla: 
+               Activos y Sin Dirigente *@
+            <select asp-for="PoliticalPartyId" class="form-input" asp-items="ViewBag.Parties">
+                <option value="">-- Seleccione un Partido --</option>
+            </select>
+            <span class="form-hint">Solo se muestran partidos activos que no tienen dirigente asignado.</span>
+            <span asp-validation-for="PoliticalPartyId" class="form-error"></span>
+        </div>
+
+        <div class="form-field">
+            <label class="form-label" asp-for="PoliticalAssignmentDate">Fecha de Asignación</label>
+            <input asp-for="PoliticalAssignmentDate" 
+                   type="date" 
+                   class="form-input" 
+                   value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+            <span class="form-hint">Fecha en la que se oficializa la asignación.</span>
+            <span asp-validation-for="PoliticalAssignmentDate" class="form-error"></span>
+        </div>
+
+        <div class="form-footer">
+            <a asp-action="Index" class="btn-cancel">
+                <i class="bi bi-x-lg" aria-hidden="true"></i>
+                Cancelar
+            </a>
+            <button type="submit" class="btn-submit">
+                <i class="bi bi-floppy-fill" aria-hidden="true"></i>
+                <span>Confirmar Asignación</span>
+            </button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
