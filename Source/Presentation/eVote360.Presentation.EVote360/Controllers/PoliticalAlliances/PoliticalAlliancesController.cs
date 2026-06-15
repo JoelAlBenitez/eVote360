@@ -293,6 +293,7 @@ namespace eVote360.Presentation.EVote360.Controllers.PoliticalAlliances
             }
 
             TempData["Message"] = "Alianza eliminada exitosamente";
+            TempData["TypeAlert"] = "success";
             return RedirectToAction(nameof(Index));
         }
     }
