@@ -18,11 +18,16 @@ using eVote360.Infraestructure.Persistence.Services;
 using eVote360.Infraestructure.Persistence.ServicesValidators;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection; 
+using Microsoft.Extensions.DependencyInjection;
 using eVote360.Infraestructure.Persistence.ServicesValidators.Candidatess;
 using eVote360.Core.Domain.Contracts.ServiceValidates.Candidate;
 using eVote360.Core.Domain.Contracts.Repositories.AuthenticationAndAutorization;
 using eVote360.Infraestructure.Persistence.Repositories.Authentication;
+using eVote360.Core.Domain.Contracts.Repositories.AdminManager;
+using eVote360.Infraestructure.Persistence.Repositories.Admin;
+using eVote360.Core.Domain.Contracts.ServiceValidates.Admin;
+using eVote360.Infraestructure.Persistence.ServicesValidators.Admin;
+
 using eVote360.Core.Domain.Validators.UserValidator;
 using eVote360.Core.Domain.Contracts.ServiceValidates.User;
 using eVote360.Infraestructure.Persistence.ServicesValidators.User;
@@ -92,6 +97,11 @@ namespace eVote360.IOC.Dependencies
             //Authentication
 
             services.AddScoped<IAuthenticationRepository, AuthenticationRepository>();
+
+            //admin
+
+            services.AddScoped<IAdminManagerRepository, AdminRepository>();
+            services.AddScoped<IAdminFunctionalitysValidate, AdminServiceValidator>();
 
             //Political Parties
             services.AddScoped<IPoliticalPartyRepository, PoliticalPartyRepository>();
