@@ -62,7 +62,7 @@ namespace eVote360.Presentation.EVote360.Controllers.ElectivePosictions
             return View(electivePViewModel);
         }
 
-        [HttpGet]
+        [HttpPost]
         public async  Task<IActionResult> GetElectivePosictionByActive()
         {
 
@@ -84,7 +84,7 @@ namespace eVote360.Presentation.EVote360.Controllers.ElectivePosictions
             return View("Index", electivePViewModel);
         }
 
-        [HttpGet]
+        [HttpPost]
         public async Task<IActionResult> GetElectiveByDate(FilterElectivePosictionsByDateViewModel vp)
         {
             var electiveP = await  _electivePosictionsGetElectivesPosictionsByDateQuery.GetElectivePosictionsByDate(vp.From, vp.To);
@@ -104,7 +104,7 @@ namespace eVote360.Presentation.EVote360.Controllers.ElectivePosictions
             return View("Index", electivePViewModel);
         }
 
-        [HttpGet]
+        [HttpPost]
         public async Task<IActionResult> GetElectivePosiction(int Id)
         {
             var elective = await _electivePosictionsGetByIdQuery.GetAllById(Id);
