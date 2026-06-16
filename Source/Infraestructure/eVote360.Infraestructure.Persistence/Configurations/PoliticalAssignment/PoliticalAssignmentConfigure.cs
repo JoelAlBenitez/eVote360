@@ -32,7 +32,7 @@ namespace eVote360.Infraestructure.Persistence.Configurations.PoliticalAssignmen
             
             // Relación con el Dirigente Político
             builder.HasOne(x => x.PoliticalLeader)
-                   .WithMany(u => u.AssignmentEntities) 
+                   .WithMany(u => u.PoliticalAssignments) 
                    .HasForeignKey(x => x.PoliticalLeaderId)
                    .OnDelete(DeleteBehavior.Restrict);
 

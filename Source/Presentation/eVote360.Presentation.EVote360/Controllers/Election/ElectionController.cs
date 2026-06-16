@@ -96,7 +96,7 @@ using Microsoft.AspNetCore.Authorization;
     
                  var dto = new ElectionDto
                  {
-                         Name = model.ElectionName,
+                         Name = model.ElectionName!,
                      ElectionDate = model.ElectionDate,
                      State = true
                  }

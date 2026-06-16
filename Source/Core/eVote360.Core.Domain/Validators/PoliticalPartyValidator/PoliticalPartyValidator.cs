@@ -22,8 +22,8 @@ namespace eVote360.Core.Domain.Validators.PoliticalPartyValidator
         {
             var errors = new List<Error>();
 
-            var exists = await _service.GetByIdEntitie(partyId);
-            if (exists == null) {
+            var exists = await _service.ExistByIdAsync(partyId);
+            if (!exists) {
                 errors.Add(new Error("Partido Politico", "El partido politico no existe"));
                 return ValidationResult.Failure(errors);
             }
@@ -55,7 +55,7 @@ namespace eVote360.Core.Domain.Validators.PoliticalPartyValidator
             else if (await _service.ValidateUniqueAcronymAsync(party.PoliticalPartyAcronym.Value))
                     errors.Add(PoliticalPartyError.PoliticalPartyAcronymAlreadyExist);
 
-            if (string.IsNullOrWhiteSpace(party.PoliticalPartyLogo))
+            if (party.PoliticalPartyLogo == null || string.IsNullOrWhiteSpace(party.PoliticalPartyLogo.PhotoUrl))
                 errors.Add(PoliticalPartyError.PoliticalPartyLogoIsRequired);
 
                 return errors.Any() ? ValidationResult.Failure(errors) : ValidationResult.Success();
@@ -70,7 +70,7 @@ namespace eVote360.Core.Domain.Validators.PoliticalPartyValidator
 
             if (hasParticiped)
             {
-                var currentParty = await _service.GetByIdEntitie(party.Id);
+                var currentParty = await _service.GetPartyForValidationAsync(party.Id);
 
                 if(currentParty.Name != party.Name || currentParty.PoliticalPartyAcronym.Value !=  party.PoliticalPartyAcronym.Value)
                     errors.Add(PoliticalPartyError.PoliticalPartyAlreadyParticipated);
