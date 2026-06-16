@@ -14,11 +14,11 @@ namespace eVote360.Core.Domain.Entities.CandidateAssignment
         public DateTimeOffset CreateAt { get; set; }
         public int CreateUserId { get; set; }
 
-        public PoliticalPartyEntity AssigningParty { get; set; }
+        public PoliticalPartyEntity? AssigningParty { get; set; }
 
 
         // Propiedades de navegación
-        public Candidates Candidate { get; set; }
-        public ElectivePositions ElectivePosition { get; set; }
+        public Candidates? Candidate { get; set; }
+        public ElectivePositions? ElectivePosition { get; set; }
     }
 }

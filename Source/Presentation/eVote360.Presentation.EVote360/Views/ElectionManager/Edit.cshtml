@@ -1,0 +1,94 @@
+@using eVote360.Core.Application.ViewModels.Election
+@model ElectionEditViewModel
+@{
+    ViewData["Title"] = "Modificar Elección";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/admin-views.css" asp-append-version="true" />
+}
+
+@await Html.PartialAsync("_Notifications")
+
+<div class="page-header">
+    <div class="page-header__left">
+        <div class="page-header__icon" style="background-color: #fff3e0; color: #f57c00; padding: 12px; border-radius: 12px;">
+            <i class="bi bi-pencil-square" style="font-size: 1.5rem;" aria-hidden="true"></i>
+        </div>
+        <div>
+            <h1 class="page-header__title">Modificar Proceso Electoral</h1>
+            <p class="page-header__subtitle">Actualiza los detalles del proceso y define su etapa actual</p>
+        </div>
+    </div>
+    <a asp-action="Index" class="btn-back">
+        <i class="bi bi-arrow-left" aria-hidden="true"></i>
+        <span>Volver al listado</span>
+    </a>
+</div>
+
+<div class="form-card">
+    <form asp-action="Edit" method="post" novalidate>
+        @Html.AntiForgeryToken()
+        
+        <input type="hidden" asp-for="Id" />
+
+        <div class="form-field">
+            <label class="form-label" asp-for="Name">Nombre de la Elección</label>
+            <input asp-for="Name" 
+                   class="form-input" 
+                   placeholder="Ej. Elecciones Generales 2026" 
+                   autocomplete="off" />
+            <span class="form-hint">Nombre descriptivo del proceso (5-50 caracteres).</span>
+            <span asp-validation-for="Name" class="form-error"></span>
+        </div>
+
+        <div class="form-field">
+            <label class="form-label" asp-for="ElectionDate">Fecha de Ejecución</label>
+            <input asp-for="ElectionDate" 
+                   type="date" 
+                   class="form-input" 
+                   value="@Model.ElectionDate.ToString("yyyy-MM-dd")" />
+            <span class="form-hint">Fecha oficial en la que se llevará a cabo el sufragio.</span>
+            <span asp-validation-for="ElectionDate" class="form-error"></span>
+        </div>
+
+        <div class="form-field">
+            <label class="form-label" asp-for="ElectionState">Etapa del Proceso</label>
+            <select asp-for="ElectionState" class="form-input">
+                @foreach (var state in Enum.GetValues(typeof(eVote360.Core.Domain.Common.Enums.ElectionState)))
+                {
+                    <option value="@state">@state</option>
+                }
+            </select>
+            <span class="form-hint">Define si la elección está Pendiente, Activa o Finalizada.</span>
+            <span asp-validation-for="ElectionState" class="form-error"></span>
+        </div>
+
+        <div class="form-field">
+            <label class="form-label" asp-for="State">Estado Lógico (Sistema)</label>
+            <div class="form-toggle">
+                <label class="toggle-switch" title="Activar o desactivar en el sistema">
+                    <input asp-for="State" type="checkbox" />
+                    <span class="toggle-switch__slider"></span>
+                </label>
+                <span class="toggle-label">Habilitada para uso</span>
+            </div>
+        </div>
+
+        <div class="form-footer">
+            <a asp-action="Index" class="btn-cancel">
+                <i class="bi bi-x-lg" aria-hidden="true"></i>
+                Cancelar
+            </a>
+            <button type="submit" class="btn-submit">
+                <i class="bi bi-floppy-fill" aria-hidden="true"></i>
+                <span>Actualizar Registro</span>
+            </button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

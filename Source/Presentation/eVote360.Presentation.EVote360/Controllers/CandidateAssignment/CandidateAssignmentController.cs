@@ -182,6 +182,7 @@ namespace eVote360.Presentation.EVote360.Controllers.CandidateAssignment
             }
 
             TempData["Message"] = "Asignación eliminada exitosamente";
+            TempData["TypeAlert"] = "success";
             return RedirectToAction(nameof(Index));
         }
     }

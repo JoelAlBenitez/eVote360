@@ -22,17 +22,19 @@ namespace eVote360.Core.Domain.Validators.ElectionValidator
             {
                 await ValidateElectionName (election.Name),
                 await ValidateElectionDate(election.ElectionDate),
-                await ExistActiveElection(election.Id)
+                await ExistActiveElection(election.ElectionState)
             };
 
             errors.AddRange(validations.Where(v => v != null));
             return errors.Any() ? ValidationResult.Failure(errors) : ValidationResult.Success();
         }
 
-        private async Task<Error> ExistActiveElection(int id)
+        private async Task<Error> ExistActiveElection(ElectionState currentState)
         {
+            if(currentState == ElectionState.Activa) { 
             var alreadyActive = await _electionDomainService.ExistActiveElection();
             if (alreadyActive) return ElectionError.ElectionStateError;
+            }
             return null!;
         }
 
