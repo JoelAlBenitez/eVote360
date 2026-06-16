@@ -23,7 +23,8 @@ namespace eVote360.Infraestructure.Persistence.Configurations.PoliticalParty
                 .HasColumnType("nvarchar")
                 .IsRequired();
 
-            builder.Property(x => x.PoliticalPartyLogo)
+            builder.Property(x => x.PoliticalPartyLogo.PhotoUrl)
+                .HasColumnName("PoliticalPartyLogo")
                 .IsRequired();
 
             builder.Property(x => x.State)
@@ -38,6 +39,18 @@ namespace eVote360.Infraestructure.Persistence.Configurations.PoliticalParty
 
             builder.HasIndex(x => x.Name).IsUnique();
             builder.HasIndex(x => x.PoliticalPartyAcronym.Value).IsUnique();
+
+            
+             builder.HasMany(x => x.RequestedAlliances)
+               .WithOne() 
+               .HasForeignKey(x => x.RequestingPartyId)
+               .OnDelete(DeleteBehavior.Restrict);
+            
+               
+                builder.HasMany(x => x.ReceiveAlliances)
+                .WithOne()
+                .HasForeignKey(x => x.ReceivingPartyId)
+                .OnDelete(DeleteBehavior.Restrict);
 
 
         }
