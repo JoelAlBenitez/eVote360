@@ -1,6 +1,4 @@
 ﻿using eVote360.Core.Application.Contracts.Users.Commands;
-using eVote360.Core.Application.Contracts.Users.Commands;
-using eVote360.Core.Application.Contracts.Users.Query;
 using eVote360.Core.Application.Contracts.Users.Query;
 using eVote360.Core.Application.DTOs.Users;
 using eVote360.Core.Application.ViewModels.Users;

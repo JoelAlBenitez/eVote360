@@ -114,7 +114,7 @@ namespace eVote360.Presentation.EVote360.Controllers.PoliticalLeaderAssignment
 
              var viewModel = new LeaderAssignmentEditViewModel
              {
-                 Id = assignment.Id,
+                 Id = assignment!.Id,
                  Name = assignment.Name,
                  State = assignment.State,
                  PoliticalLeaderId = assignment.PoliticalLeaderId,

@@ -36,7 +36,7 @@ namespace eVote360.Core.Application.Services.Users.CommandHandler
 
             try
             {
-                if (dto.Id == null || dto.Id <= 0)
+                if (dto.Id <= 0)
                 {
                     errors.Add(new Error("USER EDIT ID", "El ID del usuarion es invalido para editar"));
                     return ValidationResult.Failure(errors);

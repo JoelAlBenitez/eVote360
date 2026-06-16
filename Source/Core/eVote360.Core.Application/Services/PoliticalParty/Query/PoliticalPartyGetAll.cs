@@ -22,7 +22,7 @@ namespace eVote360.Core.Application.Services.PoliticalParty.Query
                 State = p.State,
                 PoliticalPartyDescription = p.PoliticalPartyDescription,
                 PoliticalPartyAcronym = p.PoliticalPartyAcronym.Value,
-                PoliticalPartyLogo = p.PoliticalPartyLogo.PhotoUrl,
+                PoliticalPartyLogo = p.PoliticalPartyLogo.PhotoUrl!,
                 CreateAt = p.CreateAt,
                 CreateUserId = p.CreateUserId,
                 UpdateUserId = p.UpdateUserId,
