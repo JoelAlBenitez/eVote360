@@ -39,6 +39,18 @@ namespace eVote360.Infraestructure.Persistence.Configurations.PoliticalParty
             builder.HasIndex(x => x.Name).IsUnique();
             builder.HasIndex(x => x.PoliticalPartyAcronym.Value).IsUnique();
 
+            
+             builder.HasMany(x => x.RequestedAlliances)
+               .WithOne() 
+               .HasForeignKey(x => x.RequestingPartyId)
+               .OnDelete(DeleteBehavior.Restrict);
+            
+               
+                builder.HasMany(x => x.ReceiveAlliances)
+                .WithOne()
+                .HasForeignKey(x => x.ReceivingPartyId)
+                .OnDelete(DeleteBehavior.Restrict);
+
 
         }
     }
