@@ -27,7 +27,11 @@ namespace eVote360.Core.Domain.Entities.PoliticalAlliances
             ResponseDate = DateTimeOffset.Now;
         }
 
+
+        // Propiedades de navegación - descomentar cuando los modulos ten ready
+
         // Propiedades de navegación - descomentar cuando todos los módulos estén en development
+
         public eVote360.Core.Domain.Entities.PoliticalParty.PoliticalParty? RequestingParty { get; set; }
         public eVote360.Core.Domain.Entities.PoliticalParty.PoliticalParty? ReceivingParty { get; set; }
     }

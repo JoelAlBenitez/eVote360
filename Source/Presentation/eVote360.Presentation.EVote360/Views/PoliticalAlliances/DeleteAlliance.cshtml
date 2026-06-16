@@ -1,0 +1,33 @@
+@model eVote360.Core.Application.ViewModels.PoliticalAlliances.AllianceConfirmationViewModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    Layout = "_LeaderLayout";
+    ViewData["Title"] = "Eliminar Alianza";
+}
+
+<div class="container-fluid px-4 mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-5">
+            <div class="card shadow-sm border-danger border-2">
+                <div class="card-body text-center p-5">
+                    <i class="bi bi-trash text-danger" style="font-size: 3rem;"></i>
+                    <h3 class="fw-light text-danger mt-3 mb-4">Eliminar Alianza</h3>
+                    
+                    <p class="fs-5 text-secondary mb-4">
+                        ¿Está seguro que desea eliminar la alianza vigente con <strong>@Model.PartyName (@Model.PartySiglas)</strong>?
+                    </p>
+                    <p class="small text-danger fw-bold mb-5">Esta acción no se puede deshacer.</p>
+
+                    <form method="post" asp-action="DeleteAlliance">
+                        <input type="hidden" asp-for="AllianceId" />
+                        <div class="d-flex justify-content-center gap-3">
+                            <a asp-action="Index" class="btn btn-secondary rounded-pill px-4">Cancelar</a>
+                            <button type="submit" class="btn btn-danger rounded-pill px-4">Sí, eliminar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

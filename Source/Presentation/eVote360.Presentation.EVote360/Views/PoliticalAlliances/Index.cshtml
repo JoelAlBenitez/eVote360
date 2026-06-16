@@ -1,0 +1,180 @@
+@model eVote360.Core.Application.ViewModels.PoliticalAlliances.AllianceIndexViewModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    Layout = "_LeaderLayout";
+    ViewData["Title"] = "Alianzas Políticas";
+}
+
+<div class="container-fluid px-4 mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-light text-secondary">Alianzas Políticas</h2>
+        <a asp-action="Create" class="btn btn-primary rounded-pill">
+            <i class="bi bi-plus-circle me-1"></i> Nueva Solicitud
+        </a>
+    </div>
+
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show rounded-pill" role="alert">
+            @TempData["Message"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @if (Model.HasActiveElection)
+    {
+        <div class="alert alert-warning rounded-pill" role="alert">
+            Existe una elección activa. No se pueden gestionar alianzas.
+        </div>
+    }
+
+    <!-- Sección 1: Solicitudes Pendientes Recibidas -->
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body">
+            <h4 class="fw-light text-secondary mb-3">
+                Solicitudes Recibidas 
+                <span class="badge bg-warning rounded-pill fs-6 ms-2">@Model.PendingReceived.Count</span>
+            </h4>
+            
+            @if (Model.PendingReceived.Count == 0)
+            {
+                <p class="text-muted fst-italic">No hay solicitudes pendientes.</p>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table table-borderless align-middle">
+                        <thead class="border-bottom">
+                            <tr>
+                                <th>Partido</th>
+                                <th>Siglas</th>
+                                <th>Fecha Solicitud</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.PendingReceived)
+                            {
+                                <tr>
+                                    <td>@item.PartyName</td>
+                                    <td>@item.PartySiglas</td>
+                                    <td>@item.RequestDate.ToString("dd/MM/yyyy")</td>
+                                    <td>
+                                        <a asp-action="Accept" asp-route-Id="@item.Id" class="btn btn-success btn-sm rounded-pill px-3">Aceptar</a>
+                                        <a asp-action="Reject" asp-route-Id="@item.Id" class="btn btn-danger btn-sm rounded-pill px-3 ms-2">Rechazar</a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+
+    <hr class="text-muted opacity-25">
+
+    <!-- Sección 2: Solicitudes Enviadas -->
+    <div class="card shadow-sm border-0 mt-4 mb-4">
+        <div class="card-body">
+            <h4 class="fw-light text-secondary mb-3">
+                Solicitudes Enviadas
+                <span class="badge bg-info rounded-pill fs-6 ms-2">@Model.SentRequests.Count</span>
+            </h4>
+
+            @if (Model.SentRequests.Count == 0)
+            {
+                <p class="text-muted fst-italic">No hay solicitudes enviadas.</p>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table table-borderless align-middle">
+                        <thead class="border-bottom">
+                            <tr>
+                                <th>Partido Destino</th>
+                                <th>Siglas</th>
+                                <th>Fecha Solicitud</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.SentRequests)
+                            {
+                                <tr>
+                                    <td>@item.PartyName</td>
+                                    <td>@item.PartySiglas</td>
+                                    <td>@item.RequestDate.ToString("dd/MM/yyyy")</td>
+                                    <td>
+                                        @if (item.Status == "Pending")
+                                        {
+                                            <span class="badge bg-warning text-dark rounded-pill">En espera</span>
+                                        }
+                                        else if (item.Status == "Accepted")
+                                        {
+                                            <span class="badge bg-success rounded-pill">Aceptada</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-danger rounded-pill">Rechazada</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        <a asp-action="DeleteRequest" asp-route-Id="@item.Id" class="btn btn-danger btn-sm rounded-pill px-3">Cancelar</a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+
+    <hr class="text-muted opacity-25">
+
+    <!-- Sección 3: Alianzas Vigentes -->
+    <div class="card shadow-sm border-0 mt-4 mb-4">
+        <div class="card-body">
+            <h4 class="fw-light text-secondary mb-3">
+                Alianzas Vigentes
+                <span class="badge bg-success rounded-pill fs-6 ms-2">@Model.ActiveAlliances.Count</span>
+            </h4>
+
+            @if (Model.ActiveAlliances.Count == 0)
+            {
+                <p class="text-muted fst-italic">No hay alianzas vigentes.</p>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table table-borderless align-middle">
+                        <thead class="border-bottom">
+                            <tr>
+                                <th>Partido Aliado</th>
+                                <th>Siglas</th>
+                                <th>Fecha Aceptación</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.ActiveAlliances)
+                            {
+                                <tr>
+                                    <td>@item.PartyName</td>
+                                    <td>@item.PartySiglas</td>
+                                    <td>@(item.ResponseDate.HasValue ? item.ResponseDate.Value.ToString("dd/MM/yyyy") : "N/A")</td>
+                                    <td>
+                                        <a asp-action="DeleteAlliance" asp-route-Id="@item.Id" class="btn btn-danger btn-sm rounded-pill px-3">Eliminar</a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+</div>

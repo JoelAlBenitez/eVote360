@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using eVote360.Core.Domain.Common.Enums;
 using PoliticalAllianceEntity = eVote360.Core.Domain.Entities.PoliticalAlliances.PoliticalAlliances;
 using eVote360.Core.Domain.Entities.PoliticalAlliances;
-
+using eVote360.Core.Domain.Entities.User;
 namespace eVote360.Infraestructure.Persistence.Configurations.PoliticalAlliances
 {
     public class PoliticalAlliancesConfigure : IEntityTypeConfiguration<PoliticalAllianceEntity>
@@ -36,6 +36,7 @@ namespace eVote360.Infraestructure.Persistence.Configurations.PoliticalAlliances
 
             // Relaciones activadas
             
+
             builder.HasOne(x => x.RequestingParty)
                 .WithMany()
                 .HasForeignKey(x => x.RequestingPartyId)
@@ -47,11 +48,11 @@ namespace eVote360.Infraestructure.Persistence.Configurations.PoliticalAlliances
                 .OnDelete(DeleteBehavior.Restrict);
             
 
-            // Relación con el usuario que creó el registro (comentada al estilo Joel)
-            //builder.HasOne(u => u.Users).
-            //    WithMany(x => x.PoliticalAlliances).
-            //    HasForeignKey(u => u.CreateUserId).
-            //    OnDelete(DeleteBehavior.Restrict);
+         
+            
+
+        
+       
         }
     }
 }
