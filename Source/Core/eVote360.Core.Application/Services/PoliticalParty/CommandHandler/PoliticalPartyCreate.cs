@@ -7,6 +7,7 @@ using PartyEntity = eVote360.Core.Domain.Entities.PoliticalParty.PoliticalParty;
 using eVote360.Core.Domain.Common.ValidationResult;
 using eVote360.Core.Domain.Common.Errors;
 using eVote360.Core.Application.Contracts.Authentication.Command;
+using PhotoValidator = eVote360.Core.Domain.Settings.ValueObjects.Candidate.CandidatePhoto;
 
 namespace eVote360.Core.Application.Services.PoliticalParty.CommandHandler
 {
@@ -39,7 +40,7 @@ namespace eVote360.Core.Application.Services.PoliticalParty.CommandHandler
 
                     Name = dto.Name!,
                     PoliticalPartyDescription = dto.PoliticalPartyDescription,
-                    PoliticalPartyLogo = dto.PoliticalPartyLogo,
+                    PoliticalPartyLogo = new PhotoValidator(dto.PoliticalPartyLogo),
                     State = dto.State,
 
                     PoliticalPartyAcronym = new PoliticalPartyAcronym(dto.PoliticalPartyAcronym)
