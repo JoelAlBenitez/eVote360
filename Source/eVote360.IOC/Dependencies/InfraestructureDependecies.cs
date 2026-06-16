@@ -46,6 +46,10 @@ using eVote360.Core.Domain.Contracts.Repositories.PoliticalAssignment;
 using eVote360.Infraestructure.Persistence.Repositories.PoliticalAssignment;
 using eVote360.Core.Domain.Contracts.ServiceValidates.PoliticalAssignment;
 using eVote360.Infraestructure.Persistence.ServicesValidators.PoliticalAssignment;
+using eVote360.Core.Domain.Contracts.ServiceValidates.Elector.CodeVerifications;
+using eVote360.Infraestructure.Persistence.ServicesValidators.Elector.CodeVerification;
+using eVote360.Core.Domain.Contracts.ServiceValidates.Elector.Votes;
+using eVote360.Infraestructure.Persistence.ServicesValidators.Elector.VoteService;
 
 namespace eVote360.IOC.Dependencies
 {
@@ -106,6 +110,12 @@ namespace eVote360.IOC.Dependencies
             //Political Parties
             services.AddScoped<IPoliticalPartyRepository, PoliticalPartyRepository>();
             services.AddScoped<IPoliticalPartyDomainService, PoliticalPartyServiceValidator>();
+
+
+            //elector
+
+            services.AddScoped<ICodeVerificationValidate, CodeVerificationValidate>();
+            services.AddScoped<IVotesValidate, VotesValidate>();
 
             return services;
         }

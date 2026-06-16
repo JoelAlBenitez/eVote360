@@ -9,6 +9,11 @@ using eVote360.Core.Domain.Validators.Admin;
 
 using eVote360.Core.Domain.Validators.UserValidator;
 using eVote360.Core.Domain.Validators.PoliticalPartyValidator;
+using eVote360.Core.Domain.Contracts.ServiceValidates.Elector.CodeVerifications;
+using eVote360.Core.Domain.Validators.ElectorValidator.CodeVerifications;
+using eVote360.Core.Domain.Validators.ElectorValidator.IdentificationProcess;
+using eVote360.Core.Domain.Validators.ElectorValidator.ProcessVotesElector;
+using eVote360.Core.Domain.Validators.ElectorValidator.Vote;
 
 
 namespace eVote360.IOC.Dependencies
@@ -40,6 +45,13 @@ namespace eVote360.IOC.Dependencies
             //Election
             services.AddScoped<IElectionValidator, ElectionValidator>();
 
+            //elector
+            services.AddScoped<ICodeVerificationValidator, CodeVerificationsValidator>();
+            services.AddScoped<IIdentificationProcess, IdentificationProcess>();
+            services.AddScoped<IProcessElector, ProcessElector>();
+            services.AddScoped<IVoteValidator, VoteValidator>();
+
+            //
             return services;
         }
     }

@@ -34,19 +34,19 @@ namespace eVote360.Infraestructure.Persistence.Configurations.Election
                 builder.HasIndex(x => x.Name).IsUnique();
 
     
-             builder.HasMany(x => x.Votes)
-               .WithOne(x => x.Elections) 
-               .HasForeignKey(x => x.IdElection);
+            // builder.HasMany(x => x.Votes)
+            //   .WithOne(x => x.Elections) 
+            //   .HasForeignKey(x => x.IdElection);
             
     
-               builder.HasMany(x => x.AuditVotes)
-               .WithOne(x => x.ElectionEntitie)
-               .HasForeignKey(x => x.IdElection);
+            //   builder.HasMany(x => x.AuditVotes)
+            //   .WithOne(x => x.ElectionEntitie)
+            //   .HasForeignKey(x => x.IdElection);
 
-            builder.HasMany(x => x.ElectivePositions)
-                .WithOne()
-                .HasForeignKey("ElecetionId")
-                .OnDelete(DeleteBehavior.Restrict);
+            //builder.HasMany(x => x.ElectivePositions)
+            //    .WithOne()
+            //    .HasForeignKey("ElecetionId")
+            //    .OnDelete(DeleteBehavior.Restrict);
 
         }
     }
