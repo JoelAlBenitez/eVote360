@@ -20,7 +20,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="DTOs\Elector\Code\" />
     <Folder Include="Services\Candidate\CommandHandler\" />
     <Folder Include="Services\Candidate\Query\" />
   </ItemGroup>

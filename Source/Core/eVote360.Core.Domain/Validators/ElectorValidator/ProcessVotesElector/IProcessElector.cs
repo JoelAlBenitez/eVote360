@@ -7,6 +7,11 @@ namespace eVote360.Core.Domain.Validators.ElectorValidator.ProcessVotesElector
 {
     public interface IProcessElector
     {
-        Task<ValidationResult> ValidateProcessElectoral(Citizen citizen, Election election, List<SelectionElector> selectionElectors);
+        Task<ValidationResult> ValidateProcessElectoral(Citizen citizen, 
+            Election election,
+            List<SelectionElector> selectionElectors,
+            bool ValidateOCR
+           
+            );
     }
 }

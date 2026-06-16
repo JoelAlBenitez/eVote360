@@ -14,9 +14,9 @@ namespace eVote360.Infraestructure.Persistence.Repositories.Elector.VoteReposito
             _context = context;
         }
 
-        public async Task<bool> CreateAsync(Votes votes, AuditVotes auditVotes)
+        public async Task<bool> CreateAsync(List<Votes> votes, AuditVotes auditVotes)
         {
-            await _context.Vote.AddAsync(votes);
+            await _context.Vote.AddRangeAsync(votes);
             await _context.AuditVote.AddAsync(auditVotes);
             return await _context.SaveChangesAsync() > 0;
         }
