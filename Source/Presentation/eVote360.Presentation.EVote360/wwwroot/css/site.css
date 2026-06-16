@@ -29,3 +29,122 @@ body {
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
   text-align: start;
 }
+
+/* eVote360 Custom Styles */
+:root {
+    --ev-primary: #0d6efd;
+    --ev-success: #198754;
+    --ev-error: #dc3545;
+    --ev-warning: #ffc107;
+    --ev-info: #0dcaf0;
+    --ev-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.ev-card {
+    border: none;
+    border-radius: 12px;
+    box-shadow: var(--ev-shadow);
+    transition: transform 0.2s;
+}
+
+.ev-card:hover {
+    transform: translateY(-4px);
+}
+
+/* Notifications */
+.ev-notification {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 8px;
+    background: white;
+    box-shadow: var(--ev-shadow);
+    border-left: 4px solid var(--ev-info);
+}
+
+.ev-notification--success { border-left-color: var(--ev-success); }
+.ev-notification--error { border-left-color: var(--ev-error); }
+.ev-notification--warning { border-left-color: var(--ev-warning); }
+
+.ev-notification__icon { margin-right: 1rem; font-size: 1.5rem; }
+.ev-notification__body { flex-grow: 1; }
+.ev-notification__close { background: none; border: none; font-size: 1.25rem; cursor: pointer; }
+
+/* Errors Panel */
+.ev-errors-panel {
+    background: white;
+    border-radius: 8px;
+    box-shadow: var(--ev-shadow);
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+    border: 1px solid #eee;
+}
+
+.ev-errors-panel__header {
+    background: #f8f9fa;
+    padding: 0.75rem 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #eee;
+}
+
+.ev-errors-panel__title {
+    color: var(--ev-error);
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.ev-errors-panel__body {
+    padding: 1rem;
+}
+
+.ev-error-slide {
+    display: none;
+}
+
+.ev-error-slide.active {
+    display: block;
+    animation: fadeIn 0.3s;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.ev-error-slide__code {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    color: #666;
+    display: block;
+    margin-bottom: 0.25rem;
+}
+
+.ev-error-slide__description {
+    margin: 0;
+    font-size: 1rem;
+}
+
+.ev-errors-panel__footer {
+    padding: 0.75rem 1rem;
+    background: #f8f9fa;
+    display: flex;
+    justify-content: space-between;
+}
+
+.ev-errors-panel__nav {
+    background: none;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.9rem;
+}
+
+.ev-errors-panel__nav:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}

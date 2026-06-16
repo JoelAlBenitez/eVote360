@@ -54,14 +54,18 @@ namespace eVote360.Core.Domain.Validators.ElectorValidator.IdentificationProcess
             }
 
             var citizenExits = await _citizensServiceValidate.ExistCitizensByIdentification(Identification);
-            if (!citizenExits) _errors.Add(CitizenErrors.NoExtisCitizen);
-            var citizenState = await _citizensServiceValidate.CurrentStateOfTheCitizen(null,Identification);
-            if (!citizenState) _errors.Add(CitizenErrors.CitizentNoActiveOfVote);
-
-            var citizenParticiped = await _votesValidate.ExistVoteByCitizen(Identification);
-            if (!citizenParticiped) _errors.Add(VotesError.ExistVotes);
+            if (!citizenExits) errors.Add(CitizenErrors.NoExtisCitizen);
             
-            return errors.Any() ? ValidationResult.Failure() : ValidationResult.Success();
+            if (citizenExits)
+            {
+                var citizenState = await _citizensServiceValidate.CurrentStateOfTheCitizen(null, Identification);
+                if (!citizenState) errors.Add(CitizenErrors.CitizentNoActiveOfVote);
+
+                var citizenParticiped = await _votesValidate.ExistVoteByCitizen(Identification);
+                if (!citizenParticiped) errors.Add(VotesError.ExistVotes);
+            }
+            
+            return errors.Any() ? ValidationResult.Failure(errors) : ValidationResult.Success();
         }
     }
 }

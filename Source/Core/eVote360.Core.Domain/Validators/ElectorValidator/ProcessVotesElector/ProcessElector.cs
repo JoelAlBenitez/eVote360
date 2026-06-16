@@ -92,6 +92,12 @@ namespace eVote360.Core.Domain.Validators.ElectorValidator.ProcessVotesElector
             }
             var validate = await CodeUsedElectorProcess(citizen.Id, election.Id, citizenExits);
             if (!validate.IsValid) return validate;
+
+            if (!ValidateOCR)
+            {
+                errors.Add(new Error("Validación de identidad pendiente", "No se ha validado su identidad mediante OCR, complete este paso para continuar."));
+                return ValidationResult.Failure(errors);
+            }
            
             var positionsrequerid = election.ElectivePositions.Select(p => p.Id).ToList();
             var positionsSelectionsByCitizen = selectionElectors.Select(s => s.IdPosictionElective).ToList();

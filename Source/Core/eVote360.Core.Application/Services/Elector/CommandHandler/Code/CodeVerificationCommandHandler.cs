@@ -7,6 +7,8 @@ using eVote360.Core.Domain.Common.Errors;
 using eVote360.Core.Domain.Contracts.Repositories.ElectionRepository;
 using eVote360.Core.Domain.Contracts.Repositories.Citizens;
 
+using eVote360.Core.Domain.Contracts.Repositories.Elector.Otp;
+
 namespace eVote360.Core.Application.Services.Elector.CommandHandler.Code
 {
     public class CodeVerificationCommandHandler : ICodeVerificationCommand
@@ -16,17 +18,20 @@ namespace eVote360.Core.Application.Services.Elector.CommandHandler.Code
         private readonly IElectorSession _electorSession;
         private readonly IElectionRepository _electionRepository;
         private readonly ICitizenRepository _citizenRepository;
+        private readonly IOtpRepository _otpRepository;
 
         public CodeVerificationCommandHandler(ICodeVerificationValidator codeVerificationValidator,
             IElectorSession electorSession,
             IElectionRepository electionRepository,
-            ICitizenRepository citizenRepository
+            ICitizenRepository citizenRepository,
+            IOtpRepository otpRepository
             )
         {
             _codeVerificationValidator = codeVerificationValidator;
             _electorSession = electorSession;
             _electionRepository = electionRepository;
             _citizenRepository = citizenRepository;
+            _otpRepository = otpRepository;
         }
 
         public async Task<ValidationResult> VerifyCodeVerification(CodeVerificationDto codeVerificationDto)
@@ -37,7 +42,12 @@ namespace eVote360.Core.Application.Services.Elector.CommandHandler.Code
                 var elecive = await _electionRepository.GetActivateElectionAsync();
                 var citizen = await _citizenRepository.GetByIdentification(_electorSession.GetIdentification());
                 var validate = await _codeVerificationValidator.VerificationCode(citizen.Id, elecive!.Id, codeVerificationDto.Code);
-                if (validate != null) return validate;
+                if (!validate.IsValid) return validate;
+
+                var otp = await _otpRepository.GetByIdAndIdCitizens(citizen.Id, elecive.Id);
+                otp.State = true;
+                await _otpRepository.UpdateAsync(otp);
+
                 return ValidationResult.Success();
             }
             catch (Exception ex) {

@@ -46,6 +46,8 @@ using eVote360.Core.Application.Contracts.Elector.Commands.Code;
 using eVote360.Core.Application.Services.Elector.CommandHandler.Code;
 using eVote360.Core.Application.Contracts.Elector.Commands.Identification;
 using eVote360.Core.Application.Services.Elector.CommandHandler.Identification;
+using eVote360.Core.Application.Contracts.Elector.Commands.Votes;
+using eVote360.Core.Application.Services.Elector.CommandHandler.Votes;
 using eVote360.Core.Domain.Contracts.Repositories.Elector.SelectPorcess;
 using eVote360.Core.Application.Services.Elector.Query;
 using eVote360.Core.Application.Contracts.Elector.Query;
@@ -150,15 +152,15 @@ namespace eVote360.IOC.Dependencies
             services.AddScoped<IAvailableYearsQuery, AvailableYearQuery>();
 
             //elector
-            
-
             services.AddScoped<ICodeVerificationCommand, CodeVerificationCommandHandler>();
             services.AddScoped<IIdentificationVerifyCommand, IdentificationVerifyCommandHandler>();
             services.AddScoped<IIdentificationVerifyCompareIdentificationByImg, IdentificationVerifyCompareIdentificationByImg>();
+            services.AddScoped<IOcrVerificationCommand, OcrVerificationCommandHandler>();
             services.AddScoped<ISelectionCandidateByIdElectivePosictionQuery, SelectionCandidacteByIdElectivePositionQuery>();
             services.AddScoped<IWindowElectivePositionQuery, WindowElectivePositionQuery>();
+            services.AddScoped<IProcessVoteElectorCommand, ProcessVoteElectorCommandHandler>();
 
-            //....
+            //
 
             return services;
         }

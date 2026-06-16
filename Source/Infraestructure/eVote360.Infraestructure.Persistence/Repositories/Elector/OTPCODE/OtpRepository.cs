@@ -26,5 +26,11 @@ namespace eVote360.Infraestructure.Persistence.Repositories.Elector.OTPCODE
                 .AsNoTracking()
                 .FirstOrDefaultAsync(code => code.IdCitizens == IdCitizens && code.IdElection == IdElection))!;
         }
+
+        public async Task<bool> UpdateAsync(CodeVerification codeVerification)
+        {
+            _context.CodeVerifications.Update(codeVerification);
+            return await _context.SaveChangesAsync() > 0;
+        }
     }
 }

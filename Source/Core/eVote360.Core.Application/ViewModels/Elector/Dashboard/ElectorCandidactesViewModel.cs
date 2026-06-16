@@ -8,6 +8,5 @@ namespace eVote360.Core.Application.ViewModels.Elector.Dashboard
         public required string NameCandidacte { get; set; }
         public required string PoliticalParty {  get; set; }
         public required string LogoPoliticalParty { get; set; }
-        public required int IdPoliticalParty { get; set;}
     }
 }
