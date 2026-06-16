@@ -50,11 +50,8 @@ namespace eVote360.Infraestructure.Persistence.Configurations.PoliticalAlliances
          
             
 
-            // Relación con el usuario que creó el registro (comentada al estilo Joel)
-            //builder.HasOne(u => u.Users).
-            //  WithMany(x => x.PoliticalAlliances).
-            //   HasForeignKey(u => u.CreateUserId).
-            //   OnDelete(DeleteBehavior.Restrict);
+        
+       
         }
     }
 }
