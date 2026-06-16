@@ -1,0 +1,129 @@
+@using eVote360.Core.Application.ViewModels.PoliticalLeaderAssignment
+@model List<LeaderAssignmentViewModel>
+@{
+    ViewData["Title"] = "Asignación de Dirigentes Políticos";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    var hasData = Model != null && Model.Any();
+    var count = Model?.Count ?? 0;
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/admin-views.css" asp-append-version="true" />
+}
+
+
+<div class="page-header">
+    <div class="page-header__left">
+        <div class="page-header__icon" style="background-color: #e3f2fd; color: #1976d2; padding: 12px; border-radius: 12px;">
+            <i class="bi bi-person-badge-fill" style="font-size: 1.5rem;" aria-hidden="true"></i>
+        </div>
+        <div>
+            <h1 class="page-header__title">Asignación de Dirigentes Políticos</h1>
+            <p class="page-header__subtitle">
+                @count asignación@(count != 1 ? "es" : "") registrada@(count != 1 ? "s" : "")
+            </p>
+        </div>
+    </div>
+    <a asp-action="Create" class="btn-add">
+        <i class="bi bi-plus-lg" aria-hidden="true"></i>
+        <span>Nueva Asignación</span>
+    </a>
+</div>
+
+<div class="filters-bar">
+    <div class="filters-bar__quick">
+        <a asp-action="GetActive" class="btn-filter-outline btn-filter-outline--active">
+            <i class="bi bi-check-circle-fill" aria-hidden="true"></i>
+            Solo Activas
+        </a>
+        <a asp-action="Index" class="btn-filter-outline">
+            <i class="bi bi-list-ul" aria-hidden="true"></i>
+            Todas
+        </a>
+    </div>
+</div>
+
+@if (hasData)
+{
+    <div class="data-table-wrap">
+        <table class="data-table" aria-label="Lista de asignaciones de dirigentes">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">
+                        <i class="bi bi-person-fill" aria-hidden="true"></i>Dirigente Político
+                    </th>
+                    <th scope="col">
+                        <i class="bi bi-flag-fill" aria-hidden="true"></i>Partido Político
+                    </th>
+                    <th scope="col">
+                        <i class="bi bi-calendar-event" aria-hidden="true"></i>Fecha Asignación
+                    </th>
+                    <th scope="col">
+                        <i class="bi bi-toggle-on" aria-hidden="true"></i>Estado
+                    </th>
+                    <th scope="col" class="text-center">
+                        <i class="bi bi-gear-fill" aria-hidden="true"></i>Acciones
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model!)
+                {
+                    <tr>
+                        <td>@item.Id</td>
+                        <td class="data-table__name">
+                            @* Idealmente, el ViewModel debería tener el nombre del líder resuelto, aquí usamos el ID como placeholder hasta que se integre en el handler *@
+                            Usuario ID: @item.PoliticalLeaderId
+                        </td>
+                        <td>
+                            @* Idealmente, el ViewModel debería tener el nombre del partido resuelto *@
+                            Partido ID: @item.PoliticalPartyId
+                        </td>
+                        <td>@item.PoliticalAssignmentDate.ToString("dd/MM/yyyy")</td>
+                        <td>
+                            <span class="data-badge @(item.State ? "data-badge--active" : "data-badge--inactive")">
+                                <i class="bi @(item.State ? "bi-check-circle-fill" : "bi-x-circle-fill")" aria-hidden="true"></i>
+                                @(item.State ? "Vigente" : "Inactiva")
+                            </span>
+                        </td>
+                        <td>
+                            <div class="table-actions justify-content-center">
+                                <a asp-action="Edit" 
+                                   asp-route-Id="@item.Id" 
+                                   class="btn-table-action btn-table-action--edit" 
+                                   title="Editar"
+                                   aria-label="Editar asignación @item.Id">
+                                    <i class="bi bi-pencil-fill" aria-hidden="true"></i>
+                                </a>
+                                <a asp-action="AlterState" 
+                                   asp-route-Id="@item.Id" 
+                                   class="btn-table-action @(item.State ? "btn-table-action--deactivate" : "btn-table-action--activate")" 
+                                   title="@(item.State ? "Desactivar" : "Activar")"
+                                   aria-label="@(item.State ? "Desactivar" : "Activar") asignación @item.Id">
+                                    <i class="bi @(item.State ? "bi-toggle-on" : "bi-toggle-off")" aria-hidden="true"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <div class="empty-state" role="status">
+        <div class="empty-state__icon" aria-hidden="true">
+            <i class="bi bi-person-x"></i>
+        </div>
+        <h2 class="empty-state__title">No hay asignaciones registradas</h2>
+        <p class="empty-state__desc">
+            Aún no se han asignado dirigentes a partidos políticos en el sistema.
+        </p>
+        <a asp-action="Create" class="btn-primary-outline">
+            <i class="bi bi-plus-lg" aria-hidden="true"></i>
+            Asignar Primer Dirigente
+        </a>
+    </div>
+}
