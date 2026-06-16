@@ -96,15 +96,34 @@ namespace eVote360.Core.Application.Services.Elector.CommandHandler.Votes
                     return ValidationResult.Failure(errors);
                 }
 
-                var body = $"<h3>Resumen de votación - eVote360</h3>" +
-                           $"<p>Hola {citizen.Name} {citizen.LastName},</p>" +
-                           $"<p>Su voto ha sido procesado exitosamente para la elección: <strong>{election!.Name}</strong>.</p>" +
-                           $"<p>Gracias por ejercer su derecho al voto.</p>";
+                var selections = _electorSession.GetCurrentSelections();
+                var selectionsHtml = "<ul>";
+                foreach (var s in selections.Values)
+                {
+                    var choice = s.NoApplyCandidacte ? "No aplica" : $"{s.NameCandidacte} ({s.PoliticalParty})";
+                    selectionsHtml += $"<li><strong>{s.PositionName}:</strong> {choice}</li>";
+                }
+                selectionsHtml += "</ul>";
+
+                var body = $@"
+                    <div style='font-family: sans-serif; max-width: 600px; margin: auto; border: 1px solid #eee; padding: 20px; border-radius: 10px;'>
+                        <h2 style='color: #0d6efd; text-align: center;'>Resumen de Votación - eVote360</h2>
+                        <p>Estimado ciudadano <strong>{citizen.Name} {citizen.LastName}</strong>,</p>
+                        <p>Su voto ha sido registrado exitosamente en el sistema <strong>eVote360</strong> para el proceso electoral:</p>
+                        <div style='background: #f8f9fa; padding: 15px; border-radius: 8px; margin: 20px 0;'>
+                            <h3 style='margin-top: 0;'>{election!.Name}</h3>
+                            <p><strong>Fecha y Hora:</strong> {DateTime.Now:dd/MM/yyyy HH:mm:ss}</p>
+                            <hr style='border: 0; border-top: 1px solid #ddd;' />
+                            {selectionsHtml}
+                        </div>
+                        <p style='color: #666; font-size: 0.9em;'>Este es un comprobante automático de su participación. Su voto es secreto y está protegido por criptografía de grado militar.</p>
+                        <p style='text-align: center; margin-top: 30px; font-weight: bold; color: #0d6efd;'>eVote360 - Innovación al servicio de la democracia</p>
+                    </div>";
 
                 await _emailService.SendEmailAsync(new MessageDto
                 {
                     ToEmail = citizen.Email.Value,
-                    Subject = "Resumen de su Votación - eVote360",
+                    Subject = $"Comprobante de Votación - {election!.Name}",
                     Body = body
                 });
 

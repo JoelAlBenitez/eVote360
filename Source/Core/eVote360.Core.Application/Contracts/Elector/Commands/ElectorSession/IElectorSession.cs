@@ -6,7 +6,7 @@ namespace eVote360.Core.Application.Contracts.Elector.Commands.ElectorSession
     {
         string GetIdentification();
         void SetIdentification(string identification);
-        void SaveSelection(int idElectivePosition, int? idCandidate, bool noApply);
+        void SaveSelection(SelectionCandidacteByPositionElectiveViewModel selection);
         Dictionary<int, SelectionCandidacteByPositionElectiveViewModel> GetCurrentSelections();
         void Clear();
         bool GetValidateOCR();

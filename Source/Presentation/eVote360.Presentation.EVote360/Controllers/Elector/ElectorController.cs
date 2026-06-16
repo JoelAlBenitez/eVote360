@@ -165,9 +165,37 @@ namespace eVote360.Presentation.EVote360.Controllers.Elector
         }
 
         [HttpPost]
-        public IActionResult SaveSelection(int idElectivePosition, int? idCandidate, bool noApply)
+        public async Task<IActionResult> SaveSelection(int idElectivePosition, int? idCandidate, bool noApply)
         {
-            _electorSession.SaveSelection(idElectivePosition, idCandidate, noApply);
+            var selection = new SelectionCandidacteByPositionElectiveViewModel
+            {
+                IdPosictionElective = idElectivePosition,
+                IdCandidacteSelection = idCandidate,
+                NoApplyCandidacte = noApply
+            };
+
+            var positions = await _windowElectivePositionQuery.GetWindowsElectivePositionsAsync();
+            var position = positions.FirstOrDefault(p => p.IdElectivePosition == idElectivePosition);
+            if (position != null)
+            {
+                selection.PositionName = position.NameElectivePosition;
+                selection.NumberPoliticalParty = position.NumberPoliticalParty;
+            }
+
+            if (idCandidate.HasValue && !noApply)
+            {
+                var candidates = await _selectionCandidateQuery.GetSelectionCandidacteAsync(idElectivePosition);
+                var candidate = candidates.FirstOrDefault(c => c.IdCandidacte == idCandidate.Value);
+                if (candidate != null)
+                {
+                    selection.NameCandidacte = candidate.NameCandidacte;
+                    selection.PhotoUrlCandidacte = candidate.PhotoCandidacte;
+                    selection.PoliticalParty = candidate.PoliticalParty;
+                    selection.LogoPoliticalParty = candidate.PoliticalPartyLogoUrl;
+                }
+            }
+
+            _electorSession.SaveSelection(selection);
             return RedirectToAction(nameof(Dashboard));
         }
 
@@ -202,6 +230,7 @@ namespace eVote360.Presentation.EVote360.Controllers.Elector
                 return View(selections.Values.ToList());
             }
 
+            _electorSession.Clear();
             return RedirectToAction(nameof(VoteSuccess));
         }
 

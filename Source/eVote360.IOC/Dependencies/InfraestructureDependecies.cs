@@ -57,6 +57,8 @@ using eVote360.Infraestructure.Persistence.Repositories.Elector.SelectData;
 
 using eVote360.Core.Domain.Contracts.ServiceValidates.Elector.OCR;
 using eVote360.Infraestructure.Persistence.ServicesValidators.Elector.OcrService;
+using eVote360.Core.Domain.Contracts.Repositories.Elector.Otp;
+using eVote360.Infraestructure.Persistence.Repositories.Elector.OTPCODE;
 
 namespace eVote360.IOC.Dependencies
 {
@@ -129,7 +131,6 @@ namespace eVote360.IOC.Dependencies
             services.AddScoped<IVotingProcess, VotingProcess>();
             services.AddScoped<ISelectDataForElectoralProcessRepository, SelectDataForElectoralProcessRepository>();
             services.AddScoped<IOtpRepository, OtpRepository>();
-
             return services;
         }
     }

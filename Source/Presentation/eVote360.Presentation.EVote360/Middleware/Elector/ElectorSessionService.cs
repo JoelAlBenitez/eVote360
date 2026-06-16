@@ -30,15 +30,10 @@ namespace eVote360.Presentation.EVote360.Middleware.Elector
         public void SetValidateOCR(bool validate) =>
             Session.SetInt32(OCRValidatedKey, validate ? 1 : 0);
 
-        public void SaveSelection(int idElectivePosition, int? idCandidate, bool noApply)
+        public void SaveSelection(SelectionCandidacteByPositionElectiveViewModel selection)
         {
             var selections = GetCurrentSelections();
-            selections[idElectivePosition] = new SelectionCandidacteByPositionElectiveViewModel
-            {
-                IdPosictionElective = idElectivePosition,
-                IdCandidacteSelection = idCandidate,
-                NoApplyCandidacte = noApply
-            };
+            selections[selection.IdPosictionElective] = selection;
             Session.SetString(SelectionsKey, JsonSerializer.Serialize(selections));
         }
 
