@@ -40,8 +40,8 @@ namespace eVote360.Core.Application.Services.Candidate.Query
                 var DtoCandidate = new CandidateDTO
                 {
                     Id = candidateById.Id,
-                    Name = candidateById.Name.Name,
-                    LastName = candidateById.Name.LastName,
+                    Name = candidateById.Name.Name!,
+                    LastName = candidateById.Name.LastName!,
                     PhotoUrl = candidateById.PhotoUrl?.PhotoUrl,
                     State = candidateById.State,
                     PoliticalPartyId = candidateById.PoliticalPartyId,

@@ -30,16 +30,7 @@ namespace eVote360.Infraestructure.Persistence.ServicesValidators.PoliticalParty
             return await Task.FromResult(false);
         }
 
-        public async Task<PoliticalPartyEntity> GetByIdEntitie(int tkey)
-            {
-                return await _context.PoliticalParties.AsNoTracking().FirstOrDefaultAsync(x => x.Id == tkey);
-            }
-   
-            public async Task<bool> CreateEntiteAsync(PoliticalPartyEntity entitie)
-            {
-                _context.PoliticalParties.Add(entitie);
-                return await _context.SaveChangesAsync() > 0;
-            }
+        
 
             public async Task<bool> UpdateEntitieAsync(PoliticalPartyEntity entitie)
             {
@@ -76,6 +67,16 @@ namespace eVote360.Infraestructure.Persistence.ServicesValidators.PoliticalParty
        {
                 return await _context.PoliticalParties.AsNoTracking().ToListAsync();
        }
+
+        public async Task<bool> ExistByIdAsync(int id)
+        {
+           return await _context.PoliticalParties.AnyAsync(x=>x.Id == id);
+        }
+
+        public async Task<PoliticalPartyEntity?> GetPartyForValidationAsync(int id)
+        {
+            return await _context.PoliticalParties.AsNoTracking().FirstOrDefaultAsync(x=> x.Id == id);
+        }
 
    
 

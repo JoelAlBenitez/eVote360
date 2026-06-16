@@ -19,7 +19,7 @@ namespace eVote360.Core.Application.ViewModels.Election
         [Display(Name = "nombre de Eleccion")]
         [Required(ErrorMessage = "Se requiere un nombre valido de eleccion")]
         [StringLength(50, ErrorMessage = "El nombre de eleccion debe tener al menos 8 caracteres", MinimumLength = 8)]
-        public string Name { get; set; }
+        public required string Name { get; set; }
 
         [Display(Name = "Estado de Eleccion")]
         [Required(ErrorMessage = "Se requiere un estado valido")]

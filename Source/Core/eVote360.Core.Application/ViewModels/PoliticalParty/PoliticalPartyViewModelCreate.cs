@@ -2,6 +2,7 @@
 using eVote360.Core.Application.ViewModels.Base;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
+using Microsoft.AspNetCore.Http;
 
 namespace eVote360.Core.Application.ViewModels.PoliticalParty
 {
@@ -25,7 +26,7 @@ namespace eVote360.Core.Application.ViewModels.PoliticalParty
         [Display(Name = "Logo")]
         [Required(ErrorMessage = "Se requiere un Logo de partido valido")]
         [StringLength(200, ErrorMessage = "Ingrese una imagen valida")]
-        public required string PoliticalPartyLogo { get; set; }
+        public required IFormFile? LogoFile { get; set; }
 
         [Display(Name = "Estado")]
         [Required(ErrorMessage ="Se requiere un estado valido")]
