@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ElectionEntity = eVote360.Core.Domain.Entities.Election.Election;
+using eVote360.Core.Domain.Entities.Elector.Vote;
+using eVote360.Core.Domain.Entities.Election;
 
 namespace eVote360.Infraestructure.Persistence.Repositories.Election
 {
@@ -77,6 +79,37 @@ namespace eVote360.Infraestructure.Persistence.Repositories.Election
                 .Where(x =>x.ElectionDate.Value.Year == year)
                 .ToListAsync();
         }
+        public async Task<IReadOnlyCollection<ElectionResult>> GetElectionResultAsync(int electionId)
+        {
+            var totalVotesCount = await _context.Vote.Where(v=>v.IdElection == electionId)
+            .CountAsync();
 
+            var results = await (from vote in _context.Vote
+                                 join candidate in _context.Candidates on vote.IdCandidate equals candidate.Id
+                                 join party in _context.PoliticalParties on candidate.PoliticalPartyId equals party.Id
+                                 where vote.IdElection == electionId
+                                 group vote by new {
+                                 CandidateId = candidate.Id,
+                                 CandidateObj = candidate.Name,
+                                 PartyId = party.Id,
+                                 PartyName = party.Name,
+                                 PartyAcronym = party.PoliticalPartyAcronym,
+                                 PartyLog = party.PoliticalPartyLogo
+                                 } into g
+                                 select new ElectionResult
+                                 {
+                                     CandidateNamer = g.Key.CandidateObj.Name + " " + g.Key.CandidateObj.LastName,
+                                     PartyName = g.Key.PartyName,
+                                     PartyAcronym = g.Key.PartyAcronym.Value,
+                                     PartyLogo = g.Key.PartyLog,
+                                     TotalVotes = g.Count(),
+                                     Percentage = totalVotesCount > 0 ? (double)g.Count() / totalVotesCount * 100 : 0
+                                 })
+                                 .OrderByDescending(r=>r.TotalVotes)
+                                 .ToListAsync();
+
+            return results;
+           
+        }
     }
 }

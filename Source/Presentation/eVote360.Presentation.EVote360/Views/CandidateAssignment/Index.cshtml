@@ -1,12 +1,12 @@
 @model IEnumerable<eVote360.Core.Application.ViewModels.CandidateAssignment.CandidateAssignmentViewModel>
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
-
 @{
-    ViewData["Title"] = "AsignaciÃ³n de Candidatos a Puestos";
+    Layout = "_LeaderLayout";
+    ViewData["Title"] = "Asignación de Candidatos a Puestos";
 }
 
 <div class="container mt-4">
-    <h2 class="mb-4">AsignaciÃ³n de Candidatos a Puestos</h2>
+    <h2 class="mb-4">Asignación de Candidatos a Puestos</h2>
 
     @if (TempData["Message"] != null)
     {
