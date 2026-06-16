@@ -52,6 +52,12 @@ namespace eVote360.Infraestructure.Persistence.Configurations.User
                 
                 builder.HasIndex(x => x.Name).IsUnique();
                          builder.HasIndex(x => x.UserEmail.Value).IsUnique();
+
+            builder.HasMany(x => x.PoliticalAssignments) 
+                      .WithOne(x => x.PoliticalLeader)       
+                      .HasForeignKey(x => x.PoliticalLeaderId) 
+                      .OnDelete(DeleteBehavior.Restrict);
+
         }
     }
 

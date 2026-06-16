@@ -24,7 +24,7 @@ namespace eVote360.Core.Domain.Entities.User
         public UserRole UserRole { get; set; }
 
         //Navgation Property
-        public virtual IReadOnlyCollection<AssignmentEntities> AssignmentEntities { get; set; } = new List<AssignmentEntities>();
+        public virtual IReadOnlyCollection<AssignmentEntities> PoliticalAssignments { get; set; } = new List<AssignmentEntities>();
 
 
     }

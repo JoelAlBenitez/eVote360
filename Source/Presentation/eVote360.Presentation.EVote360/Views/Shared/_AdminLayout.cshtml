@@ -65,6 +65,7 @@
                     </a>
                 </li>
 
+
                 <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "PoliticalParty" ? "active" : "")">
                     <a asp-controller="PoliticalParty" asp-action="Index">
                         <i class="bi bi-flag-fill"></i>
@@ -73,6 +74,16 @@
                     </a>
                     6
                 </li>
+
+
+                <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "PoliticalLeaderAssignment" ? "active" : "")">
+                     <a asp-controller="PoliticalLeaderAssignment" asp-action="Index">
+                         <i class="bi bi-person-badge-fill"></i>
+                         <span>Asignar Dirigente</span>
+                        
+                    </a>
+                </li>
+
 
 
                 <li class="menu-divider"></li>
@@ -120,6 +131,7 @@
         </header>
 
         <main class="content-wrapper" role="main">
+            @await Html.PartialAsync("_Notifications")
             @RenderBody()
         </main>
 
