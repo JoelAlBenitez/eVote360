@@ -1,7 +1,7 @@
 @model eVote360.Core.Application.ViewModels.Candidates.CandidateViewModelEdit
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
-
 @{
+    Layout = "_LeaderLayout";
     ViewData["Title"] = "Editar Candidato";
 }
 
@@ -18,13 +18,27 @@
                         
                         <div class="mb-3">
                             <label asp-for="Name" class="form-label">Nombre</label>
-                            <input asp-for="Name" class="form-control" />
+                            @if (Model.HasParticipatedInElection)
+                            {
+                                <input asp-for="Name" class="form-control" readonly />
+                            }
+                            else
+                            {
+                                <input asp-for="Name" class="form-control" />
+                            }
                             <span asp-validation-for="Name" class="text-danger"></span>
                         </div>
                         
                         <div class="mb-3">
                             <label asp-for="LastName" class="form-label">Apellido</label>
-                            <input asp-for="LastName" class="form-control" />
+                            @if (Model.HasParticipatedInElection)
+                            {
+                                <input asp-for="LastName" class="form-control" readonly />
+                            }
+                            else
+                            {
+                                <input asp-for="LastName" class="form-control" />
+                            }
                             <span asp-validation-for="LastName" class="text-danger"></span>
                         </div>
 
@@ -55,4 +69,6 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+}
+alidationScriptsPartial" />
 }

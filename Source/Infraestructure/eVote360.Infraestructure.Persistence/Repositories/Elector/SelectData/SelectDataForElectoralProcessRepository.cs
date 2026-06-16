@@ -46,13 +46,13 @@ namespace eVote360.Infraestructure.Persistence.Repositories.Elector.SelectData
         {
             var result = await _context.CandidateAssignments
                 .AsNoTracking()
-                .Where(c => c.ElectivePositionId == IdElectivePosition && c.Candidate.State == true)
+                .Where(c => c.ElectivePositionId == IdElectivePosition && c.Candidate!.State == true)
                 .Select( c => new ElectorSelectCandidacteElectivepPosiction { 
                        IdCandidate = c.CandidateId,
-                       NameCandidacte = c.Candidate.Name.Name,
-                       PhotoUrlOfCandidacte = c.Candidate.PhotoUrl.PhotoUrl,
-                       PoliticalParty = c.AssigningParty.Name,
-                       LogoPoliticalParty = c.AssigningParty.PoliticalPartyLogo
+                       NameCandidacte = c.Candidate!.Name.Name!,
+                       PhotoUrlOfCandidacte = c.Candidate!.PhotoUrl.PhotoUrl!,
+                       PoliticalParty = c.AssigningParty!.Name,
+                       LogoPoliticalParty = c.AssigningParty.PoliticalPartyLogo.PhotoUrl!
                 })
                 .ToListAsync(); 
             return result;

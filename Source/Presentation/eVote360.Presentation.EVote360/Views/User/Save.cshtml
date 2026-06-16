@@ -1,0 +1,113 @@
+@model dynamic
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    bool isEdit = Model != null && Model.GetType().GetProperty("Id") != null && Model.Id > 0;
+    ViewData["Title"] = isEdit ? "Editar Usuario" : "Nuevo Usuario";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<partial name="_Notifications" />
+
+<div class="container mt-4 admin_view">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-primary text-white d-flex align-items-center">
+                    <i class="bi @(isEdit ? "bi-person-gear" : "bi-person-plus-fill") me-2 fs-5"></i>
+                    <h4 class="mb-0">@ViewData["Title"]</h4>
+                </div>
+                <div class="card-body p-4">
+                    
+                    <form method="post" asp-action="@(isEdit ? "Edit" : "Create")">
+                        
+                        @if (isEdit)
+                        {
+                            <input type="hidden" name="Id" value="@Model.Id" />
+                            <input type="hidden" name="State" value="@Model.State" />
+                        }
+
+                        <h5 class="border-bottom pb-2 mb-3 text-secondary">Datos Personales</h5>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="UserFirstName" class="form-label fw-bold">Primer Nombre</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-person"></i></span>
+                                    <input type="text" id="UserFirstName" name="UserFirstName" value="@(Model?.UserFirstName)" class="form-control" placeholder="Ej. Juan" required />
+                                </div>
+                                <span class="text-danger field-validation-valid" data-valmsg-for="UserFirstName" data-valmsg-replace="true"></span>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label for="UserLastName" class="form-label fw-bold">Apellido</label>
+                                <input type="text" id="UserLastName" name="UserLastName" value="@(Model?.UserLastName)" class="form-control" placeholder="Ej. Pérez" required />
+                                <span class="text-danger field-validation-valid" data-valmsg-for="UserLastName" data-valmsg-replace="true"></span>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="UserEmail" class="form-label fw-bold">Correo Electrónico</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                                <input type="email" id="UserEmail" name="UserEmail" value="@(Model?.UserEmail)" class="form-control" placeholder="ejemplo@correo.com" required />
+                            </div>
+                            <span class="text-danger field-validation-valid" data-valmsg-for="UserEmail" data-valmsg-replace="true"></span>
+                        </div>
+
+                        <h5 class="border-bottom pb-2 mb-3 text-secondary mt-4">Credenciales de Acceso</h5>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="Name" class="form-label fw-bold">Usuario (Login)</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-at"></i></span>
+                                    <input type="text" id="Name" name="Name" value="@(Model?.Name)" class="form-control" placeholder="Nombre de usuario" required />
+                                </div>
+                                <span class="text-danger field-validation-valid" data-valmsg-for="Name" data-valmsg-replace="true"></span>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label for="UserRole" class="form-label fw-bold">Rol en el Sistema</label>
+                                <select id="UserRole" name="UserRole" class="form-select" required>
+                                    <option value="">-- Seleccione un rol --</option>
+                                    <!option value="0" @(Model?.UserRole?.ToString() == "Admin" || (int?)Model?.UserRole == 0 ? "selected" : "")>Administrador</!option>
+                                    <!option value="1" @(Model?.UserRole?.ToString() == "DirigentePolitico" || (int?)Model?.UserRole == 1 ? "selected" : "")>Dirigente Político</!option>
+                                </select>
+                                <span class="text-danger field-validation-valid" data-valmsg-for="UserRole" data-valmsg-replace="true"></span>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="UserPassword" class="form-label fw-bold">Contraseña</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-key"></i></span>
+                                <input type="password" id="UserPassword" name="UserPassword" class="form-control" placeholder="@(isEdit ? "Escriba para cambiar la contraseña..." : "Mínimo 8 caracteres (letras y números)")" @(isEdit ? "" : "required") />
+                            </div>
+                            @if (isEdit)
+                            {
+                                <div class="form-text text-warning"><i class="bi bi-info-circle"></i> Si no desea cambiar la contraseña, escriba su contraseña actual o una nueva. El sistema requiere confirmación.</div>
+                            }
+                            <span class="text-danger field-validation-valid" data-valmsg-for="UserPassword" data-valmsg-replace="true"></span>
+                        </div>
+
+                        <hr class="my-4" />
+
+                        <div class="d-flex justify-content-between align-items-center">
+                            <a asp-action="Index" class="btn btn-outline-secondary">
+                                <i class="bi bi-arrow-left"></i> Volver al Listado
+                            </a>
+                            <button type="submit" class="btn btn-success px-4">
+                                <i class="bi bi-save"></i> @(isEdit ? "Actualizar Usuario" : "Guardar Usuario")
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

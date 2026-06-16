@@ -16,7 +16,7 @@ namespace eVote360.Core.Domain.Entities.PoliticalAssignment
 
         //Navigation Property
 
-        public virtual UserEntitie PoliticalLeader { get; set; } = null;
-        public virtual PartyEntitie PoliticalParty { get; set; } = null;
+        public virtual UserEntitie PoliticalLeader { get; set; } = null!;
+        public virtual PartyEntitie PoliticalParty { get; set; } = null!;
     }
 }

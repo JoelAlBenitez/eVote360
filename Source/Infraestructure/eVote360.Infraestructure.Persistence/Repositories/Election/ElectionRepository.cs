@@ -94,7 +94,7 @@ namespace eVote360.Infraestructure.Persistence.Repositories.Election
                                  PartyId = party.Id,
                                  PartyName = party.Name,
                                  PartyAcronym = party.PoliticalPartyAcronym,
-                                 PartyLog = party.PoliticalPartyLogo
+                                 PartyLog = party.PoliticalPartyLogo.PhotoUrl,
                                  } into g
                                  select new ElectionResult
                                  {

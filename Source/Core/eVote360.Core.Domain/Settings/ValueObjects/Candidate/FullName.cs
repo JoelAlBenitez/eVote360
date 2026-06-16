@@ -7,8 +7,8 @@ namespace eVote360.Core.Domain.Settings.ValueObjects.Candidate
 {
     public sealed record FullName
     {
-        public string Name { get;  init; }
-        public string LastName { get;  init; }
+        public string? Name { get;  init; }
+        public string? LastName { get;  init; }
 
         private FullName() { }
 

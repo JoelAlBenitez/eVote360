@@ -4,16 +4,20 @@ using eVote360.Core.Domain.Common.ValidationResult;
 using eVote360.Core.Domain.Contracts.ServiceValidates.PoliticalAssignment;
 using System.Reflection.Metadata.Ecma335;
 using System.Runtime.InteropServices;
+using eVote360.Core.Domain.Contracts.ServiceValidates.Election;
+
 
 namespace eVote360.Core.Domain.Validators.PoliticalAssignment
 {
     public class PoliticalAssignmentValidator : IPoliticalAssignmentValidator
     {
         private readonly IPoliticalAssignmentDomainService _politicalAssignmentDomainService;
+        private readonly IElectionDomainService _electionDomainService;
 
-        public PoliticalAssignmentValidator(IPoliticalAssignmentDomainService politicalAssignmentDomainService)
+        public PoliticalAssignmentValidator(IPoliticalAssignmentDomainService politicalAssignmentDomainService, IElectionDomainService electionDomainService)
         {
             _politicalAssignmentDomainService = politicalAssignmentDomainService;
+            _electionDomainService = electionDomainService;
         }
 
         public async Task<ValidationResult> ValidatePoliticalAssignment(Entities.PoliticalAssignment.PoliticalAssignment politicalAssignment)
@@ -23,6 +27,7 @@ namespace eVote360.Core.Domain.Validators.PoliticalAssignment
             {
                await ValidatePoliticalParty(politicalAssignment.PoliticalPartyId),
                await validatePoliticalLeader(politicalAssignment.PoliticalLeaderId),
+               await ValidateElectionState()
             };
             errors.AddRange(validations.Where(v => v != null));
             return errors.Any() ? ValidationResult.Failure(errors) : ValidationResult.Success();
@@ -52,5 +57,14 @@ namespace eVote360.Core.Domain.Validators.PoliticalAssignment
 
             return null!;
         }
-    }
+
+        private async Task<Error> ValidateElectionState()
+        {
+           var isElectionActive = await _electionDomainService.ExistActiveElection();
+           if (isElectionActive)
+               return new Error("ASSIGN_LOCKED", "No se pueden realizar asignaciones mientras exista una elección activa en el sistema.");
+            return null!;
+        }
+        
+}
 }

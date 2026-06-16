@@ -15,7 +15,6 @@ using eVote360.Infraestructure.Persistence.Repositories.Candidate;
 using eVote360.Infraestructure.Persistence.Repositories.CandidateAssignment;
 using eVote360.Infraestructure.Persistence.ServicesValidators.CandidateAssignment;
 using eVote360.Infraestructure.Persistence.Services;
-using eVote360.Infraestructure.Persistence.ServicesValidators;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -59,6 +58,7 @@ using eVote360.Core.Domain.Contracts.ServiceValidates.Elector.OCR;
 using eVote360.Infraestructure.Persistence.ServicesValidators.Elector.OcrService;
 using eVote360.Core.Domain.Contracts.Repositories.Elector.Otp;
 using eVote360.Infraestructure.Persistence.Repositories.Elector.OTPCODE;
+using eVote360.Infraestructure.Persistence.ServicesValidators.PoliticalAlliances;
 
 namespace eVote360.IOC.Dependencies
 {

@@ -1,0 +1,104 @@
+@model eVote360.Core.Application.ViewModels.LeaderDashboard.LeaderDashboardViewModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    Layout = "_LeaderLayout";
+    ViewData["Title"] = "Panel del Dirigente";
+}
+
+<div class="container-fluid px-4 mt-4 mb-5">
+    
+    <!-- 1. Encabezado del partido -->
+    <div class="d-flex align-items-center gap-3 mb-4">
+        @if (!string.IsNullOrEmpty(Model.PartyLogoUrl))
+        {
+            <img src="~/img/parties/@Model.PartyLogoUrl" style="height:70px; object-fit: cover;" class="rounded-circle shadow-sm" alt="Logo de @Model.PartyName" />
+        }
+        else
+        {
+            <img src="~/img/evote360-logo.png" style="height:70px; object-fit: cover;" class="rounded-circle shadow-sm" alt="Logo por defecto" />
+        }
+        <div>
+            <h2 class="fw-light text-secondary mb-0">@Model.PartyName</h2>
+            <span class="badge bg-primary rounded-pill">@Model.PartyAcronym</span>
+        </div>
+    </div>
+
+    <!-- 2. Alertas (usando el Notification parcial o el TempData directo según el layout) -->
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show rounded-pill" role="alert">
+            @TempData["Message"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <!-- Fallback a Notifications si se prefiere usar el Componente de Joel -->
+    <partial name="_Notifications" />
+
+    <hr class="text-muted opacity-25 mb-4">
+
+    <!-- 3. Fila de 5 tarjetas de indicadores -->
+    <h4 class="fw-light text-secondary mb-3">Resumen Electoral</h4>
+    <div class="row row-cols-1 row-cols-md-5 g-3">
+        
+        <div class="col">
+            <div class="card shadow-sm border-0 text-center p-3 h-100">
+                <div class="display-5 fw-bold text-success">@Model.ActiveCandidatesCount</div>
+                <div class="text-muted small mt-1">Candidatos Activos</div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card shadow-sm border-0 text-center p-3 h-100">
+                <div class="display-5 fw-bold text-secondary">@Model.InactiveCandidatesCount</div>
+                <div class="text-muted small mt-1">Candidatos Inactivos</div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card shadow-sm border-0 text-center p-3 h-100">
+                <div class="display-5 fw-bold text-primary">@Model.ApprovedAlliancesCount</div>
+                <div class="text-muted small mt-1">Alianzas Aprobadas</div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card shadow-sm border-0 text-center p-3 h-100">
+                <div class="display-5 fw-bold text-warning">@Model.PendingAllianceRequestsCount</div>
+                <div class="text-muted small mt-1">Solicitudes Pendientes</div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card shadow-sm border-0 text-center p-3 h-100">
+                <div class="display-5 fw-bold text-info">@Model.AssignedCandidatesToPositionsCount</div>
+                <div class="text-muted small mt-1">Candidatos Asignados</div>
+            </div>
+        </div>
+
+    </div>
+
+    <hr class="text-muted opacity-25 mt-5 mb-4">
+
+    <!-- 4. Acceso rápido — 3 botones grandes -->
+    <h4 class="fw-light text-secondary mb-3">Accesos Rápidos</h4>
+    <div class="row g-3 mt-2">
+        <div class="col-md-4">
+            <a asp-controller="Candidate" asp-action="Index" class="btn btn-outline-primary w-100 py-3 rounded-pill fw-bold">
+                <i class="bi bi-people me-2"></i> Mis Candidatos
+            </a>
+        </div>
+        <div class="col-md-4">
+            <a asp-controller="PoliticalAlliances" asp-action="Index" class="btn btn-outline-success w-100 py-3 rounded-pill fw-bold">
+                <i class="bi bi-diagram-3 me-2"></i> Alianzas Políticas
+            </a>
+        </div>
+        <div class="col-md-4">
+            <a asp-controller="CandidateAssignment" asp-action="Index" class="btn btn-outline-info w-100 py-3 rounded-pill fw-bold">
+                <i class="bi bi-person-check me-2"></i> Asignar Candidatos
+            </a>
+        </div>
+    </div>
+
+</div>
