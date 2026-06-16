@@ -36,6 +36,7 @@ namespace eVote360.Infraestructure.Persistence.Configurations.PoliticalAlliances
 
             // Relaciones activadas
             
+
             builder.HasOne(x => x.RequestingParty)
                 .WithMany()
                 .HasForeignKey(x => x.RequestingPartyId)
