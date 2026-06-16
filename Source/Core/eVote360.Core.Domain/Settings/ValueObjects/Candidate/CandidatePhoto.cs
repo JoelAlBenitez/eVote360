@@ -7,7 +7,7 @@ namespace eVote360.Core.Domain.Settings.ValueObjects.Candidate
 {
     public sealed record CandidatePhoto
     {
-        public string PhotoUrl { get; init; }
+        public string? PhotoUrl { get; init; }
 
         private CandidatePhoto() { }
 

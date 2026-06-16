@@ -31,5 +31,10 @@ namespace eVote360.Core.Application.ViewModels.Users
         [Display(Name = "Rol de Usuario")]
         [Required(ErrorMessage = "Se requiere un rol de usuario valido")]
         public UserRole UserRole { get; set; }
+
+        [Display(Name = "Username (Login)")]
+        [Required(ErrorMessage = "Se requiere un username valido")]
+        [StringLength(30, MinimumLength = 5, ErrorMessage = "Ingrese un username mayor a 5 caracteres y no mayor a 30")]
+        public required string Name { get; set; }
     }
 }

@@ -1,0 +1,91 @@
+@model IEnumerable<eVote360.Core.Application.ViewModels.Users.UsersViewModel>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Gestión de Usuarios";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml"; 
+}
+
+<partial name="_Notifications" />
+
+<div class="container mt-4 admin_view">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>Usuarios del Sistema</h2>
+        <a asp-action="Create" class="btn btn-primary"><i class="bi bi-person-plus-fill"></i> Nuevo Usuario</a>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-striped table-hover align-middle mb-0">
+                    <thead class="table-dark">
+                        <tr>
+                            <th class="ps-4">Usuario (Login)</th>
+                            <th>Nombre Completo</th>
+                            <th>Correo Electrónico</th>
+                            <th>Rol</th>
+                            <th>Estado</th>
+                            <th class="text-end pe-4">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null && Model.Any())
+                        {
+                            foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td class="ps-4 fw-bold">@item.Name</td>
+                                    <td>@item.UserFirstName @item.UserLastName</td>
+                                    <td><a href="mailto:@item.UserEmail" class="text-decoration-none">@item.UserEmail</a></td>
+                                    <td>
+                                        @if (item.UserRole == eVote360.Core.Domain.Common.Enums.UserRole.Admin)
+                                        {
+                                            <span class="badge bg-primary"><i class="bi bi-shield-lock-fill"></i> Administrador</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-info text-dark"><i class="bi bi-person-badge-fill"></i> Dirigente Político</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (item.State)
+                                        {
+                                            <span class="badge bg-success">Activo</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-secondary">Inactivo</span>
+                                        }
+                                    </td>
+                                    <td class="text-end pe-4">
+                                        <div class="btn-group" role="group">
+                                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm" title="Editar">
+                                                <i class="bi bi-pencil-square"></i>
+                                            </a>
+                                            <form asp-action="AlterState" asp-route-id="@item.Id" method="post" class="d-inline ms-1">
+                                                <button type="submit" class="btn btn-sm @(item.State ? "btn-danger" : "btn-success")" 
+                                                        onclick="return confirm('¿Está seguro que desea @(item.State ? "desactivar" : "activar") este usuario?');"
+                                                        title="@(item.State ? "Desactivar" : "Activar")">
+                                                    <i class="bi @(item.State ? "bi-person-x-fill" : "bi-person-check-fill")"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="6" class="text-center py-5 text-muted">
+                                    <i class="bi bi-people fs-1 d-block mb-3"></i>
+                                    No hay usuarios registrados en el sistema.
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

@@ -22,5 +22,7 @@ namespace eVote360.Core.Application.ViewModels.Candidates
         public IFormFile? PhotoFile { get; set; }
         
         public string? CurrentPhotoUrl { get; set; }
+        
+        public bool HasParticipatedInElection { get; set; }
     }
 }

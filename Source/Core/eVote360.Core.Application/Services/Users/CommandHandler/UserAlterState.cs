@@ -28,31 +28,35 @@ namespace eVote360.Core.Application.Services.Users.CommandHandler
 
         public async Task<ValidationResult> ExecuteAsync(int id, bool state)
         {
-            var user = await _repository.GetByIdEntitie(id);
-
-            if (user == null)
-            {
-                var errors = new List<Error> { new Error("USER ST", "No se encontro el usuario") };
+                 var user = await _repository.GetByIdEntitie(id);
+            
+                if (user == null)
+                {
+                var errors = new List<Error> { new Error("USER ST", "No se encontró el usuario solicitado.") };
                 return ValidationResult.Failure(errors);
-            }
+                }
+            
+                if (state == false)
+                {
+                  user.State = false;
+                
+                  var validationResult = await _validator.ValidateUser(user, "DummyPass1!", _sessionUser.GetUserId());
+                
+                if (!validationResult.IsValid)
+                    {
+                    return validationResult;
+                    }
+                }
 
-            user.State = false;
-
-            var validationResult = await _validator.ValidateUser(user, "Contrasena123!",_sessionUser.GetUserId());
-
-            if (!validationResult.IsValid)
-            {
-                return validationResult;
-            }
-
-            var result = await _repository.AlterState(id, state);
-
-            if (!result)
-            {
-                var errors = new List<Error> { new Error("USER ST", "No se pudo cambiar el estado del Usuario") };
+                var result = await _repository.AlterState(id, state);
+            
+                if (!result)
+                {
+                var errors = new List<Error> { new Error("USER ST", "No fue posible actualizar el estado en la base de datos.") };
                 return ValidationResult.Failure(errors);
-            }
-            return ValidationResult.Success();
+                }
+            
+                return ValidationResult.Success();
         }
     }
 }
