@@ -92,7 +92,7 @@ namespace eVote360.Core.Domain.Validators.ElectorValidator.ProcessVotesElector
                 return ValidationResult.Failure(errors);
             }
 
-             
+         
             return ValidationResult.Success();
         }
     }

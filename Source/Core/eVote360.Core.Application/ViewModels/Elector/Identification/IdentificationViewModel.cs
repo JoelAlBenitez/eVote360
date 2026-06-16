@@ -1,8 +1,6 @@
-﻿
+﻿using System.ComponentModel.DataAnnotations;
 
-using System.ComponentModel.DataAnnotations;
-
-namespace eVote360.Core.Application.Services.Elector.Identification
+namespace eVote360.Core.Application.ViewModels.Elector.Identification
 {
     public sealed class IdentificationViewModel
     {

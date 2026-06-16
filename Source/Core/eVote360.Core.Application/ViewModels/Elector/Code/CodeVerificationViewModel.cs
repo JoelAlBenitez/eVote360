@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace eVote360.Core.Application.Services.Elector.Code
+namespace eVote360.Core.Application.ViewModels.Elector.Code
 {
     public sealed class CodeVerificationViewModel
     {

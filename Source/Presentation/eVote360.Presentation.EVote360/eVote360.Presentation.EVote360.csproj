@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Core\eVote360.Core.Application\eVote360.Core.Application.csproj" />
-    <ProjectReference Include="..\..\Core\eVote360.Core.Domain\eVote360.Core.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>
