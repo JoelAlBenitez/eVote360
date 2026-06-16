@@ -1,0 +1,115 @@
+@model List<eVote360.Core.Application.ViewModels.Elector.Dashboard.ElectorCandidactesViewModel>
+@{
+    ViewData["Title"] = "Selección de Candidato";
+    int idElectivePosition = ViewBag.IdElectivePosition;
+}
+
+<div class="row mb-4">
+    <div class="col-12 d-flex align-items-center">
+        <a asp-action="Dashboard" class="btn btn-link text-decoration-none p-0 me-3">
+            <i class="bi bi-arrow-left fs-4"></i>
+        </a>
+        <h2 class="fw-bold mb-0">Seleccione su Candidato</h2>
+    </div>
+</div>
+
+<form asp-action="SaveSelection" method="post" id="selectionForm">
+    <input type="hidden" name="idElectivePosition" value="@idElectivePosition" />
+    <input type="hidden" name="idCandidate" id="selectedCandidateId" value="" />
+    <input type="hidden" name="noApply" id="noApplyInput" value="false" />
+
+    <div class="row g-4">
+        @foreach (var candidate in Model)
+        {
+            <div class="col-md-6 col-lg-4">
+                <div class="card ev-card h-100 border-0 shadow-sm candidate-card cursor-pointer position-relative overflow-hidden" 
+                     onclick="selectCandidate(@candidate.IdCandidacte, this)">
+                    
+                    <div class="position-absolute top-0 end-0 p-2 z-1">
+                        <img src="@candidate.LogoPoliticalParty" alt="@candidate.PoliticalParty" class="bg-white rounded shadow-sm border p-1" style="width: 50px; height: 50px; object-fit: contain;" />
+                    </div>
+
+                    <div class="card-body p-0 d-flex flex-column">
+                        <div class="candidate-photo-container bg-light" style="height: 250px; overflow: hidden;">
+                            <img src="@candidate.PhotoUrlCandidacte" alt="@candidate.NameCandidacte" class="w-100 h-100 object-fit-cover transition-scale" />
+                        </div>
+                        
+                        <div class="p-4 text-center">
+                            <h5 class="fw-bold mb-1">@candidate.NameCandidacte</h5>
+                            <p class="text-primary small fw-medium mb-3">@candidate.PoliticalParty</p>
+                            
+                            <div class="custom-radio-check border-2 border rounded-pill py-2 px-3 d-inline-block transition-all">
+                                <i class="bi bi-circle me-2"></i> Seleccionar
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="selection-overlay d-none position-absolute top-0 start-0 w-100 h-100 bg-primary opacity-10 d-flex align-items-center justify-content-center z-0">
+                    </div>
+                </div>
+            </div>
+        }
+
+        <div class="col-md-6 col-lg-4">
+            <div class="card ev-card h-100 border-0 shadow-sm candidate-card cursor-pointer border-2 border-dashed d-flex align-items-center justify-content-center text-center p-5"
+                 onclick="selectNoApply(this)">
+                <div>
+                    <i class="bi bi-slash-circle display-4 text-muted mb-3"></i>
+                    <h5 class="fw-bold">No seleccionar candidato</h5>
+                    <p class="text-muted small">Su voto será registrado como "No aplica" para esta posición.</p>
+                    <div class="custom-radio-check border-2 border rounded-pill py-2 px-3 d-inline-block transition-all mt-3">
+                        <i class="bi bi-circle me-2"></i> Seleccionar
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-5 mb-5 sticky-bottom bg-light py-3 border-top">
+        <div class="col-12 text-center">
+            <button type="submit" class="btn btn-success btn-lg px-5 fw-bold rounded-pill shadow-lg py-3 w-100 w-md-auto" id="submitSelectionBtn" disabled>
+                Guardar Selección <i class="bi bi-check-lg ms-2"></i>
+            </button>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    <style>
+        .candidate-card:hover .transition-scale {
+            transform: scale(1.05);
+        }
+        .transition-scale { transition: transform 0.3s ease; }
+        .cursor-pointer { cursor: pointer; }
+        .candidate-card.selected {
+            border: 3px solid var(--ev-primary) !important;
+            background-color: #f0f7ff;
+        }
+        .candidate-card.selected .custom-radio-check {
+            background-color: var(--ev-primary);
+            color: white;
+            border-color: var(--ev-primary);
+        }
+        .candidate-card.selected .custom-radio-check i::before {
+            content: "\f26a";
+        }
+        .transition-all { transition: all 0.2s ease; }
+    </style>
+    <script>
+        function selectCandidate(id, element) {
+            document.querySelectorAll('.candidate-card').forEach(c => c.classList.remove('selected'));
+            element.classList.add('selected');
+            document.getElementById('selectedCandidateId').value = id;
+            document.getElementById('noApplyInput').value = 'false';
+            document.getElementById('submitSelectionBtn').disabled = false;
+        }
+
+        function selectNoApply(element) {
+            document.querySelectorAll('.candidate-card').forEach(c => c.classList.remove('selected'));
+            element.classList.add('selected');
+            document.getElementById('selectedCandidateId').value = '';
+            document.getElementById('noApplyInput').value = 'true';
+            document.getElementById('submitSelectionBtn').disabled = false;
+        }
+    </script>
+}

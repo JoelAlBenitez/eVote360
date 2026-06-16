@@ -1,0 +1,56 @@
+@model eVote360.Core.Application.ViewModels.Elector.Identification.IdentificationViewModel
+@{
+    ViewData["Title"] = "Identificación del Elector";
+}
+
+<div class="row justify-content-center animate__animated animate__fadeIn">
+    <div class="col-md-8 col-lg-6">
+        <div class="text-center mb-5">
+            <h1 class="display-5 fw-bold text-primary mb-3">Bienvenido a eVote360</h1>
+            <p class="lead text-muted">Su participación fortalece nuestra democracia. Por favor, identifíquese para iniciar su proceso de votación.</p>
+        </div>
+
+        <div class="card ev-card border-0 shadow-lg overflow-hidden">
+            <div class="bg-primary py-3 px-4">
+                <h5 class="text-white mb-0"><i class="bi bi-person-badge-fill me-2"></i>Validación de Identidad</h5>
+            </div>
+            <div class="card-body p-4 p-md-5">
+                <form asp-action="IdentifyElector" method="post">
+                    <div class="mb-4">
+                        <label asp-for="Identification" class="form-label fw-bold text-dark">Cédula de Identidad</label>
+                        <div class="input-group input-group-lg border rounded-3 overflow-hidden shadow-sm">
+                            <span class="input-group-text bg-white border-0"><i class="bi bi-card-text text-primary"></i></span>
+                            <input asp-for="Identification" class="form-control border-0 px-2" placeholder="Ej: 00100000000" maxlength="11" autocomplete="off" />
+                        </div>
+                        <span asp-validation-for="Identification" class="text-danger small mt-1 d-block"></span>
+                        <div class="form-text mt-2">Ingrese sus 11 dígitos sin guiones ni espacios.</div>
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary btn-lg fw-bold rounded-pill py-3 shadow">
+                            Continuar <i class="bi bi-arrow-right ms-2"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="mt-5 text-center p-4 bg-white rounded-4 shadow-sm">
+            <h6 class="fw-bold mb-3">Información Importante</h6>
+            <div class="row text-start g-3">
+                <div class="col-12 d-flex align-items-center">
+                    <i class="bi bi-shield-check text-success fs-4 me-3"></i>
+                    <span class="text-muted small">Su voto es secreto y está protegido por los más altos estándares de seguridad.</span>
+                </div>
+                <div class="col-12 d-flex align-items-center">
+                    <i class="bi bi-camera-fill text-primary fs-4 me-3"></i>
+                    <span class="text-muted small">El siguiente paso requerirá que suba una foto de su cédula para validación biométrica.</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

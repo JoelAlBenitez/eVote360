@@ -1,0 +1,33 @@
+name: eVote360 Pro — CI Architecture & Build Gatekeeper
+
+on:
+  push:
+    branches:
+      - 'feature/*'      # Valida que el desarrollador no rompa la compilación en su propia rama
+  pull_request:
+    branches:
+      - development      # Valida de manera obligatoria antes de integrar a desarrollo
+
+jobs:
+  verify-and-build:
+    name: Compilation & Code Integrity Check
+    runs-on: ubuntu-latest
+
+    steps:
+    # 1. Descarga del código fuente
+    - name: Checkout Code Repository
+      uses: actions/checkout@v4
+
+    # 2. Configuración del entorno .NET para el proyecto
+    - name: Setup .NET SDK
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '9.0.x' # Ajustar a la versión exacta de .NET que utilicen
+
+    # 3. Restaurar paquetes NuGet (Validación de dependencias limpias)
+    - name: Restore Project Dependencies
+      run: dotnet restore
+
+    # 4. Compilación estricta en modo Release (Falla si hay errores de sintaxis, tipos o capas)
+    - name: Strict Compile Verification
+      run: dotnet build --no-restore --configuration Release

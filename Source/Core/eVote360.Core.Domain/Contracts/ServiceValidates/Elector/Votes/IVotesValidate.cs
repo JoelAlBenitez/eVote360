@@ -1,0 +1,10 @@
+﻿namespace eVote360.Core.Domain.Contracts.ServiceValidates.Elector.Votes
+{
+    public interface IVotesValidate
+    {
+        Task<bool> ExistVoteByCitizen(string identification);
+        Task<bool> CitizenParticipatedInElection(Guid Id, string IdentificationCitizens);
+        Task<bool> ElectivePositionUsedInElections(int Id);
+
+    }
+}

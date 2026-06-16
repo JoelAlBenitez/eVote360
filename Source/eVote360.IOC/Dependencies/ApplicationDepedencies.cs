@@ -1,0 +1,169 @@
+using eVote360.Core.Application.Contracts.Alliance.Commands;
+using eVote360.Core.Application.Contracts.Alliance.Query;
+using eVote360.Core.Application.Contracts.Authentication.Query;
+using eVote360.Core.Application.Contracts.Candidate.Commands;
+using eVote360.Core.Application.Contracts.Candidate.Query;
+using eVote360.Core.Application.Contracts.Citizens.Command;
+using eVote360.Core.Application.Contracts.Citizens.Query;
+using eVote360.Core.Application.Contracts.Election.Commands;
+using eVote360.Core.Application.Contracts.Election.Query;
+using eVote360.Core.Application.Contracts.ElectivePosictions.Commands;
+using eVote360.Core.Application.Contracts.ElectivePosictions.Query;
+using eVote360.Core.Application.Contracts.ElectivePosictions.QueryServices;
+using eVote360.Core.Application.Contracts.PoliticalLeaderAssignment.Commands;
+using eVote360.Core.Application.Contracts.PoliticalLeaderAssignment.Query;
+using eVote360.Core.Application.Services.Alliance.CommandHandler;
+using eVote360.Core.Application.Services.Alliance.QueryHandler;
+using eVote360.Core.Application.Services.Authentication_Autorization.Query;
+using eVote360.Core.Application.Services.Candidate.CommandHandler;
+using eVote360.Core.Application.Services.Candidate.Query;
+using eVote360.Core.Application.Services.Admin;
+using eVote360.Core.Application.Services.Citizens.CommandHandler;
+using eVote360.Core.Application.Services.Citizens.Query;
+using eVote360.Core.Application.Services.ElectivePosiction.CommandHandler;
+using eVote360.Core.Application.Services.ElectivePosiction.Query;
+using eVote360.Core.Application.Services.PoliticalParty.CommandHandler;
+using eVote360.Core.Application.Services.PoliticalParty.Query;
+using eVote360.Core.Application.Services.Users.CommandHandler;
+using eVote360.Core.Application.Services.Users.Query;
+using eVote360.Core.Application.Services.Election.CommandHandler;
+using eVote360.Core.Application.Services.Election.Query;
+using eVote360.Core.Application.Services.PoliticalLeaderAssignment.CommandHandler;
+using eVote360.Core.Application.Services.PoliticalLeaderAssignment.Query;
+using Microsoft.Extensions.DependencyInjection;
+using eVote360.Core.Application.Contracts.Users.Commands;
+using eVote360.Core.Application.Contracts.Users.Query;
+using eVote360.Core.Application.Contracts.PoliticalParty.Commands;
+using eVote360.Core.Application.Contracts.PoliticalParty.Query;
+using eVote360.Core.Application.Contracts.Admin.Query;
+using eVote360.Core.Application.Contracts.CandidateAssignment.Commands;
+using eVote360.Core.Application.Contracts.CandidateAssignment.Query;
+using eVote360.Core.Application.Services.CandidateAssignment.CommandHandler;
+using eVote360.Core.Application.Services.CandidateAssignment.QueryHandler;
+using eVote360.Core.Domain.Contracts.Validators.CandidateAssignment;
+using eVote360.Core.Domain.Validators.AssignmentValidator;
+using eVote360.Core.Application.Contracts.Elector.Commands.Code;
+using eVote360.Core.Application.Services.Elector.CommandHandler.Code;
+using eVote360.Core.Application.Contracts.Elector.Commands.Identification;
+using eVote360.Core.Application.Services.Elector.CommandHandler.Identification;
+using eVote360.Core.Application.Contracts.Elector.Commands.Votes;
+using eVote360.Core.Application.Services.Elector.CommandHandler.Votes;
+using eVote360.Core.Domain.Contracts.Repositories.Elector.SelectPorcess;
+using eVote360.Core.Application.Services.Elector.Query;
+using eVote360.Core.Application.Contracts.Elector.Query;
+
+namespace eVote360.IOC.Dependencies
+{
+    public static class ApplicationDepedencies
+    {
+
+        public static IServiceCollection AddApplicationDepedencies(this IServiceCollection services)
+        {
+
+            //ElectivePosictions
+            services.AddScoped<IElectivePosictionsCreateCommand, ElectivePosictionsCreate>();
+            services.AddScoped<IElectivePosictionsAlterState, ElectivePosictionsAlterState>();
+            services.AddScoped<IElectivePosictionsUpdateCommand, ElectivePosictionsUpdate>();
+
+            services.AddScoped<IElectivePosictionsGetActiveQuery, ElectivePosictionsGetActive>();
+            services.AddScoped<IElectivePosictionsGetAllQuery, ElectivePosictionsGetAll>();
+            services.AddScoped<IElectivePosictionsGetByIdQuery, ElectivePosictionsGetById>();
+            services.AddScoped<IElectivePosictionsGetElectivesPosictionsByDateQuery, ElectivePosictionsGetElectivesPosictionsByDate>();
+
+            //PoliticalAlliances
+            services.AddScoped<ICreateAllianceCommand, CreateAllianceCommandHandler>();
+            services.AddScoped<IAcceptAllianceCommand, AcceptAllianceCommandHandler>();
+            services.AddScoped<IRejectAllianceCommand, RejectAllianceCommandHandler>();
+            services.AddScoped<IDeleteAllianceRequestCommand, DeleteAllianceRequestCommandHandler>();
+            services.AddScoped<IDeleteActiveAllianceCommand, DeleteActiveAllianceCommandHandler>();
+
+            services.AddScoped<IGetPendingReceivedAlliancesQuery, GetPendingReceivedAlliancesQueryHandler>();
+            services.AddScoped<IGetSentAllianceRequestsQuery, GetSentAllianceRequestsQueryHandler>();
+            services.AddScoped<IGetActiveAlliancesQuery, GetActiveAlliancesQueryHandler>();
+            services.AddScoped<IGetAllianceByIdQuery, GetAllianceByIdQueryHandler>();
+
+            //CandidateAssignment
+            services.AddScoped<ICreateAssignmentCommand, CreateAssignmentCommandHandler>();
+            services.AddScoped<IDeleteAssignmentCommand, DeleteAssignmentCommandHandler>();
+            services.AddScoped<IGetAssignmentsByPartyQuery, GetAssignmentsByPartyQueryHandler>();
+            services.AddScoped<IGetAssignmentByIdQuery, GetAssignmentByIdQueryHandler>();
+            services.AddScoped<IGetEligibleCandidatesForPositionQuery, GetEligibleCandidatesForPositionQueryHandler>();
+            services.AddScoped<IAssignmentValidator, AssignmentValidator>();
+
+            //Citizens
+            services.AddScoped<ICitizensAlterStateCommand, CitizensAlterState>();
+            services.AddScoped<ICitizensCreateCommand, CitizensCreate>();
+            services.AddScoped<ICitizensEditCommand, CitizensUpdate>();
+
+            services.AddScoped<ICitizensGetActiveQuery, CitizensGetAllActive>();
+            services.AddScoped<ICitizensGetAllQuery, CitizensGetAll>();
+            services.AddScoped<ICitizensGetByIdQuery, CitizensGetById>();
+
+            //Candidates
+            services.AddScoped<ICandidateCreateCommand, CandidateCreate>();
+            services.AddScoped<ICandidateChangeStateCommand, CandidateChangeState>();
+            services.AddScoped<ICandidateUpdateCommand, CandidateUpdate>();
+
+            services.AddScoped<ICandidateGetAllPartyQuery, CandidateGetAllParty>();
+            services.AddScoped<ICandidateGetByIdQuery, CandidateGetById>();
+
+            //Users
+            services.AddScoped<IUserCreateCommand, UserCreate>();
+            services.AddScoped<IUserEditCommand, UserEdit>();
+            services.AddScoped<IUserAlterStateCommand, UserAlterState>();
+
+            services.AddScoped<IUserGetAllQuery, UserGetAll>();
+            services.AddScoped<IUserGetByIdQuery, UserGetById>();
+            services.AddScoped<IUserGetAllActivesQuery, UserGetAllActives>();
+
+
+            //Political Parties
+            services.AddScoped<IPoliticalPartyCreateCommand, PoliticalPartyCreate>();
+            services.AddScoped<IPoliticalPartyUpdateCommand, PoliticalPartyUpdate>();
+            services.AddScoped<IPoliticalPartyStateCommand, PoliticalPartyState>();
+
+            services.AddScoped<IPoliticalPartyGetAllQuery, PoliticalPartyGetAll>();
+            services.AddScoped<IPoliticalPartyGetByIdQuery, PoliticalPartyGetById>();
+            services.AddScoped<IPoliticalPartyGetActiveQuery, PoliticalPartyGetActive>();
+
+            //Election
+            services.AddScoped<IElectionCreateCommand, ElectionCreate>();
+            services.AddScoped<IElectionUpdateCommand, ElectionUpdate>();
+            services.AddScoped<IElectionAlterStateCommand, ElectionAlterState>();
+
+            services.AddScoped<IElectionGetAllQuery, ElectionGetAll>();
+            services.AddScoped<IElectionGetByIdQuery, ElectionGetById>();
+            services.AddScoped<IGetElectionReportQuery, GetElectionReport>();
+
+            //Leader assignment
+            services.AddScoped<ILeaderAssignmentCreateCommand, LeaderAssignmentCreate>();
+            services.AddScoped<ILeaderAssignmentUpdateCommand, LeaderAssignmentUpdate>();
+            services.AddScoped<ILeaderAssignmentAlterStateCommand, LeaderAssignmentAlterState>();
+            services.AddScoped<ILeaderAssignmentGetAllQuery, LeaderAssignmentGetAll>();
+            services.AddScoped<ILeaderAssignmentGetByIdQuery, LeaderAssignmentGetById>();
+
+            //Authentication
+
+            services.AddScoped<ILoginQuery, AuthenticationLoggedUserQuery>();
+
+            //admin
+            services.AddScoped<ICountRegisterAdminQuery, CountRegisterQueryHandler>();
+            services.AddScoped<Core.Application.Contracts.Admin.Query.IElectionByYearQuery, ElectionByYear>();
+            services.AddScoped<IAvailableYearsQuery, AvailableYearQuery>();
+
+            //elector
+            services.AddScoped<ICodeVerificationCommand, CodeVerificationCommandHandler>();
+            services.AddScoped<IIdentificationVerifyCommand, IdentificationVerifyCommandHandler>();
+            services.AddScoped<IIdentificationVerifyCompareIdentificationByImg, IdentificationVerifyCompareIdentificationByImg>();
+            services.AddScoped<IOcrVerificationCommand, OcrVerificationCommandHandler>();
+            services.AddScoped<ISelectionCandidateByIdElectivePosictionQuery, SelectionCandidacteByIdElectivePositionQuery>();
+            services.AddScoped<IWindowElectivePositionQuery, WindowElectivePositionQuery>();
+            services.AddScoped<IProcessVoteElectorCommand, ProcessVoteElectorCommandHandler>();
+
+            //
+
+            return services;
+        }
+
+    }
+}

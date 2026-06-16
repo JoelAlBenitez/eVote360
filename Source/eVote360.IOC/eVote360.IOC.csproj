@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Infraestructure\eVote360.Infraestructure.Shared\eVote360.Infraestructure.Shared.csproj" />
+    <ProjectReference Include="..\Core\eVote360.Core.Application\eVote360.Core.Application.csproj" />
+    <ProjectReference Include="..\Core\eVote360.Core.Domain\eVote360.Core.Domain.csproj" />
+    <ProjectReference Include="..\Infraestructure\eVote360.Infraestructure.Persistence\eVote360.Infraestructure.Persistence.csproj" />
+  </ItemGroup>
+
+</Project>

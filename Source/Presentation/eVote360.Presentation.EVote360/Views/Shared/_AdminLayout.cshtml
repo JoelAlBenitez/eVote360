@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - eVote360</title>
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/admin-layout.css" asp-append-version="true" />
+
+    @await RenderSectionAsync("Styles", required: false)
+</head>
+<body>
+
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <button class="sidebar-toggle" id="sidebarToggle" aria-label="Abrir menú">
+        <i class="bi bi-list"></i>
+    </button>
+
+    <aside class="admin-sidebar" id="adminSidebar">
+
+        <div class="sidebar-header">
+            <div class="sidebar-brand">
+                <span class="brand-e">e</span>Vote<span class="brand-accent">360</span>
+            </div>
+            <p class="sidebar-subtitle">Panel Administrativo</p>
+        </div>
+
+        <nav class="sidebar-menu" role="navigation" aria-label="Menú principal">
+            <ul>
+
+                <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Admin" && ViewContext.RouteData.Values["action"]?.ToString() == "Index" ? "active" : "")">
+                    <a asp-controller="Admin" asp-action="Index">
+                        <i class="bi bi-grid-fill"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+
+                <li class="menu-divider"></li>
+
+                <li class="menu-section-label">Mantenimiento</li>
+
+                <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "ElectivePosictions" ? "active" : "")">
+                    <a asp-controller="ElectivePosictions" asp-action="Index">
+                        <i class="bi bi-award-fill"></i>
+                        <span>Puestos Electivos</span>
+                    </a>
+                </li>
+
+                <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Citizen" ? "active" : "")">
+                    <a asp-controller="Citizen" asp-action="Index">
+                        <i class="bi bi-people-fill"></i>
+                        <span>Ciudadanos</span>
+                    </a>
+                </li>
+
+                <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "User" ? "active" : "")">
+                    <a asp-controller="User" asp-action="Index">
+                        <i class="bi bi-person-gear"></i>
+                        <span>Usuarios</span>
+                    </a>
+                </li>
+
+
+                <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "PoliticalParty" ? "active" : "")">
+                    <a asp-controller="PoliticalParty" asp-action="Index">
+                        <i class="bi bi-flag-fill"></i>
+                         <span>Partidos Políticos</span>
+                        
+                    </a>
+                    6
+                </li>
+
+
+                <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "PoliticalLeaderAssignment" ? "active" : "")">
+                     <a asp-controller="PoliticalLeaderAssignment" asp-action="Index">
+                         <i class="bi bi-person-badge-fill"></i>
+                         <span>Asignar Dirigente</span>
+                        
+                    </a>
+                </li>
+
+
+
+                <li class="menu-divider"></li>
+
+                <li class="menu-section-label">Electoral</li>
+
+                <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Admin" && ViewContext.RouteData.Values["action"]?.ToString() == "SelectYear" ? "active" : "")">
+                    <a asp-controller="Admin" asp-action="SelectYear">
+                        <i class="bi bi-calendar-event-fill"></i>
+                        <span>Elecciones</span>
+                    </a>
+                </li>
+
+            </ul>
+        </nav>
+
+        <div class="sidebar-footer">
+            <img src="~/logo/logo.png" alt="Logo eVote360" />
+        </div>
+
+    </aside>
+
+    <div class="admin-main">
+
+        <header class="admin-header">
+            <div class="header-actions">
+                <div class="user-info">
+                    <i class="bi bi-person-circle"></i>
+                    <span>@(User.Identity?.Name ?? "Administrador")</span>
+                </div>
+
+                <button class="theme-toggle-btn" id="theme-toggle" title="Cambiar tema visual">
+                    <i class="bi bi-moon-stars-fill"></i>
+                    <span>Oscuro</span>
+                </button>
+
+                <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="logout-btn">
+                        <i class="bi bi-box-arrow-right"></i>
+                        <span>Salir</span>
+                    </button>
+                </form>
+            </div>
+        </header>
+
+        <main class="content-wrapper" role="main">
+            @await Html.PartialAsync("_Notifications")
+            @RenderBody()
+        </main>
+
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/admin-layout.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

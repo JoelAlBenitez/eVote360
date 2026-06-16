@@ -1,0 +1,74 @@
+@model List<eVote360.Core.Application.ViewModels.Elector.Dashboard.SelectionCandidacteByPositionElectiveViewModel>
+@{
+    ViewData["Title"] = "Confirmar Votación";
+}
+
+<div class="row justify-content-center">
+    <div class="col-lg-10">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold text-dark">Resumen de su Elección</h2>
+            <p class="text-muted lead">Por favor, revise sus selecciones cuidadosamente antes de finalizar el proceso.</p>
+        </div>
+
+        <div class="row g-4 mb-5">
+            @foreach (var selection in Model)
+            {
+                <div class="col-md-6">
+                    <div class="card ev-card border-0 shadow-sm overflow-hidden h-100">
+                        <div class="bg-light py-2 px-3 border-bottom d-flex justify-content-between align-items-center">
+                            <span class="fw-bold text-primary small">@selection.PositionName</span>
+                            <span class="badge bg-primary rounded-pill">#@selection.NumberPoliticalParty</span>
+                        </div>
+                        <div class="card-body p-3 d-flex align-items-center">
+                            @if (selection.NotSelectionCandidate)
+                            {
+                                <div class="bg-light rounded-circle p-3 me-3">
+                                    <i class="bi bi-slash-circle fs-3 text-muted"></i>
+                                </div>
+                                <div>
+                                    <h6 class="fw-bold mb-0 text-muted">No seleccionado</h6>
+                                    <small class="text-muted">Voto en blanco para esta posición</small>
+                                </div>
+                            }
+                            else
+                            {
+                                <img src="@selection.PhotoUrlCandidacte" alt="@selection.NameCandidacte" class="rounded-circle border p-1 me-3 shadow-sm" style="width: 65px; height: 65px; object-fit: cover;" />
+                                <div>
+                                    <h6 class="fw-bold mb-0">@selection.NameCandidacte</h6>
+                                    <div class="d-flex align-items-center mt-1">
+                                        <img src="@selection.LogoPoliticalParty" alt="@selection.PoliticalParty" style="width: 20px; height: 20px; object-fit: contain;" class="me-2" />
+                                        <small class="text-primary fw-medium">@selection.PoliticalParty</small>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <div class="card ev-card border-0 bg-white shadow-lg rounded-5 overflow-hidden">
+            <div class="card-body p-4 p-md-5 text-center">
+                <div class="mb-4">
+                    <i class="bi bi-shield-check display-1 text-success mb-3"></i>
+                    <h3 class="fw-bold">Declaración de Votación</h3>
+                    <p class="text-muted">Al hacer clic en "Emitir mi Voto", confirmo que las selecciones mostradas arriba representan fielmente mi voluntad soberana y entiendo que esta acción es definitiva e irreversible.</p>
+                </div>
+
+                <form asp-action="ProcessVote" method="post">
+                    <div class="d-grid gap-3 col-md-8 mx-auto">
+                        <button type="submit" class="btn btn-primary btn-lg fw-bold rounded-pill py-3 shadow-lg">
+                            <i class="bi bi-check2-all me-2"></i> EMITIR MI VOTO AHORA
+                        </button>
+                        <a asp-action="Dashboard" class="btn btn-outline-secondary rounded-pill py-2">
+                            Corregir selecciones
+                        </a>
+                    </div>
+                </form>
+            </div>
+            <div class="bg-primary py-2 text-center text-white opacity-75 small">
+                PROCESO ELECTORAL eVote360 - JCE REPÚBLICA DOMINICANA
+            </div>
+        </div>
+    </div>
+</div>

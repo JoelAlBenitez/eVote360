@@ -1,0 +1,40 @@
+@model eVote360.Core.Application.ViewModels.CandidateAssignment.CreateAssignmentViewModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    Layout = "_LeaderLayout";
+    ViewData["Title"] = "Asignar Candidato";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Asignar Candidato para @Model.ElectivePositionName</h5>
+                </div>
+                <div class="card-body">
+                    <form method="post" asp-action="Create">
+                        <input type="hidden" asp-for="ElectivePositionId" />
+                        
+                        <div class="mb-4">
+                            <label asp-for="CandidateId" class="form-label fw-bold">Seleccione el Candidato</label>
+                            <select asp-for="CandidateId" asp-items="Model.EligibleCandidates" class="form-select">
+                                <option value="">-- Seleccione un candidato --</option>
+                            </select>
+                            <span asp-validation-for="CandidateId" class="text-danger small"></span>
+                        </div>
+
+                        <div class="d-flex justify-content-between mt-4">
+                            <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+                            <button type="submit" class="btn btn-primary">Asignar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
