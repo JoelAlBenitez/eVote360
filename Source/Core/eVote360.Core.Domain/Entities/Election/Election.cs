@@ -1,11 +1,9 @@
 ﻿using eVote360.Core.Domain.Commom.BaseEntity;
 using eVote360.Core.Domain.Common.Enums;
 using eVote360.Core.Domain.Settings.ValueObjects.ElectionDate;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using eVote360.Core.Domain.Entities.Elector.Vote;
+using eVote360.Core.Domain.Entities.Elector.AuditVote;
+using ElectivePositionEntity = eVote360.Core.Domain.Entities.ElectivePosition.ElectivePositions;
 
 namespace eVote360.Core.Domain.Entities.Election
 {
@@ -15,5 +13,11 @@ namespace eVote360.Core.Domain.Entities.Election
         public required ElectionDate ElectionDate { get; set; }
 
         public required ElectionState ElectionState { get; set; }
+
+        //Navigation Properties
+        public virtual IReadOnlyCollection<Votes> Votes { get; set; } = new List<Votes>();
+        public virtual IReadOnlyCollection<AuditVotes> AuditVotes{ get; set; } = new List<AuditVotes>();
+
+        public virtual IReadOnlyCollection<ElectivePositionEntity> ElectivePositions { get; set; } = new List<ElectivePositionEntity>();
     }
 }
