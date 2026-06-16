@@ -21,7 +21,7 @@ namespace eVote360.Infraestructure.Persistence.ServicesValidators.ElectivePoscti
             return result!.State;
         }
 
-     
+
         public async Task<bool> ExistById(int Id)
         {
             return await _context.ElectivePosition
@@ -33,7 +33,7 @@ namespace eVote360.Infraestructure.Persistence.ServicesValidators.ElectivePoscti
         {
             var elective = await _context.ElectivePosition
                 .AsNoTracking()
-                .FirstOrDefaultAsync (x => x.Name == Name);
+                .FirstOrDefaultAsync(x => x.Name == Name);
             return elective != null;
         }
 
@@ -42,16 +42,16 @@ namespace eVote360.Infraestructure.Persistence.ServicesValidators.ElectivePoscti
             var elective = await _context.ElectivePosition
                 .AsNoTracking()
                 .FirstOrDefaultAsync(e => e.Name == Name && e.Id != Id && e.State != State);
-           return elective != null;
+            return elective != null;
         }
 
         public async Task<bool> ExistsAnotherElectivePositionWithName(int Id, string Name)
         {
             return await _context.ElectivePosition
                 .AsNoTracking()
-                .AnyAsync(e => e.Name == Name &&  e.Id != Id);
+                .AnyAsync(e => e.Name == Name && e.Id != Id);
 
-           
+
         }
     }
 }

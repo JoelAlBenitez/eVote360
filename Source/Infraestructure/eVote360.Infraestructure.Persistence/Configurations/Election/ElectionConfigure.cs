@@ -18,11 +18,14 @@ namespace eVote360.Infraestructure.Persistence.Configurations.Election
                 builder.Property(x => x.Name)
                          .HasMaxLength(100)
                          .HasColumnType("nvarchar")
-                         .IsRequired();           
-
-                builder.Property(x => x.ElectionDate.Value)
-                         .HasColumnName("ElectionDate")
                          .IsRequired();
+
+            builder.OwnsOne(x => x.ElectionDate, date =>
+            {
+                date.Property(d => d.Value)
+                    .HasColumnName("ElectionDate")
+                    .IsRequired();
+            });
             
                 builder.Property(x => x.ElectionState)
                          .IsRequired();
@@ -34,19 +37,19 @@ namespace eVote360.Infraestructure.Persistence.Configurations.Election
                 builder.HasIndex(x => x.Name).IsUnique();
 
     
-             builder.HasMany(x => x.Votes)
-               .WithOne(x => x.Elections) 
-               .HasForeignKey(x => x.IdElection);
+            // builder.HasMany(x => x.Votes)
+            //   .WithOne(x => x.Elections) 
+            //   .HasForeignKey(x => x.IdElection);
             
     
-               builder.HasMany(x => x.AuditVotes)
-               .WithOne(x => x.ElectionEntitie)
-               .HasForeignKey(x => x.IdElection);
+            //   builder.HasMany(x => x.AuditVotes)
+            //   .WithOne(x => x.ElectionEntitie)
+            //   .HasForeignKey(x => x.IdElection);
 
-            builder.HasMany(x => x.ElectivePositions)
-                .WithOne()
-                .HasForeignKey("ElecetionId")
-                .OnDelete(DeleteBehavior.Restrict);
+            //builder.HasMany(x => x.ElectivePositions)
+            //    .WithOne()
+            //    .HasForeignKey("ElecetionId")
+            //    .OnDelete(DeleteBehavior.Restrict);
 
         }
     }

@@ -1,8 +1,8 @@
-﻿
-using eVote360.Core.Domain.Common.CodeErrors;
+﻿using eVote360.Core.Domain.Common.CodeErrors;
 using eVote360.Core.Domain.Common.Errors;
 using eVote360.Core.Domain.Common.ValidationResult;
 using eVote360.Core.Domain.Contracts.ServiceValidates.Citizens;
+using eVote360.Core.Domain.Contracts.ServiceValidates.Election;
 using eVote360.Core.Domain.Contracts.ServiceValidates.Elector.CodeVerifications;
 
 namespace eVote360.Core.Domain.Validators.ElectorValidator.CodeVerifications
@@ -11,25 +11,38 @@ namespace eVote360.Core.Domain.Validators.ElectorValidator.CodeVerifications
     {
 
         private readonly ICodeVerificationValidate _codeVerificationValidate;
-
         private readonly ICitizensServiceValidate _citizensServiceValidate;
+        private readonly IElectionDomainService _electionDomainService;
 
         public CodeVerificationsValidator(ICodeVerificationValidate codeVerificationValidate,
-                ICitizensServiceValidate citizensServiceValidate
+                ICitizensServiceValidate citizensServiceValidate,
+                IElectionDomainService electionDomainService
             )
         {
             _codeVerificationValidate = codeVerificationValidate;
+            _citizensServiceValidate = citizensServiceValidate;
+            _electionDomainService = electionDomainService;
         }
 
         public async Task<ValidationResult> VerificationCode(Guid IdCitizens, int IdElection, int Code)
         {
             var _errors = new List<Error>();
-            //agregar metodo en citizens para validar si existe o no y poder validar el codigo ingresado
 
-            //agregar validacion de elecciones activas del services validator de la entidad 
+            var electionActive = await _electionDomainService.ExistActiveElection();
+            if (!electionActive)
+            {
+                _errors.Add(ElectionError.ElectionActive);
+                return ValidationResult.Failure(_errors);
+            }
+
+            var citizenExist = await _citizensServiceValidate.ExistByIdCitizen(IdCitizens);
+            if (!citizenExist) {
+                _errors.Add(CitizenErrors.NoExistCitzentById);
+                return ValidationResult.Failure(_errors);
+            }
 
             var citizenState = await _citizensServiceValidate.CurrentStateOfTheCitizen(IdCitizens);
-            if (!citizenState) _errors.Add(new Error("Ciudadano no se encuentra activo para votar", "El estado del ciudadano no se encentra en vigencia de votos, favor intente de nuevo o notifique a las autoridades."));
+            if (!citizenState) _errors.Add(CitizenErrors.CitizentNoActiveOfVote);
 
             if (Code >= 100000 && Code <= 999999) _errors.Add(CodeVerificationError.CodeInvalid);
 

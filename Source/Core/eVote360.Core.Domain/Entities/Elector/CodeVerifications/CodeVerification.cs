@@ -1,5 +1,5 @@
 ﻿using eVote360.Core.Domain.Entities.Citizens;
-
+using eVote360.Core.Domain.Entities.Election;
 namespace eVote360.Core.Domain.Entities.Elector.CodeVerifications
 {
     public sealed class CodeVerification
@@ -11,8 +11,7 @@ namespace eVote360.Core.Domain.Entities.Elector.CodeVerifications
         public required DateTimeOffset CreateAt { get; set; }
         public required DateTimeOffset ExpirationDate { get; set; }
         public Citizen? Citizen { get; set; }
-
-        //agregar entidad de elecciones
+        public Election.Election? election { get; set; }
        
     }
 }

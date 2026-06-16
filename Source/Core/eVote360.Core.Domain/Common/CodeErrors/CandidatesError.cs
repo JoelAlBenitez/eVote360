@@ -21,23 +21,22 @@ namespace eVote360.Core.Domain.Common.CodeErrors
                  => new Error("Partido inactivo", "No se pueden gestionar candidatos porque el partido político no se encuentra activo.");
 
         public static Error DataInvalid
-    => new Error("Datos no válidos", "Se han introducido datos no válidos en el intento operacional.");
+        => new Error("Datos no válidos", "Se han introducido datos no válidos en el intento operacional.");
 
         public static Error NameAlreadyExists
-    => new Error("Nombre duplicado", "Ya existe un candidato con ese nombre y apellido en el partido.");
+        => new Error("Nombre duplicado", "Ya existe un candidato con ese nombre y apellido en el partido.");
 
 
         public static Error CandidateNotBelongsToParty
                     => new Error("Acceso denegado", "El candidato no pertenece a su partido político.");
 
         public static Error NoPartyAssigned
-=> new Error("Sin partido asignado", "No puede gestionar candidatos porque no tiene un partido político asignado.");
+    => new Error("Sin partido asignado", "No puede gestionar candidatos porque no tiene un partido político asignado.");
 
         public static Error CandidateAlreadyActive
             => new Error("Candidato ya activo", "Este candidato ya se encuentra activo.");
 
-        public static Error CandidateAlreadyInactive
-            => new Error("Candidato ya inactivo", "Este candidato ya se encuentra inactivo.");
-
+public static Error CandidateAlreadyInactive
+    => new Error("Candidato ya inactivo", "Este candidato ya se encuentra inactivo.");
     }
 }

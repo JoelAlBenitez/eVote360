@@ -45,6 +45,19 @@ using eVote360.Core.Domain.Contracts.Repositories.PoliticalAssignment;
 using eVote360.Infraestructure.Persistence.Repositories.PoliticalAssignment;
 using eVote360.Core.Domain.Contracts.ServiceValidates.PoliticalAssignment;
 using eVote360.Infraestructure.Persistence.ServicesValidators.PoliticalAssignment;
+using eVote360.Core.Domain.Contracts.ServiceValidates.Elector.CodeVerifications;
+using eVote360.Infraestructure.Persistence.ServicesValidators.Elector.CodeVerification;
+using eVote360.Core.Domain.Contracts.ServiceValidates.Elector.Votes;
+using eVote360.Infraestructure.Persistence.ServicesValidators.Elector.VoteService;
+using eVote360.Core.Domain.Contracts.Repositories.Elector.Vote;
+using eVote360.Infraestructure.Persistence.Repositories.Elector.VoteRepository;
+using eVote360.Core.Domain.Contracts.Repositories.Elector.SelectPorcess;
+using eVote360.Infraestructure.Persistence.Repositories.Elector.SelectData;
+
+using eVote360.Core.Domain.Contracts.ServiceValidates.Elector.OCR;
+using eVote360.Infraestructure.Persistence.ServicesValidators.Elector.OcrService;
+using eVote360.Core.Domain.Contracts.Repositories.Elector.Otp;
+using eVote360.Infraestructure.Persistence.Repositories.Elector.OTPCODE;
 using eVote360.Infraestructure.Persistence.ServicesValidators.PoliticalAlliances;
 
 namespace eVote360.IOC.Dependencies
@@ -58,6 +71,10 @@ namespace eVote360.IOC.Dependencies
             services.AddDbContext<DbContextEVote360>(options =>
             options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"))
             );
+
+            // OCR Service
+            var tessdataPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "tessdata");
+            services.AddScoped<IOcrService>(sp => new OcrService(tessdataPath));
 
             //Elecitive Poisitions
             services.AddScoped<IElectivePositionsRepository, ElectivePosictionsRepository>();
@@ -107,6 +124,13 @@ namespace eVote360.IOC.Dependencies
             services.AddScoped<IPoliticalPartyRepository, PoliticalPartyRepository>();
             services.AddScoped<IPoliticalPartyDomainService, PoliticalPartyServiceValidator>();
 
+
+            //elector
+            services.AddScoped<ICodeVerificationValidate, CodeVerificationValidate>();
+            services.AddScoped<IVotesValidate, VotesValidate>();
+            services.AddScoped<IVotingProcess, VotingProcess>();
+            services.AddScoped<ISelectDataForElectoralProcessRepository, SelectDataForElectoralProcessRepository>();
+            services.AddScoped<IOtpRepository, OtpRepository>();
             return services;
         }
     }

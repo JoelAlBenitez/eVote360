@@ -39,7 +39,7 @@ namespace eVote360.Presentation.EVote360.Controllers.Account
                 {
                     ModelState.AddModelError(item.Code, item.Description);
                 }
-                return RedirectToAction(nameof(LogIn));
+                return View(nameof(LogIn));
             }
 
             var newDto = new LoginDto { 

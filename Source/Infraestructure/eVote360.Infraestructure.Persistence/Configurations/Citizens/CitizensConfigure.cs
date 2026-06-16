@@ -16,14 +16,28 @@ namespace eVote360.Infraestructure.Persistence.Configurations.Citizens
             builder.Property(x => x.Name).HasMaxLength(40).IsRequired();
 
             builder.Property(x => x.LastName).HasMaxLength(40).IsRequired();
-            builder.Property(x => x.Email.Value).HasColumnType("nvarchar").HasMaxLength(254).IsRequired();
 
-            builder.Property(x => x.IdentificationNumber.Value).HasColumnType("nvarchar").HasMaxLength(11).IsRequired();
+            builder.OwnsOne(x => x.Email, email =>
+            {
+                email.Property(e => e.Value)
+                    .HasColumnName("Email")
+                    .HasColumnType("nvarchar")
+                    .HasMaxLength(254)
+                    .IsRequired();
+                email.HasIndex(e => e.Value).IsUnique();
+            });
+
+            builder.OwnsOne(x => x.IdentificationNumber, id =>
+            {
+                id.Property(i => i.Value)
+                    .HasColumnName("IdentificationNumber")
+                    .HasColumnType("nvarchar")
+                    .HasMaxLength(11)
+                    .IsRequired();
+                id.HasIndex(i => i.Value).IsUnique();
+            });
 
             builder.Property(x => x.State).IsRequired().HasDefaultValue(true);
-
-            builder.HasIndex(x => x.Email.Value).IsUnique();
-            builder.HasIndex(x => x.IdentificationNumber.Value).IsUnique();
 
             builder.Property(x => x.CreateAt).HasDefaultValue("SYSDATETIMEOFFSET()");
 

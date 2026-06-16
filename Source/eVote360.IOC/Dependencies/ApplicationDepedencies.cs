@@ -36,13 +36,21 @@ using eVote360.Core.Application.Contracts.Users.Query;
 using eVote360.Core.Application.Contracts.PoliticalParty.Commands;
 using eVote360.Core.Application.Contracts.PoliticalParty.Query;
 using eVote360.Core.Application.Contracts.Admin.Query;
-
 using eVote360.Core.Application.Contracts.CandidateAssignment.Commands;
 using eVote360.Core.Application.Contracts.CandidateAssignment.Query;
 using eVote360.Core.Application.Services.CandidateAssignment.CommandHandler;
 using eVote360.Core.Application.Services.CandidateAssignment.QueryHandler;
 using eVote360.Core.Domain.Contracts.Validators.CandidateAssignment;
 using eVote360.Core.Domain.Validators.AssignmentValidator;
+using eVote360.Core.Application.Contracts.Elector.Commands.Code;
+using eVote360.Core.Application.Services.Elector.CommandHandler.Code;
+using eVote360.Core.Application.Contracts.Elector.Commands.Identification;
+using eVote360.Core.Application.Services.Elector.CommandHandler.Identification;
+using eVote360.Core.Application.Contracts.Elector.Commands.Votes;
+using eVote360.Core.Application.Services.Elector.CommandHandler.Votes;
+using eVote360.Core.Domain.Contracts.Repositories.Elector.SelectPorcess;
+using eVote360.Core.Application.Services.Elector.Query;
+using eVote360.Core.Application.Contracts.Elector.Query;
 
 namespace eVote360.IOC.Dependencies
 {
@@ -142,6 +150,17 @@ namespace eVote360.IOC.Dependencies
             services.AddScoped<ICountRegisterAdminQuery, CountRegisterQueryHandler>();
             services.AddScoped<Core.Application.Contracts.Admin.Query.IElectionByYearQuery, ElectionByYear>();
             services.AddScoped<IAvailableYearsQuery, AvailableYearQuery>();
+
+            //elector
+            services.AddScoped<ICodeVerificationCommand, CodeVerificationCommandHandler>();
+            services.AddScoped<IIdentificationVerifyCommand, IdentificationVerifyCommandHandler>();
+            services.AddScoped<IIdentificationVerifyCompareIdentificationByImg, IdentificationVerifyCompareIdentificationByImg>();
+            services.AddScoped<IOcrVerificationCommand, OcrVerificationCommandHandler>();
+            services.AddScoped<ISelectionCandidateByIdElectivePosictionQuery, SelectionCandidacteByIdElectivePositionQuery>();
+            services.AddScoped<IWindowElectivePositionQuery, WindowElectivePositionQuery>();
+            services.AddScoped<IProcessVoteElectorCommand, ProcessVoteElectorCommandHandler>();
+
+            //
 
             return services;
         }

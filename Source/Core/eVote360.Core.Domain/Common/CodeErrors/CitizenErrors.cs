@@ -7,6 +7,12 @@ namespace eVote360.Core.Domain.Common.CodeErrors
         public static Error DataInvalid
             => new Error("Datos incongruentes", "Los campos llenados presentan datos incoherentes, favor verificar cada campo.");
 
+        public static Error NoExistCitzentById
+            => new Error("Ciudadano no encontrado", "El ciudadano que esta intentnado hacer este proceso no fue encontrado, verifique su identidad nuevamente.");
+
+        public static Error CitizentNoActiveOfVote
+            => new Error("Ciudadano no se encuentra activo para votar", "El estado del ciudadano no se encentra en vigencia de votos, favor intente de nuevo o notifique a las autoridades.");
+
         public static Error StateNoValidOfModifie
             => new Error("Modificación de estado no valida", "Para modificar el estado del ciudadano el estado anterior debe ser diferente al estado al que se quiere modificar.");
 

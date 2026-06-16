@@ -14,6 +14,9 @@ namespace eVote360.Core.Domain.Common.CodeErrors
         public static Error UnexpectedError
             => new Error("Oh un error inesperado ha ocurrido", "Un error inesperado a ocurrido en el procesamiento de la voleta, favor intenta de nuevo.");
 
+        public static Error ElectoralProcessNoValid
+            => new Error("No hay un procesor electoral en este momento", "Ningun procesos electoral siendo llevado a cabo en estos momentos, si se trata de un error favor contactar con un admnistrador por lo medios pertinentes.");
+
         //.....
     }
 }

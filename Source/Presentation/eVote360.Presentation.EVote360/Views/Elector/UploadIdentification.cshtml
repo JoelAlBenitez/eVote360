@@ -1,0 +1,108 @@
+@model eVote360.Core.Application.ViewModels.Elector.Identification.IdentifiationFileImagenViewModel
+@{
+    ViewData["Title"] = "Validación OCR";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="mb-4 d-flex align-items-center">
+            <a asp-action="IdentifyElector" class="btn btn-link text-decoration-none p-0 me-3">
+                <i class="bi bi-chevron-left"></i> Volver
+            </a>
+            <h2 class="h4 fw-bold mb-0">Verificación Biométrica (OCR)</h2>
+        </div>
+
+        <div class="card ev-card border-0 shadow-lg overflow-hidden">
+            <div class="bg-primary py-3 px-4">
+                <h5 class="text-white mb-0"><i class="bi bi-camera-fill me-2"></i>Captura de Documento</h5>
+            </div>
+            <div class="card-body p-4 p-md-5">
+                <p class="text-muted mb-4">Para garantizar la integridad del proceso, necesitamos validar que el documento físico coincide con la identificación ingresada.</p>
+                
+                <form asp-action="UploadIdentification" method="post" enctype="multipart/form-data">
+                    <div class="mb-4">
+                        <div class="upload-area border-2 border-dashed rounded-4 p-5 text-center bg-light cursor-pointer" id="dropZone">
+                            <i class="bi bi-cloud-arrow-up display-3 text-primary mb-3"></i>
+                            <h5 class="fw-bold">Subir Foto de Cédula</h5>
+                            <p class="text-muted small">Arrastre la imagen aquí o haga clic para seleccionar el archivo</p>
+                            <input asp-for="IdentificationImg" type="file" class="d-none" id="fileInput" accept="image/*" capture="environment" />
+                            <div id="previewContainer" class="mt-3 d-none">
+                                <img id="imagePreview" src="#" alt="Vista previa" class="img-fluid rounded-3 shadow-sm border" style="max-height: 200px;" />
+                                <p id="fileName" class="small text-primary mt-2 fw-bold"></p>
+                            </div>
+                        </div>
+                        <span asp-validation-for="IdentificationImg" class="text-danger small mt-1 d-block"></span>
+                    </div>
+
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary btn-lg fw-bold rounded-pill py-3 shadow" id="submitBtn" disabled>
+                            Validar Documento <i class="bi bi-cpu ms-2"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="mt-4 alert alert-info border-0 shadow-sm rounded-4">
+            <div class="d-flex">
+                <i class="bi bi-info-circle-fill fs-4 me-3"></i>
+                <div>
+                    <h6 class="fw-bold mb-1">Recomendaciones:</h6>
+                    <ul class="mb-0 small ps-3">
+                        <li>Asegúrese de tener buena iluminación.</li>
+                        <li>El documento debe estar enfocado y ser legible.</li>
+                        <li>Evite reflejos sobre el plástico de la cédula.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        const dropZone = document.getElementById('dropZone');
+        const fileInput = document.getElementById('fileInput');
+        const previewContainer = document.getElementById('previewContainer');
+        const imagePreview = document.getElementById('imagePreview');
+        const fileName = document.getElementById('fileName');
+        const submitBtn = document.getElementById('submitBtn');
+
+        dropZone.addEventListener('click', () => fileInput.click());
+
+        fileInput.addEventListener('change', function() {
+            if (this.files && this.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    imagePreview.src = e.target.result;
+                    previewContainer.classList.remove('d-none');
+                    dropZone.querySelector('i').classList.add('d-none');
+                    dropZone.querySelector('h5').classList.add('d-none');
+                    dropZone.querySelector('p').classList.add('d-none');
+                    submitBtn.disabled = false;
+                }
+                reader.readAsDataURL(this.files[0]);
+                fileName.textContent = this.files[0].name;
+            }
+        });
+
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('bg-primary-subtle');
+        });
+
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.classList.remove('bg-primary-subtle');
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('bg-primary-subtle');
+            if (e.dataTransfer.files.length) {
+                fileInput.files = e.dataTransfer.files;
+                fileInput.dispatchEvent(new Event('change'));
+            }
+        });
+    </script>
+}

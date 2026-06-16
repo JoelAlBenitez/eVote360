@@ -31,7 +31,7 @@ namespace eVote360.Core.Domain.Validators.CitizensValidator
         {
             if (string.IsNullOrWhiteSpace(name)
                 || name.Trim().Length > 40 ||
-                !Regex.IsMatch("^[a-zA-Z\\s]+$", name.Trim()
+                !Regex.IsMatch(name.Trim(), "^[a-zA-Z\\s]+$"
                 )) return  CitizenErrors.NameNoValid;
 
             return null!;
@@ -41,7 +41,7 @@ namespace eVote360.Core.Domain.Validators.CitizensValidator
         {
             if (string.IsNullOrWhiteSpace(lastName)
                 || lastName.Trim().Length > 40 ||
-                !Regex.IsMatch("^[a-zA-Z\\s]+$", lastName.Trim()
+                !Regex.IsMatch(lastName.Trim(), "^[a-zA-Z\\s]+$"
                 )) return CitizenErrors.LastNameNoValid;
 
             return null!;
@@ -49,106 +49,115 @@ namespace eVote360.Core.Domain.Validators.CitizensValidator
 
         public async Task<ValidationResult> ActiveCitizen(Guid Id, string Identification)
         {
-
+            var errors = new List<Error>();
             var existElectionActive = await _electionDomainService.ExistActiveElection();
             if (existElectionActive)
             {
-                _errors.Add(ElectionError.ElectionActive);
-                return ValidationResult.Failure(_errors);
+                errors.Add(ElectionError.ElectionActive);
+                return ValidationResult.Failure(errors);
             }
 
             var valid = await _citizensServiceValidate.ExistCitizensByIdentification(Identification);
-            if (!valid) _errors.Add(CitizenErrors.NoExtisCitizen);
+            if (!valid) errors.Add(CitizenErrors.NoExtisCitizen);
 
             var validActive = await _citizensServiceValidate.ExistOtherCitizensByState(Id, Identification, true);
-            if (validActive) _errors.Add(CitizenErrors.ActiveNoValid);
+            if (validActive) errors.Add(CitizenErrors.ActiveNoValid);
 
             var stateValidOfModif = await _citizensServiceValidate.CurrentStateOfTheCitizen(Id);
-            if (stateValidOfModif) _errors.Add(CitizenErrors.StateNoValidOfModifie);
+            if (stateValidOfModif) errors.Add(CitizenErrors.StateNoValidOfModifie);
 
-            return _errors.Any() ? ValidationResult.Failure(_errors) : ValidationResult.Success();
+            return errors.Any() ? ValidationResult.Failure(errors) : ValidationResult.Success();
         }
 
         public async Task<ValidationResult> CreateCitizen(Citizen citizen)
         {
+            var errors = new List<Error>();
             var existElectionActive = await _electionDomainService.ExistActiveElection();
             if (existElectionActive)
             {
-                _errors.Add(ElectionError.ElectionActive);
-                return ValidationResult.Failure(_errors);
+                errors.Add(ElectionError.ElectionActive);
+                return ValidationResult.Failure(errors);
             }
 
-            if (citizen == null) _errors.Add(CitizenErrors.DataInvalid);
+            if (citizen == null)
+            {
+                errors.Add(CitizenErrors.DataInvalid);
+                return ValidationResult.Failure(errors);
+            }
+
             var exitsCitizenByIdentification = await _citizensServiceValidate.ExistCitizensByIdentification(citizen!.IdentificationNumber.Value);
             var exitsCitizenByEmail = await _citizensServiceValidate.ExistCitizensByEmail(citizen.Email.Value, null);
-            if(exitsCitizenByEmail || exitsCitizenByIdentification) _errors.Add(CitizenErrors.ExistCitizen);
-            if (exitsCitizenByEmail) _errors.Add(CitizenErrors.ExistEmail);
-            if (exitsCitizenByIdentification) _errors.Add(CitizenErrors.ExistIdentification);
+            if(exitsCitizenByEmail || exitsCitizenByIdentification) errors.Add(CitizenErrors.ExistCitizen);
+            if (exitsCitizenByEmail) errors.Add(CitizenErrors.ExistEmail);
+            if (exitsCitizenByIdentification) errors.Add(CitizenErrors.ExistIdentification);
 
             var validName = ValidateName(citizen.Name);
-            if (validName != null) _errors.Add(CitizenErrors.NameNoValid);
+            if (validName != null) errors.Add(CitizenErrors.NameNoValid);
             var validLastName = ValidateLastName(citizen.LastName);
-            if (validLastName != null) _errors.Add(CitizenErrors.LastNameNoValid);
-            if (!citizen.State) _errors.Add(CitizenErrors.StateNoValid);
+            if (validLastName != null) errors.Add(CitizenErrors.LastNameNoValid);
+            if (!citizen.State) errors.Add(CitizenErrors.StateNoValid);
 
-            return _errors.Any() ? ValidationResult.Failure(_errors) : ValidationResult.Success();
+            return errors.Any() ? ValidationResult.Failure(errors) : ValidationResult.Success();
         }
 
         public async Task<ValidationResult> DesactiveCitizen(Guid Id, string Identification)
         {
-
+            var errors = new List<Error>();
             var existElectionActive = await _electionDomainService.ExistActiveElection();
             if (existElectionActive)
             {
-                _errors.Add(ElectionError.ElectionActive);
-                return ValidationResult.Failure(_errors);
+                errors.Add(ElectionError.ElectionActive);
+                return ValidationResult.Failure(errors);
             }
 
             var valid = await _citizensServiceValidate.ExistCitizensByIdentification(Identification);
-            if (!valid) _errors.Add(CitizenErrors.NoExtisCitizen);
+            if (!valid) errors.Add(CitizenErrors.NoExtisCitizen);
 
             var validActive = await _citizensServiceValidate.ExistOtherCitizensByState(Id, Identification, false);
-            if (validActive) _errors.Add(CitizenErrors.DesactiveNoValid);
+            if (validActive) errors.Add(CitizenErrors.DesactiveNoValid);
 
             var stateValidOfModif = await _citizensServiceValidate.CurrentStateOfTheCitizen(Id);
-            if (!stateValidOfModif) _errors.Add(CitizenErrors.StateNoValidOfModifie);
+            if (!stateValidOfModif) errors.Add(CitizenErrors.StateNoValidOfModifie);
 
-            return _errors.Any() ? ValidationResult.Failure(_errors) : ValidationResult.Success();
+            return errors.Any() ? ValidationResult.Failure(errors) : ValidationResult.Success();
         }
 
         public async Task<ValidationResult> UpdateCitizen(Citizen citizen)
         {
-
+            var errors = new List<Error>();
             var existElectionActive = await _electionDomainService.ExistActiveElection();
             if (existElectionActive)
             {
-                _errors.Add(ElectionError.ElectionActive);
-                return ValidationResult.Failure(_errors);
+                errors.Add(ElectionError.ElectionActive);
+                return ValidationResult.Failure(errors);
             }
 
-
-            if (citizen == null) _errors.Add(CitizenErrors.DataInvalid);
+            if (citizen == null)
+            {
+                errors.Add(CitizenErrors.DataInvalid);
+                return ValidationResult.Failure(errors);
+            }
 
             var exits = await _citizensServiceValidate.ExistCitizensByIdentification(citizen!.IdentificationNumber.Value);
-            if (!exits) _errors.Add(CitizenErrors.NoExtisCitizen);
+            if (!exits) errors.Add(CitizenErrors.NoExtisCitizen);
 
             var existOtherCitizen = await _citizensServiceValidate.ExistOtherCitizens(citizen.Id, citizen.IdentificationNumber.Value);
-            if(existOtherCitizen) _errors.Add(CitizenErrors.ExistCitizen);
+            if(existOtherCitizen) errors.Add(CitizenErrors.ExistCitizen);
 
             var parcitedInEletions = await _votesValidate.CitizenParticipatedInElection(citizen.Id, citizen.IdentificationNumber.Value);
-            if (parcitedInEletions) _errors.Add(CitizenErrors.ChangeIdentificationNoValid);
+            if (parcitedInEletions) errors.Add(CitizenErrors.ChangeIdentificationNoValid);
 
             var validateName = ValidateName(citizen.Name);
-            if (validateName != null) _errors.Add(CitizenErrors.NameNoValid);
+            if (validateName != null) errors.Add(CitizenErrors.NameNoValid);
 
             var validateLastName = ValidateLastName(citizen.LastName);
-            if (validateLastName != null) _errors.Add(CitizenErrors.LastNameNoValid);
+            if (validateLastName != null) errors.Add(CitizenErrors.LastNameNoValid);
 
             var exitsCitizenByEmail = await _citizensServiceValidate.ExistCitizensByEmail(citizen.Email.Value, citizen.Id);
-            if (exitsCitizenByEmail) _errors.Add(CitizenErrors.ExistEmail);
+            if (exitsCitizenByEmail) errors.Add(CitizenErrors.ExistEmail);
 
 
-            return _errors.Any() ? ValidationResult.Failure(_errors) : ValidationResult.Success();
+            return errors.Any() ? ValidationResult.Failure(errors) : ValidationResult.Success();
         }
     }
 }
