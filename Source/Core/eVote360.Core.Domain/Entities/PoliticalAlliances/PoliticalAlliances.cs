@@ -28,7 +28,7 @@ namespace eVote360.Core.Domain.Entities.PoliticalAlliances
         }
 
         // Propiedades de navegación - descomentar cuando todos los módulos estén en development
-        // public PoliticalParty RequestingParty { get; set; }
-        // public PoliticalParty ReceivingParty { get; set; }
+        public eVote360.Core.Domain.Entities.PoliticalParty.PoliticalParty? RequestingParty { get; set; }
+        public eVote360.Core.Domain.Entities.PoliticalParty.PoliticalParty? ReceivingParty { get; set; }
     }
 }

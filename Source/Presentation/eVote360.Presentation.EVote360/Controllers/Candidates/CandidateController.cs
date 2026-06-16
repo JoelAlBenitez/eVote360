@@ -130,6 +130,7 @@ namespace eVote360.Presentation.EVote360.Controllers.Candidates
             }
 
             TempData["Message"] = "Candidato creado exitosamente";
+            TempData["TypeAlert"] = "success";
             return RedirectToAction(nameof(Index));
         }
 
@@ -151,7 +152,8 @@ namespace eVote360.Presentation.EVote360.Controllers.Candidates
                 Id = result.Value!.Id,
                 Name = result.Value.Name,
                 LastName = result.Value.LastName,
-                CurrentPhotoUrl = result.Value.PhotoUrl
+                CurrentPhotoUrl = result.Value.PhotoUrl,
+                HasParticipatedInElection = result.Value.HasParticipatedInElection
             };
 
             return View("Edit", candidateVm);
