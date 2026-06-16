@@ -11,8 +11,7 @@ namespace eVote360.Infraestructure.Persistence.Configurations.Elector.CodeVerifi
         public void Configure(EntityTypeBuilder<CodeVerification> builder)
         {
             builder.ToTable("CodeVerification");
-            builder.HasKey(e => e.IdCitizens);
-            builder.HasKey(e => e.IdElection);
+            builder.HasKey(e => new { e.IdCitizens, e.IdElection });
 
             builder.Property(e => e.Code).IsRequired();
             builder.Property(e => e.State).IsRequired();

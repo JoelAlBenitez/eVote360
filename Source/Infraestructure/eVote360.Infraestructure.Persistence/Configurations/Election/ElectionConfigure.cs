@@ -18,11 +18,14 @@ namespace eVote360.Infraestructure.Persistence.Configurations.Election
                 builder.Property(x => x.Name)
                          .HasMaxLength(100)
                          .HasColumnType("nvarchar")
-                         .IsRequired();           
-
-                builder.Property(x => x.ElectionDate.Value)
-                         .HasColumnName("ElectionDate")
                          .IsRequired();
+
+            builder.OwnsOne(x => x.ElectionDate, date =>
+            {
+                date.Property(d => d.Value)
+                    .HasColumnName("ElectionDate")
+                    .IsRequired();
+            });
             
                 builder.Property(x => x.ElectionState)
                          .IsRequired();
