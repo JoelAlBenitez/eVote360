@@ -31,7 +31,7 @@ namespace eVote360.Core.Domain.Validators.CitizensValidator
         {
             if (string.IsNullOrWhiteSpace(name)
                 || name.Trim().Length > 40 ||
-                !Regex.IsMatch(name.Trim(), "^[a-zA-Z\\s]+$"
+                !Regex.IsMatch(name.Trim(), @"^[\p{L}\s]+$"
                 )) return  CitizenErrors.NameNoValid;
 
             return null!;
@@ -41,7 +41,7 @@ namespace eVote360.Core.Domain.Validators.CitizensValidator
         {
             if (string.IsNullOrWhiteSpace(lastName)
                 || lastName.Trim().Length > 40 ||
-                !Regex.IsMatch(lastName.Trim(), "^[a-zA-Z\\s]+$"
+                !Regex.IsMatch(lastName.Trim(), @"^[\p{L}\s]+$"
                 )) return CitizenErrors.LastNameNoValid;
 
             return null!;
@@ -95,7 +95,6 @@ namespace eVote360.Core.Domain.Validators.CitizensValidator
             if (validName != null) errors.Add(CitizenErrors.NameNoValid);
             var validLastName = ValidateLastName(citizen.LastName);
             if (validLastName != null) errors.Add(CitizenErrors.LastNameNoValid);
-            if (!citizen.State) errors.Add(CitizenErrors.StateNoValid);
 
             return errors.Any() ? ValidationResult.Failure(errors) : ValidationResult.Success();
         }

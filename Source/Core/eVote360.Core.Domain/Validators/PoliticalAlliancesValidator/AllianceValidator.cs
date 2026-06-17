@@ -77,7 +77,7 @@ namespace eVote360.Core.Domain.Validators.PoliticalAlliancesValidator
                 return ValidationResult.Failure(errors);
             }
 
-            if (alliance.Status != AllianceStatus.Pending)
+            if (alliance.Status != AllianceStatus.Pendiente)
             {
                 errors.Add(AllianceErrors.RequestAlreadyAnswered);
                 return ValidationResult.Failure(errors);
@@ -114,7 +114,7 @@ namespace eVote360.Core.Domain.Validators.PoliticalAlliancesValidator
                 return ValidationResult.Failure(errors);
             }
 
-            if (alliance.Status != AllianceStatus.Pending)
+            if (alliance.Status != AllianceStatus.Pendiente)
             {
                 errors.Add(AllianceErrors.RequestAlreadyAnswered);
                 return ValidationResult.Failure(errors);
@@ -145,7 +145,7 @@ namespace eVote360.Core.Domain.Validators.PoliticalAlliancesValidator
                 return ValidationResult.Failure(errors);
             }
 
-            if (alliance.Status == AllianceStatus.Accepted)
+            if (alliance.Status == AllianceStatus.Aceptado)
             {
                 errors.Add(AllianceErrors.CannotDeleteAcceptedRequest);
                 return ValidationResult.Failure(errors);

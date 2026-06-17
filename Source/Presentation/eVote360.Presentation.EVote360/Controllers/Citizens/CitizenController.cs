@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using eVote360.Core.Application.Contracts.Citizens.Command;
 using eVote360.Core.Application.Contracts.Citizens.Query;
 using eVote360.Core.Application.ViewModels.Citizens;
@@ -207,6 +207,8 @@ namespace eVote360.Presentation.EVote360.Controllers.Citizens
                 foreach (var item in alter.errors) {
                     ModelState.AddModelError(item.Code, item.Description);
                 }
+                TempData["TypeAlert"] = "danger";
+                TempData["Message"] = alter.errors.FirstOrDefault()?.Description ?? "Error al intentar cambiar el estado del ciudadano.";
                 return RedirectToAction(nameof(Index));
             }
             return RedirectToAction(nameof(Index));

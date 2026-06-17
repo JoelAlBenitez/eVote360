@@ -39,7 +39,7 @@ namespace eVote360.Core.Application.Services.Alliance.CommandHandler
                 {
                     RequestingPartyId = requestingPartyId,
                     ReceivingPartyId = request.ReceivingPartyId,
-                    Status = AllianceStatus.Pending,
+                    Status = AllianceStatus.Pendiente,
                     RequestDate = DateTimeOffset.Now,
                     CreateAt = DateTimeOffset.Now,
                     CreateUserId = authenticatedUserId

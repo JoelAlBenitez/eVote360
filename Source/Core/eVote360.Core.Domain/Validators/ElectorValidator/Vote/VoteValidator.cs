@@ -70,7 +70,7 @@ namespace eVote360.Core.Domain.Validators.ElectorValidator.Vote
                         return ValidationResult.Failure(errrors);
                     }
 
-                    var candidacteActive = await _candidateDomainService.CandidateExistsAsync(vote!.IdCandidate);
+                    var candidacteActive = await _candidateDomainService.CandidateExistsAsync((int)vote!.IdCandidate);
                     if (!citizenActive)
                     {
                         errrors.Add(new Error("Candidacto no encontrado", "El candidacto seleccionado en el proceso electoral no fue encontrado, " +
@@ -106,7 +106,7 @@ namespace eVote360.Core.Domain.Validators.ElectorValidator.Vote
 
                 if (vote.Candidacte != null)
                 {
-                    var candidacteState = await _candidateDomainService.GetCandidateStateAsync(vote.IdCandidate);
+                    var candidacteState = await _candidateDomainService.GetCandidateStateAsync((int)vote.IdCandidate);
                     if (!citizenState)
                     {
                         errrors.Add(new Error("Candidacto no valido", $"El candidacto seleccionado {vote!.Candidacte!.Name}  no se encuentra en disponibilidad, favor contactar con el equipo de administración."));

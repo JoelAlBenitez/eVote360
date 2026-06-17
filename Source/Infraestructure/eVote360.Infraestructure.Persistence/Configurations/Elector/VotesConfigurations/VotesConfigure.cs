@@ -15,7 +15,7 @@ namespace eVote360.Infraestructure.Persistence.Configurations.Elector.VotesConfi
 
             builder.Property(v => v.IdElection).IsRequired();
             builder.Property(v => v.IdElectivePosiction).IsRequired();
-            builder.Property(v => v.IdCandidate).IsRequired();
+            builder.Property(v => v.IdCandidate).IsRequired(false);
 
             // Relationships
             builder.HasOne(v => v.Elections)

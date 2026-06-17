@@ -1,4 +1,4 @@
-﻿using eVote360.Core.Application.Contracts.ElectivePosictions.Commands;
+using eVote360.Core.Application.Contracts.ElectivePosictions.Commands;
 using eVote360.Core.Application.Contracts.ElectivePosictions.Query;
 using eVote360.Core.Application.Contracts.ElectivePosictions.QueryServices;
 using eVote360.Core.Application.DTOs.ElectivePositions;
@@ -84,7 +84,7 @@ namespace eVote360.Presentation.EVote360.Controllers.ElectivePosictions
             return View("Index", electivePViewModel);
         }
 
-        [HttpPost]
+        [HttpGet]
         public async Task<IActionResult> GetElectiveByDate(FilterElectivePosictionsByDateViewModel vp)
         {
             var electiveP = await  _electivePosictionsGetElectivesPosictionsByDateQuery.GetElectivePosictionsByDate(vp.From, vp.To);
@@ -104,7 +104,7 @@ namespace eVote360.Presentation.EVote360.Controllers.ElectivePosictions
             return View("Index", electivePViewModel);
         }
 
-        [HttpPost]
+        [HttpGet]
         public async Task<IActionResult> GetElectivePosiction(int Id)
         {
             var elective = await _electivePosictionsGetByIdQuery.GetAllById(Id);
@@ -258,6 +258,8 @@ namespace eVote360.Presentation.EVote360.Controllers.ElectivePosictions
                     {
                         ModelState.AddModelError(item.Code, item.Description);
                     }
+                    TempData["TypeAlert"] = "danger";
+                    TempData["Message"] = alter.errors.FirstOrDefault()?.Description ?? "Error al intentar cambiar el estado de la posición electiva.";
                     return RedirectToAction(nameof(Index));
                 }
                

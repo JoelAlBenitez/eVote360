@@ -34,8 +34,17 @@ namespace eVote360.Infraestructure.Persistence.Repositories.Election
 
             public async Task<bool> UpdateEntitieAsync(ElectionEntity entitie)
             {
-                 _context.Update(entitie);
-                 return await _context.SaveChangesAsync() > 0;
+                var existing = await _context.Elections.FindAsync(entitie.Id);
+                if (existing == null) return false;
+
+                existing.Name = entitie.Name;
+                existing.ElectionDate = entitie.ElectionDate;
+                existing.ElectionState = entitie.ElectionState;
+                existing.State = entitie.State;
+                existing.UpdateAt = entitie.UpdateAt;
+                existing.UpdateUserId = entitie.UpdateUserId;
+
+                return await _context.SaveChangesAsync() > 0;
             }
 
             public async Task<bool> AlterState(int tkey, bool state)

@@ -46,7 +46,7 @@ namespace eVote360.Core.Application.Services.Citizens.CommandHandler
                 };
 
                 var validate = await _citizensValidator.CreateCitizen(citizenEntitie);
-                if (validate != null) return validate;
+                if (!validate.IsValid) return validate;
 
                 var create  = await _citizenRepository.CreateEntiteAsync(citizenEntitie);
              

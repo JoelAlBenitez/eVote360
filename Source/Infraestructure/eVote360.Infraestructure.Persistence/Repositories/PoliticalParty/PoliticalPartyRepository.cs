@@ -28,9 +28,18 @@ namespace eVote360.Infraestructure.Persistence.Repositories.PoliticalParty
 
         public async Task<bool> UpdateEntitieAsync(PoliticalPartyEntity entitie)
         {
-            _context.Update(entitie);
-            return await _context.SaveChangesAsync() > 0;
+            var existing = await _context.PoliticalParties.FindAsync(entitie.Id);
+            if (existing == null) return false;
 
+            existing.Name = entitie.Name;
+            existing.PoliticalPartyDescription = entitie.PoliticalPartyDescription;
+            existing.PoliticalPartyLogo = entitie.PoliticalPartyLogo;
+            existing.PoliticalPartyAcronym = entitie.PoliticalPartyAcronym;
+            existing.State = entitie.State;
+            existing.UpdateAt = entitie.UpdateAt;
+            existing.UpdateUserId = entitie.UpdateUserId;
+
+            return await _context.SaveChangesAsync() > 0;
         }
 
         public async Task<bool> AlterState(int tkey, bool state)
