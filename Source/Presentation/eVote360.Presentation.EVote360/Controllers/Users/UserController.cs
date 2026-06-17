@@ -123,24 +123,23 @@ using Microsoft.AspNetCore.Mvc;
     public async Task<IActionResult> Edit(UsersViewModelEdit vm)
     {
         if (!ModelState.IsValid) return View("Save", vm);
-   
+
         var dto = new UsersDto
         {
-                 Id = vm.Id,
+            Id = vm.Id,
             UserFirstName = vm.UserFirstName,
             UserLastName = vm.UserLastName,
             UserEmail = vm.UserEmail,
-            UserPassword = vm.UserPassword,
+            UserPassword = string.IsNullOrWhiteSpace(vm.UserPassword) ? "" : vm.UserPassword,
             UserRole = vm.UserRole,
             Name = vm.Name,
             State = vm.State,
-   
+
             CreateAt = null,
             CreateUserId = null,
             UpdateAt = null,
             UpdateUserId = null
-        }
-    ;
+        };
     
         var result = await _editCommand.ExecuteAsync(dto);
     

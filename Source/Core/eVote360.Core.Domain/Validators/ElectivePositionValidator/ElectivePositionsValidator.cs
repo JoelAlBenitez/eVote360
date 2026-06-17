@@ -135,7 +135,7 @@ namespace eVote360.Core.Domain.Validators.ElectivePositionValidator
             if (!exitsElectiveP) errors.Add(ElectivePosictionsError.NonExistentElectivePosition);
 
             var validate = await _electivePositionDomainService.ExistElectivePositionByState(Id, name, true);
-            if (validate) errors.Add(ElectivePosictionsError.ActivedElectivePosiction);
+            if (!validate) errors.Add(ElectivePosictionsError.ActivedElectivePosiction);
 
             return errors.Any() ? ValidationResult.Failure(errors) : ValidationResult.Success();
         }   

@@ -25,7 +25,6 @@ namespace eVote360.Core.Application.ViewModels.PoliticalParty
 
         [Display(Name = "Logo")]
         [Required(ErrorMessage = "Se requiere un Logo de partido valido")]
-        [StringLength(200, ErrorMessage = "Ingrese una imagen valida")]
         public required IFormFile? LogoFile { get; set; }
 
         [Display(Name = "Estado")]

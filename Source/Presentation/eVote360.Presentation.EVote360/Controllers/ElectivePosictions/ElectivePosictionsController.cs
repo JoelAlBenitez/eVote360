@@ -62,7 +62,7 @@ namespace eVote360.Presentation.EVote360.Controllers.ElectivePosictions
             return View(electivePViewModel);
         }
 
-        [HttpPost]
+        [HttpGet]
         public async  Task<IActionResult> GetElectivePosictionByActive()
         {
 

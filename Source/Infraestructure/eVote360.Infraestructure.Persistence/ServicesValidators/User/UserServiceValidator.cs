@@ -29,10 +29,23 @@ namespace eVote360.Infraestructure.Persistence.ServicesValidators.User
 
             public async Task<bool> ExistByUsernameAsync(string username)
             {
-                 return await _context.Users
-                  .AsNoTracking()
-                  .AnyAsync(x => x.Name == username);
+                return await _context.Users
+                    .AsNoTracking()
+                    .AnyAsync(x => x.Name == username);
             }
 
+            public async Task<bool> ExistAnotherWithUsernameAsync(int userId, string username)
+            {
+                return await _context.Users
+                    .AsNoTracking()
+                    .AnyAsync(x => x.Name == username && x.Id != userId);
+            }
+
+            public async Task<bool> ExistAnotherWithEmailAsync(int userId, string email)
+            {
+                return await _context.Users
+                    .AsNoTracking()
+                    .AnyAsync(x => x.UserEmail.Value == email && x.Id != userId);
+            }
     }
 }

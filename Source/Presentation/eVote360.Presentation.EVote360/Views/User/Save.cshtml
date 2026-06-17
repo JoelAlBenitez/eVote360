@@ -3,6 +3,7 @@
 
 @{
     bool isEdit = Model != null && Model.GetType().GetProperty("Id") != null && Model.Id > 0;
+    string currentRole = isEdit ? (Model?.UserRole?.ToString() ?? "") : "";
     ViewData["Title"] = isEdit ? "Editar Usuario" : "Nuevo Usuario";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
@@ -69,8 +70,8 @@
                                 <label for="UserRole" class="form-label fw-bold">Rol en el Sistema</label>
                                 <select id="UserRole" name="UserRole" class="form-select" required>
                                     <option value="">-- Seleccione un rol --</option>
-                                    <option value="Admin" selected="@(Model?.UserRole?.ToString() == "Admin")">Administrador</option>
-                                    <option value="DirigentePolitico" selected="@(Model?.UserRole?.ToString() == "DirigentePolitico")">Dirigente Político</option>
+                                    <option value="Admin" selected="@(currentRole == "Admin" ? "selected" : null)">Administrador</option>
+                                    <option value="DirigentePolitico" selected="@(currentRole == "DirigentePolitico" ? "selected" : null)">Dirigente Político</option>
                                 </select>
                                 <span class="text-danger field-validation-valid" data-valmsg-for="UserRole" data-valmsg-replace="true"></span>
                             </div>

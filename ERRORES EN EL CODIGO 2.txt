@@ -1,0 +1,26 @@
+cuando se completa el proceso de seleccion que se le da confirm message no se manda el mensa de resumen en cambio pausa un error de 
+
+
+si ledoy al btn de activar puesto electivo Para activar este puesto no deben existir otros puestos con el mismo nombre o elecciones activas. me dice esoaunque sea mentira pero se peude editar el estado en el apartado de editar.
+
+si desactivo un ciudadano en el btn de desactivar o alteral state y luego le doy a activar me dice El estado del ciudadano no puede pasar a activado mientras exista otro ciudadano con esta identificación o en su defecto elecciones activas. pero eso es mentira.
+
+cuando le doy a crear ciudadanos el mismo me dice que s creo pero no se registra en la base de datos 
+
+cuando intento editar un usuario me dice The value 'value' is not valid for Estado.
+
+si intento cambiar el estado el un partido politico me dice Error al intentar cambiar el estado y si intentar darle a editar no me carga la vista
+
+al intentar modificar una asignacion de dirigente me dice An unhandled exception occurred while processing the request.
+InvalidOperationException: The model item passed into the ViewDataDictionary is of type 'eVote360.Core.Application.ViewModels.PoliticalLeaderAssignment.LeaderAssignmentEditViewModel', but this ViewDataDictionary instance requires a model item of type 'eVote360.Core.Application.ViewModels.PoliticalLeaderAssignment.LeaderAssignmentCreateViewModel'.
+Microsoft.AspNetCore.Mvc.ViewFeatures.ViewDataDictionary..ctor(ViewDataDictionary source, object model, Type declaredModelType).
+
+Lee el pdf para que veas que requiere el apartado de elecciones para que completes lo que necesite ya que le faltan elementos para ser desarrollados la loigca esta y encontroller pero faltan elementos de vista y demas.
+
+cuando intneto loguearme con un usuario dirigentepolitico An unhandled exception occurred while processing the request.
+InvalidOperationException: The following sections have been defined but have not been rendered by the page at '/Views/Shared/_LeaderLayout.cshtml': 'Styles'. To ignore an unrendered section call IgnoreSection("sectionName").
+Microsoft.AspNetCore.Mvc.Razor.RazorPage.EnsureRenderedBodyOrSections()
+
+al intentar mandar la confirmacion de votacion me dice Se encontró 1 error
+Error inesperado
+An error occurred while saving the entity changes. See the inner exception for details.

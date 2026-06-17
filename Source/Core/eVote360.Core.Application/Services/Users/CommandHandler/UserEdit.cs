@@ -38,28 +38,34 @@ namespace eVote360.Core.Application.Services.Users.CommandHandler
             {
                 if (dto.Id <= 0)
                 {
-                    errors.Add(new Error("USER EDIT ID", "El ID del usuarion es invalido para editar"));
+                    errors.Add(new Error("USER EDIT ID", "El ID del usuario es invalido para editar"));
                     return ValidationResult.Failure(errors);
                 }
 
-                string hashedPassword = _passwordService.HashPassword(dto.UserPassword);
+                var existing = await _repository.GetByIdEntitie((int)dto.Id!);
+                if (existing == null)
+                {
+                    errors.Add(new Error("USER NOT FOUND", "No se encontró el usuario a editar"));
+                    return ValidationResult.Failure(errors);
+                }
+
+                string hashedPassword = string.IsNullOrWhiteSpace(dto.UserPassword)
+                    ? existing.UserPassword.HashValue
+                    : _passwordService.HashPassword(dto.UserPassword);
 
                 var user = new UserEntity
                 {
-
-                    Id = dto.Id,
+                    Id = (int)dto.Id!,
                     State = dto.State,
-
                     UserFirstName = dto.UserFirstName,
                     UserLastName = dto.UserLastName,
                     UserRole = dto.UserRole,
                     Name = dto.Name,
-
                     UserEmail = new Email(dto.UserEmail),
                     UserPassword = new PasswordVO(hashedPassword)
                 };
 
-                var result = await _validator.ValidateUser(user, dto.UserPassword, _sessionUser.GetUserId());
+                var result = await _validator.ValidateUpdate(user, dto.UserPassword, _sessionUser.GetUserId());
 
                 if (!result.IsValid)
                     return result;
@@ -74,7 +80,8 @@ namespace eVote360.Core.Application.Services.Users.CommandHandler
 
                 return ValidationResult.Success();
             }
-            catch (ArgumentException ex) {
+            catch (ArgumentException ex)
+            {
                 errors.Add(new Error("USER VALIDATION ERROR", ex.Message));
                 return ValidationResult.Failure(errors);
             }

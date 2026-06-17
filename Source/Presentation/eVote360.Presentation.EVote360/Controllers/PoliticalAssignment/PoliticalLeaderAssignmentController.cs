@@ -5,6 +5,7 @@ using eVote360.Core.Application.Contracts.Users.Query;
 using eVote360.Core.Application.DTOs.PoliticalLeaderAssignment;
 using eVote360.Core.Application.ViewModels.PoliticalLeaderAssignment;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Authorization;
 
 namespace eVote360.Presentation.EVote360.Controllers.PoliticalLeaderAssignment
@@ -124,7 +125,7 @@ namespace eVote360.Presentation.EVote360.Controllers.PoliticalLeaderAssignment
     ;
 
              await LoadCatalogs();
-             return View("Save", viewModel);
+             return View("Edit", viewModel);
          }
 
 
@@ -134,8 +135,8 @@ namespace eVote360.Presentation.EVote360.Controllers.PoliticalLeaderAssignment
              if (!ModelState.IsValid)
              {
                  await LoadCatalogs();
-                  return View("Save", model);
-              }
+                 return View("Edit", model);
+             }
  
                 var dto = new LeaderAssignmentDto
                 {
@@ -158,7 +159,7 @@ namespace eVote360.Presentation.EVote360.Controllers.PoliticalLeaderAssignment
              {
                  foreach (var error in result.errors) { ModelState.AddModelError(error.Code, error.Description); }
                  await LoadCatalogs();
-                 return View("Save", model);
+                 return View("Edit", model);
              }
 
              TempData["Message"] = "Asignación actualizada con éxito";
@@ -188,8 +189,19 @@ namespace eVote360.Presentation.EVote360.Controllers.PoliticalLeaderAssignment
 
         private async Task LoadCatalogs()
         {
-          ViewBag.Parties = await _partyGetActiveQuery.ExecuteAsync();
-          ViewBag.Users = await _userGetActiveQuery.ExecuteAsync();
+            var parties = await _partyGetActiveQuery.ExecuteAsync();
+            ViewBag.Parties = parties.Select(p => new SelectListItem
+            {
+                Value = p.Id.ToString(),
+                Text = $"{p.Name} ({p.PoliticalPartyAcronym})"
+            }).ToList();
+
+            var users = await _userGetActiveQuery.ExecuteAsync();
+            ViewBag.Leaders = users.Select(u => new SelectListItem
+            {
+                Value = u.Id.ToString(),
+                Text = $"{u.UserFirstName} {u.UserLastName}"
+            }).ToList();
         }
 
 
