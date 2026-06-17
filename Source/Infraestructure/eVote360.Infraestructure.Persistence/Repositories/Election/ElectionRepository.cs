@@ -59,6 +59,7 @@ namespace eVote360.Infraestructure.Persistence.Repositories.Election
             {
                 return await _context.Elections
                    .AsNoTracking()
+                   .Include(x => x.ElectivePositions)
                    .FirstOrDefaultAsync(x => x.ElectionState == ElectionState.Activa);
             }
 

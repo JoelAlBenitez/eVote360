@@ -60,6 +60,8 @@ using eVote360.Infraestructure.Persistence.ServicesValidators.PoliticalAlliances
 using eVote360.Infraestructure.Persistence.ServicesValidators.PoliticalAssignment;
 using eVote360.Infraestructure.Persistence.ServicesValidators.PoliticalParty;
 using eVote360.Infraestructure.Persistence.ServicesValidators.User;
+using eVote360.Core.Domain.Contracts.DomainService.LeaderDashboard;
+using eVote360.Infraestructure.Persistence.DomainServices;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -139,6 +141,9 @@ namespace eVote360.IOC.Dependencies
             services.AddScoped<IPoliticalPartyRepository, PoliticalPartyRepository>();
             services.AddScoped<IPoliticalPartyDomainService, PoliticalPartyServiceValidator>();
 
+
+            //LeaderDashboard
+            services.AddScoped<ILeaderDashboardDomainService, LeaderDashboardDomainService>();
 
             //elector
             services.AddScoped<ICodeVerificationValidate, CodeVerificationValidate>();

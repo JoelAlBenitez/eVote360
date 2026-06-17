@@ -136,50 +136,41 @@ namespace eVote360.Presentation.EVote360.Controllers.Citizens
         }
 
         [HttpPost]
-
         public async Task<IActionResult> Create(CitizensViewModelCreate citizens)
         {
             if (!ModelState.IsValid)
-            {
-                ModelState.AddModelError("", "Error en la creación y carga del formulario ");
-                return RedirectToAction(nameof(Index));
-
-            }
+                return View("Save", citizens);
 
             var dto = new CitizensDto
             {
-                 Identification = citizens.Identification,
-                 Name = citizens.Name,
-                 LastName = citizens.LastName,
-                 Email = citizens.Email,
-                 State = citizens.State,
+                Identification = citizens.Identification,
+                Name = citizens.Name,
+                LastName = citizens.LastName,
+                Email = citizens.Email,
+                State = citizens.State,
             };
 
             var create = await _citizensCreateCommand.CreateAsync(dto);
             if (!create.IsValid)
             {
-                foreach(var item in create.errors)
-                {
+                foreach (var item in create.errors)
                     ModelState.AddModelError(item.Code, item.Description);
-                }
-                return RedirectToAction(nameof(Create));
+                return View("Save", citizens);
             }
-            TempData["Message"] = "Ciudadano registrado con exito";
+
+            TempData["Message"] = "Ciudadano registrado con éxito";
             TempData["TypeAlert"] = "success";
-            return RedirectToAction(nameof(Create));
+            return RedirectToAction(nameof(Index));
         }
 
         [HttpPost]
         public async Task<IActionResult> Edit(CitizensViewModelEdit citizens)
         {
             if (!ModelState.IsValid)
+                return View("Edit", citizens);
+
+            var dto = new CitizensDto
             {
-                ModelState.AddModelError("", "Error en la carga del formulario de edición, favor intente de nuevo");
-                return RedirectToAction(nameof(Index));
-
-            }
-
-            var dto = new CitizensDto { 
                 Id = citizens.Id,
                 Identification = citizens.Identification,
                 Name = citizens.Name,
@@ -189,16 +180,16 @@ namespace eVote360.Presentation.EVote360.Controllers.Citizens
             };
 
             var edit = await _citizensEditCommand.UpdateAsync(dto);
-            if (!edit.IsValid) {
-                foreach (var item in edit.errors) {
+            if (!edit.IsValid)
+            {
+                foreach (var item in edit.errors)
                     ModelState.AddModelError(item.Code, item.Description);
-                }
-                return RedirectToAction(nameof(Edit));
+                return View("Edit", citizens);
             }
 
-            TempData["Message"] = "Ciudadano editado con exito.";
+            TempData["Message"] = "Ciudadano editado con éxito.";
             TempData["TypeAlert"] = "success";
-            return RedirectToAction(nameof(Edit));
+            return RedirectToAction(nameof(Index));
         }
 
         [HttpPost]

@@ -30,7 +30,7 @@ namespace eVote360.Core.Application.Services.Admin
             {
 
                 var validate = await _adminValidator.ValidateElectionQuery();
-                if (validate != null) return (ValidationResult<IReadOnlyCollection<AdminDate>>)validate;
+                if (!validate.IsValid) return ValidationResult<IReadOnlyCollection<AdminDate>>.Failure(validate.errors.ToList());
 
                 var list = await _adminManagerRepository.GetYears();        
                 var dtosList = new List<AdminDate>();

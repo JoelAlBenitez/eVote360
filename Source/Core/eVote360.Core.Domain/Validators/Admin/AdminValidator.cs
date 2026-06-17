@@ -17,28 +17,27 @@ namespace eVote360.Core.Domain.Validators.Admin
             
         }
 
-        public  async Task<ValidationResult> ValidateElectionByYear(int year)
+        public async Task<ValidationResult> ValidateElectionByYear(int year)
         {
             var existeElectionByYear = await _adminFunctionalitysValidate.ExistElectionByYear(year);
-            if (existeElectionByYear)
+            if (!existeElectionByYear)
             {
-
                 _errors.Add(AdminError.YearNoValid);
                 return ValidationResult.Failure(_errors);
             }
             return ValidationResult.Success();
         }
-        
+
 
         public async Task<ValidationResult> ValidateElectionQuery()
         {
             var existElection = await _adminFunctionalitysValidate.ExisteElections();
-            if (existElection)
+            if (!existElection)
             {
                 _errors.Add(AdminError.NoWxisteElection);
                 return ValidationResult.Failure(_errors);
             }
-          
+
             return ValidationResult.Success();
         }
     }

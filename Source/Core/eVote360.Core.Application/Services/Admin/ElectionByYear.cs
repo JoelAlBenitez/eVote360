@@ -26,7 +26,7 @@ namespace eVote360.Core.Application.Services.Admin
             try
             {
                 var validate = await _adminValidator.ValidateElectionByYear(year.Year);
-                if (validate != null) return (ValidationResult<IReadOnlyCollection<ElectoralSummaryDto>>)validate;
+                if (!validate.IsValid) return ValidationResult<IReadOnlyCollection<ElectoralSummaryDto>>.Failure(validate.errors.ToList());
                 var dtoList = new List<ElectoralSummaryDto>();
                 var list = await _adminManagerRepository.ElectionByYearAsync(year);
 

@@ -64,7 +64,7 @@ namespace eVote360.Core.Domain.Validators.ElectorValidator.ProcessVotesElector
                 return ValidationResult.Failure(errors);
             }
             var votesRealizedByCitizen = await _votesValidate.ExistVoteByCitizen(citizen.IdentificationNumber.Value);
-            if (!votesRealizedByCitizen)
+            if (votesRealizedByCitizen)
             {
                 errors.Add(VotesError.ExistVotes);
                 return ValidationResult.Failure(errors);

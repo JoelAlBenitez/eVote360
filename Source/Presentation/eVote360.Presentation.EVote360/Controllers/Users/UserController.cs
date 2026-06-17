@@ -122,7 +122,7 @@ using Microsoft.AspNetCore.Mvc;
    [HttpPost]
     public async Task<IActionResult> Edit(UsersViewModelEdit vm)
     {
-        if (!ModelState.IsValid) return View("Edit", vm);
+        if (!ModelState.IsValid) return View("Save", vm);
    
         var dto = new UsersDto
         {
@@ -161,7 +161,7 @@ using Microsoft.AspNetCore.Mvc;
             if (!result.IsValid) {
 
                 var firstError = result.errors.FirstOrDefault();
-                TempData["Type Alert"] = "error";
+                TempData["TypeAlert"] = "danger";
 
                 TempData["Message"] = firstError != null ? firstError.Description : "Error al intentar cambiar el estado";
             }

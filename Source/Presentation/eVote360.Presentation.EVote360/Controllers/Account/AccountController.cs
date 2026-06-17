@@ -20,6 +20,12 @@ namespace eVote360.Presentation.EVote360.Controllers.Account
             _loginQuery = loginQuery;
         }
 
+        [HttpGet]
+        public IActionResult LogIn()
+        {
+            return View(new LoginViewModel { UserName = string.Empty, Password = string.Empty });
+        }
+
         [HttpPost]
         public async Task<IActionResult> LogIn(LoginViewModel login)
         {
@@ -64,10 +70,10 @@ namespace eVote360.Presentation.EVote360.Controllers.Account
             await HttpContext.SignInAsync("CookieAuth", claimsFirts);
 
             if ((int)user.Value.Role == 1)
-                return RedirectToAction("Index", "AdminHome");
+                return RedirectToAction("Index", "Admin");
 
             if ((int)user.Value.Role == 2)
-                return RedirectToAction("Index", "LeaderHome");
+                return RedirectToAction("Index", "LeaderDashboard");
 
            TempData["Message"] = "Error el rol del usuario no fue encontrado, favor intente de nuevo o contacte con un administrador";
            TempData["TypeAlert"] = "danger";

@@ -72,17 +72,22 @@ namespace eVote360.Core.Application.Services.Elector.CommandHandler.Identificati
 
                 int code = new Random().Next(100000, 999999);
 
+                var existing = await _otpRepository.GetByIdAndIdCitizens(citizen.Id, election.Id);
+
                 var codeVerification = new CodeVerification
                 {
                     IdCitizens = citizen.Id,
                     IdElection = election.Id,
                     Code = code,
-                    State = false, 
+                    State = false,
                     CreateAt = DateTimeOffset.UtcNow,
                     ExpirationDate = DateTimeOffset.UtcNow.AddMinutes(5)
                 };
 
-                await _otpRepository.CreateAsync(codeVerification);
+                if (existing == null)
+                    await _otpRepository.CreateAsync(codeVerification);
+                else
+                    await _otpRepository.UpdateAsync(codeVerification);
 
                 await _emailService.SendEmailAsync(new MessageDto
                 {
