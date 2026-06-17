@@ -30,12 +30,11 @@
     <form asp-action="Create" method="post" novalidate>
         @Html.AntiForgeryToken()
         
-        @* La validación de Elección Activa se maneja en el controlador/handler, pero aquí mostramos la UI del formulario *@
+       
 
         <div class="form-field">
             <label class="form-label" asp-for="PoliticalLeaderId">Dirigente Político</label>
-            @* En el controlador, ViewBag.Leaders debe contener un SelectList con usuarios que cumplen la regla: 
-               Rol Dirigente, Activos y Sin Partido *@
+          
             <select asp-for="PoliticalLeaderId" class="form-input" asp-items="ViewBag.Leaders">
                 <option value="">-- Seleccione un Dirigente --</option>
             </select>
@@ -45,8 +44,7 @@
 
         <div class="form-field">
             <label class="form-label" asp-for="PoliticalPartyId">Partido Político</label>
-            @* En el controlador, ViewBag.Parties debe contener un SelectList con partidos que cumplen la regla: 
-               Activos y Sin Dirigente *@
+           
             <select asp-for="PoliticalPartyId" class="form-input" asp-items="ViewBag.Parties">
                 <option value="">-- Seleccione un Partido --</option>
             </select>

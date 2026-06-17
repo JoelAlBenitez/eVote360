@@ -38,13 +38,11 @@ namespace eVote360.Core.Application.Services.Users.CommandHandler
             
                 if (state == false)
                 {
-                  user.State = false;
-                
-                  var validationResult = await _validator.ValidateUser(user, "DummyPass1!", _sessionUser.GetUserId());
-                
-                if (!validationResult.IsValid)
+                    user.State = false;
+                    var validationResult = await _validator.ValidateAlterState(user, _sessionUser.GetUserId());
+                    if (!validationResult.IsValid)
                     {
-                    return validationResult;
+                        return validationResult;
                     }
                 }
 

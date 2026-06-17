@@ -1,17 +1,17 @@
 @using eVote360.Core.Application.ViewModels.Election
+@using eVote360.Core.Domain.Common.Enums
 @model List<ElectionViewModel>
 @{
     ViewData["Title"] = "Gestión de Elecciones";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
     var hasData = Model != null && Model.Any();
     var count = Model?.Count ?? 0;
+    var hasActiveElection = Model?.Any(e => e.ElectionState == ElectionState.Activa) ?? false;
 }
 
 @section Styles {
     <link rel="stylesheet" href="~/css/admin-views.css" asp-append-version="true" />
 }
-
-@await Html.PartialAsync("_Notifications")
 
 <div class="page-header">
     <div class="page-header__left">
@@ -26,29 +26,39 @@
         </div>
     </div>
     <div class="d-flex gap-2">
-        <a asp-action="Summary" class="btn-filter-outline" style="border: 1px solid #1976d2; color: #1976d2;">
-            <i class="bi bi-graph-up-arrow" aria-hidden="true"></i>
-            <span>Resumen por Año</span>
-        </a>
-        <a asp-action="Create" class="btn-add">
-            <i class="bi bi-plus-lg" aria-hidden="true"></i>
-            <span>Nueva Elección</span>
-        </a>
+        @if (!hasActiveElection)
+        {
+            <a asp-action="Create" class="btn-add">
+                <i class="bi bi-plus-lg" aria-hidden="true"></i>
+                <span>Nueva Elección</span>
+            </a>
+        }
+        else
+        {
+            <span class="btn-add" style="opacity:.5; cursor:not-allowed; pointer-events:none;" title="Existe una elección activa">
+                <i class="bi bi-lock-fill" aria-hidden="true"></i>
+                <span>Nueva Elección</span>
+            </span>
+        }
     </div>
 </div>
 
 <div class="filters-bar">
     <div class="filters-bar__quick">
-        <a asp-action="GetActive" class="btn-filter-outline btn-filter-outline--active">
-            <i class="bi bi-check-circle-fill" aria-hidden="true"></i>
-            Solo Activas
-        </a>
         <a asp-action="Index" class="btn-filter-outline">
             <i class="bi bi-list-ul" aria-hidden="true"></i>
             Todas
         </a>
     </div>
 </div>
+
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-@(TempData["TypeAlert"] ?? "info") alert-dismissible fade show" role="alert">
+        @TempData["Message"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+    </div>
+}
 
 @if (hasData)
 {
@@ -57,25 +67,14 @@
             <thead>
                 <tr>
                     <th scope="col">#</th>
-                    <th scope="col">
-                        <i class="bi bi-type" aria-hidden="true"></i>Nombre de Elección
-                    </th>
-                    <th scope="col">
-                        <i class="bi bi-calendar3" aria-hidden="true"></i>Fecha Programada
-                    </th>
-                    <th scope="col">
-                        <i class="bi bi-info-circle" aria-hidden="true"></i>Etapa
-                    </th>
-                    <th scope="col">
-                        <i class="bi bi-toggle-on" aria-hidden="true"></i>Estado
-                    </th>
-                    <th scope="col" class="text-center">
-                        <i class="bi bi-gear-fill" aria-hidden="true"></i>Acciones
-                    </th>
+                    <th scope="col"><i class="bi bi-type" aria-hidden="true"></i>Nombre de Elección</th>
+                    <th scope="col"><i class="bi bi-calendar3" aria-hidden="true"></i>Fecha Programada</th>
+                    <th scope="col"><i class="bi bi-info-circle" aria-hidden="true"></i>Etapa</th>
+                    <th scope="col" class="text-center"><i class="bi bi-gear-fill" aria-hidden="true"></i>Acciones</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model!)
+                @foreach (var item in Model!.OrderBy(e => e.ElectionState == ElectionState.Activa ? 0 : e.ElectionState == ElectionState.Pendiente ? 1 : 2))
                 {
                     <tr>
                         <td>@item.Id</td>
@@ -83,40 +82,45 @@
                         <td>@item.ElectionDate.ToString("dd/MM/yyyy")</td>
                         <td>
                             @{
-                                var badgeClass = item.ElectionState.ToString() switch
+                                var (badgeClass, badgeIcon) = item.ElectionState switch
                                 {
-                                    "Pendiente" => "bg-warning text-dark",
-                                    "Activa" => "data-badge--active",
-                                    "Finalizada" => "bg-secondary text-white",
-                                    _ => "bg-light text-dark"
+                                    ElectionState.Pendiente => ("badge bg-warning text-dark", "bi-hourglass-split"),
+                                    ElectionState.Activa    => ("badge bg-success text-white", "bi-check-circle-fill"),
+                                    ElectionState.Finalizada => ("badge bg-secondary text-white", "bi-flag-fill"),
+                                    _ => ("badge bg-light text-dark", "bi-question-circle")
                                 };
                             }
-                            <span class="data-badge @badgeClass">
-                                @item.ElectionState
-                            </span>
-                        </td>
-                        <td>
-                            <span class="data-badge @(item.State ? "data-badge--active" : "data-badge--inactive")">
-                                <i class="bi @(item.State ? "bi-check-circle-fill" : "bi-x-circle-fill")" aria-hidden="true"></i>
-                                @(item.State ? "Habilitada" : "Inactiva")
+                            <span class="@badgeClass">
+                                <i class="bi @badgeIcon me-1" aria-hidden="true"></i>@item.ElectionState
                             </span>
                         </td>
                         <td>
                             <div class="table-actions justify-content-center">
-                                <a asp-action="Edit" 
-                                   asp-route-Id="@item.Id" 
-                                   class="btn-table-action btn-table-action--edit" 
-                                   title="Editar"
-                                   aria-label="Editar @item.Name">
-                                    <i class="bi bi-pencil-fill" aria-hidden="true"></i>
-                                </a>
-                                <a asp-action="AlterState" 
-                                   asp-route-Id="@item.Id" 
-                                   class="btn-table-action @(item.State ? "btn-table-action--deactivate" : "btn-table-action--activate")" 
-                                   title="@(item.State ? "Desactivar" : "Activar")"
-                                   aria-label="@(item.State ? "Desactivar" : "Activar") @item.Name">
-                                    <i class="bi @(item.State ? "bi-toggle-on" : "bi-toggle-off")" aria-hidden="true"></i>
-                                </a>
+                                @if (item.ElectionState == ElectionState.Pendiente)
+                                {
+                                    <a asp-action="Edit" asp-route-Id="@item.Id"
+                                       class="btn-table-action btn-table-action--edit" title="Editar" aria-label="Editar @item.Name">
+                                        <i class="bi bi-pencil-fill" aria-hidden="true"></i>
+                                    </a>
+                                    <a asp-action="ConfirmActivate" asp-route-id="@item.Id"
+                                       class="btn-table-action btn-table-action--activate" title="Activar elección" aria-label="Activar @item.Name">
+                                        <i class="bi bi-play-circle-fill" aria-hidden="true"></i>
+                                    </a>
+                                }
+                                else if (item.ElectionState == ElectionState.Activa)
+                                {
+                                    <a asp-action="ConfirmFinalize" asp-route-id="@item.Id"
+                                       class="btn-table-action btn-table-action--deactivate" title="Finalizar elección" aria-label="Finalizar @item.Name">
+                                        <i class="bi bi-stop-circle-fill" aria-hidden="true"></i>
+                                    </a>
+                                }
+                                else if (item.ElectionState == ElectionState.Finalizada)
+                                {
+                                    <a asp-action="SelectYear"
+                                       class="btn-table-action" style="background:#1976d2;color:#fff;" title="Ver resultados" aria-label="Resultados @item.Name">
+                                        <i class="bi bi-bar-chart-fill" aria-hidden="true"></i>
+                                    </a>
+                                }
                             </div>
                         </td>
                     </tr>
@@ -132,9 +136,7 @@ else
             <i class="bi bi-calendar-x"></i>
         </div>
         <h2 class="empty-state__title">No hay elecciones registradas</h2>
-        <p class="empty-state__desc">
-            Aún no se han configurado procesos electorales en el sistema.
-        </p>
+        <p class="empty-state__desc">Aún no se han configurado procesos electorales en el sistema.</p>
         <a asp-action="Create" class="btn-primary-outline">
             <i class="bi bi-plus-lg" aria-hidden="true"></i>
             Programar Primera Elección

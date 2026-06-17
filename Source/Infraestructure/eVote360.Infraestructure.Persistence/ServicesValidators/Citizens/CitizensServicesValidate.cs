@@ -96,9 +96,7 @@ namespace eVote360.Infraestructure.Persistence.ServicesValidators.Citizens
           return await _context
                 .Citzens
                 .AsNoTracking()
-                .AnyAsync(x => x.Id != Id && x.IdentificationNumber.Value != Identification && x.State == state);
-
-            
+                .AnyAsync(x => x.Id != Id && x.IdentificationNumber.Value == Identification && x.State == state);
         }
     }
 }

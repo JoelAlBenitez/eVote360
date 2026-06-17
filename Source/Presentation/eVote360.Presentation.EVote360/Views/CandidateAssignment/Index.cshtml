@@ -2,79 +2,112 @@
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
     Layout = "_LeaderLayout";
-    ViewData["Title"] = "Asignación de Candidatos a Puestos";
+    ViewData["Title"] = "AsignaciÃ³n de Candidatos a Puestos";
+    var totalItems = Model?.Count() ?? 0;
+    var assigned = Model?.Count(i => i.HasCandidate) ?? 0;
+    var vacant = totalItems - assigned;
 }
 
-<div class="container mt-4">
-    <h2 class="mb-4">Asignación de Candidatos a Puestos</h2>
+@section Styles {
+    <link rel="stylesheet" href="~/css/admin-views.css" asp-append-version="true" />
+}
 
-    @if (TempData["Message"] != null)
-    {
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            @TempData["Message"]
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+<div class="page-header">
+    <div class="page-header__left">
+        <div class="page-header__icon" style="background-color:#e8eaf6;color:#3949ab;padding:12px;border-radius:12px;">
+            <i class="bi bi-person-check-fill" style="font-size:1.5rem;" aria-hidden="true"></i>
         </div>
-    }
+        <div>
+            <h1 class="page-header__title">AsignaciÃ³n de Candidatos</h1>
+            <p class="page-header__subtitle">
+                @assigned asignado@(assigned != 1 ? "s" : "") Â· @vacant vacante@(vacant != 1 ? "s" : "")
+            </p>
+        </div>
+    </div>
+</div>
 
-    <div class="row row-cols-1 row-cols-md-3 g-4">
-        @foreach (var item in Model)
+@if (totalItems == 0)
+{
+    <div class="empty-state" role="status">
+        <div class="empty-state__icon" aria-hidden="true"><i class="bi bi-award"></i></div>
+        <h2 class="empty-state__title">Sin puestos activos</h2>
+        <p class="empty-state__desc">No hay puestos electivos activos para asignar candidatos.</p>
+    </div>
+}
+else
+{
+    <div class="row row-cols-1 row-cols-md-3 g-4 mt-1">
+        @foreach (var item in Model!)
         {
             <div class="col">
-                <div class="card h-100 shadow-sm">
-                    <div class="card-header fw-bold bg-light">
-                        @item.ElectivePositionName
+                <div class="card h-100 shadow-sm border-0" style="border-radius:16px;">
+                    <div class="card-header fw-semibold border-0" style="background:#f8f9fa;border-radius:16px 16px 0 0;padding:1rem 1.2rem;">
+                        <i class="bi bi-award-fill me-2 text-primary" aria-hidden="true"></i>@item.ElectivePositionName
                     </div>
-                    <div class="card-body d-flex flex-column align-items-center text-center">
+                    <div class="card-body d-flex flex-column align-items-center text-center px-3 py-4">
                         @if (item.HasCandidate)
                         {
                             @if (!string.IsNullOrEmpty(item.PhotoUrl))
                             {
-                                <img src="~/img/candidates/@item.PhotoUrl" alt="Foto de @item.CandidateName" class="rounded-circle mb-3" style="width: 60px; height: 60px; object-fit: cover;" />
+                                <img src="@item.PhotoUrl" alt="Foto de @item.CandidateName"
+                                     class="rounded-circle mb-3" style="width:64px;height:64px;object-fit:cover;border:3px solid #e8eaf6;" />
                             }
                             else
                             {
-                                <img src="~/img/evote360-logo.png" alt="Sin foto" class="rounded-circle mb-3" style="width: 60px; height: 60px; object-fit: cover;" />
+                                <div class="rounded-circle mb-3 bg-light d-flex align-items-center justify-content-center"
+                                     style="width:64px;height:64px;border:3px solid #e8eaf6;font-size:1.8rem;">
+                                    <i class="bi bi-person-fill text-muted" aria-hidden="true"></i>
+                                </div>
                             }
-                            
-                            <h5 class="card-title">@item.CandidateName @item.CandidateLastName</h5>
-                            
+
+                            <h6 class="card-title mb-1 fw-semibold">@item.CandidateName @item.CandidateLastName</h6>
+
                             <div class="mb-2">
                                 @if (item.CandidateType == "Propio")
                                 {
-                                    <span class="badge bg-primary">Propio</span>
+                                    <span class="badge" style="background:#e3f2fd;color:#1565c0;">Candidato Propio</span>
                                 }
                                 else if (item.CandidateType == "Aliado")
                                 {
-                                    <span class="badge bg-warning text-dark">Aliado</span>
+                                    <span class="badge" style="background:#fff3e0;color:#e65100;">Candidato Aliado</span>
                                 }
                             </div>
-                            
-                            @if (item.CandidateType == "Aliado")
+
+                            @if (item.CandidateType == "Aliado" && !string.IsNullOrEmpty(item.OriginPartyName))
                             {
-                                <p class="card-text text-muted small mt-auto">
-                                    Origen: @item.OriginPartyName (@item.OriginPartySiglas)
+                                <p class="text-muted small mt-1 mb-0">
+                                    <i class="bi bi-flag-fill me-1" aria-hidden="true"></i>@item.OriginPartyName (@item.OriginPartySiglas)
                                 </p>
                             }
                         }
                         else
                         {
-                            <div class="d-flex flex-column justify-content-center h-100 w-100">
-                                <h5 class="text-muted fst-italic m-0">Puesto Vacante</h5>
+                            <div class="d-flex flex-column align-items-center justify-content-center flex-grow-1">
+                                <i class="bi bi-person-x text-muted mb-2" style="font-size:2.5rem;" aria-hidden="true"></i>
+                                <span class="text-muted fst-italic">Puesto Vacante</span>
                             </div>
                         }
                     </div>
-                    <div class="card-footer bg-white border-top-0 text-center">
+                    <div class="card-footer bg-white border-0 px-3 pb-3" style="border-radius:0 0 16px 16px;">
                         @if (item.HasCandidate)
                         {
-                            <a asp-action="DeleteAssignment" asp-route-assignmentId="@item.AssignmentId" class="btn btn-danger btn-sm w-100">Remover</a>
+                            <a asp-action="DeleteAssignment" asp-route-assignmentId="@item.AssignmentId"
+                               class="btn btn-outline-danger btn-sm w-100">
+                                <i class="bi bi-person-dash-fill me-1" aria-hidden="true"></i>Remover
+                            </a>
                         }
                         else
                         {
-                            <a asp-action="Create" asp-route-electivePositionId="@item.ElectivePositionId" asp-route-electivePositionName="@item.ElectivePositionName" class="btn btn-success btn-sm w-100">Asignar Candidato</a>
+                            <a asp-action="Create"
+                               asp-route-electivePositionId="@item.ElectivePositionId"
+                               asp-route-electivePositionName="@item.ElectivePositionName"
+                               class="btn btn-sm w-100" style="background:#e8f5e9;color:#2e7d32;border:none;">
+                                <i class="bi bi-person-plus-fill me-1" aria-hidden="true"></i>Asignar Candidato
+                            </a>
                         }
                     </div>
                 </div>
             </div>
         }
     </div>
-</div>
+}

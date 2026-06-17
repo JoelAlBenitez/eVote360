@@ -12,6 +12,7 @@ namespace eVote360.Core.Domain.Contracts.Repositories.ElectionRepository
 
         Task<IReadOnlyCollection<Election>> GetElectionsByYearAsync(int year);
         Task<bool> DeactivateElectionAsync(int id);
+        Task<bool> ActivateElectionAsync(int id);
         Task<IReadOnlyCollection<ElectionResult>> GetElectionResultAsync (int electionId);
     }
 }

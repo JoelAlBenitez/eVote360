@@ -91,7 +91,7 @@ namespace eVote360.Infraestructure.Persistence.ServicesValidators.CandidateAssig
         {
             return await _context.PoliticalAlliances
                 .AsNoTracking()
-                .AnyAsync(x => x.Status == AllianceStatus.Accepted &&
+                .AnyAsync(x => x.Status == AllianceStatus.Aceptado &&
                                ((x.RequestingPartyId == partyId1 && x.ReceivingPartyId == partyId2) ||
                                 (x.RequestingPartyId == partyId2 && x.ReceivingPartyId == partyId1)));
         }

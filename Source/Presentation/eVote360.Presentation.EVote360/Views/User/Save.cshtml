@@ -3,11 +3,10 @@
 
 @{
     bool isEdit = Model != null && Model.GetType().GetProperty("Id") != null && Model.Id > 0;
+    string currentRole = isEdit ? (Model?.UserRole?.ToString() ?? "") : "";
     ViewData["Title"] = isEdit ? "Editar Usuario" : "Nuevo Usuario";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
-
-<partial name="_Notifications" />
 
 <div class="container mt-4 admin_view">
     <div class="row justify-content-center">
@@ -24,7 +23,7 @@
                         @if (isEdit)
                         {
                             <input type="hidden" name="Id" value="@Model.Id" />
-                            <input type="hidden" name="State" value="@Model.State" />
+                            <input type="hidden" name="State" value="@((bool)Model.State ? "true" : "false")" />
                         }
 
                         <h5 class="border-bottom pb-2 mb-3 text-secondary">Datos Personales</h5>
@@ -71,8 +70,8 @@
                                 <label for="UserRole" class="form-label fw-bold">Rol en el Sistema</label>
                                 <select id="UserRole" name="UserRole" class="form-select" required>
                                     <option value="">-- Seleccione un rol --</option>
-                                    <!option value="0" @(Model?.UserRole?.ToString() == "Admin" || (int?)Model?.UserRole == 0 ? "selected" : "")>Administrador</!option>
-                                    <!option value="1" @(Model?.UserRole?.ToString() == "DirigentePolitico" || (int?)Model?.UserRole == 1 ? "selected" : "")>Dirigente Político</!option>
+                                    <option value="Admin" selected="@(currentRole == "Admin" ? "selected" : null)">Administrador</option>
+                                    <option value="DirigentePolitico" selected="@(currentRole == "DirigentePolitico" ? "selected" : null)">Dirigente Político</option>
                                 </select>
                                 <span class="text-danger field-validation-valid" data-valmsg-for="UserRole" data-valmsg-replace="true"></span>
                             </div>

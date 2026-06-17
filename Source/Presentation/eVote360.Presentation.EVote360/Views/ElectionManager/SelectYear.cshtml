@@ -21,7 +21,7 @@
             <p class="page-header__subtitle">Selecciona un año para consultar el resumen de elecciones</p>
         </div>
     </div>
-    <a asp-controller="Admin" asp-action="Index" class="btn-back">
+    <a asp-controller="Election" asp-action="Index" class="btn-back">
         <i class="bi bi-arrow-left" aria-hidden="true"></i>
         <span>Volver al Dashboard</span>
     </a>
@@ -40,7 +40,7 @@
     <div class="year-cards-grid" role="list" aria-label="Seleccionar año electoral">
         @foreach (var year in Model.YearAvaible.OrderByDescending(y => y))
         {
-            <a href="@Url.Action("SummayElection", "Admin", new { year = year })"
+            <a href="@Url.Action("SummayElection", "Election", new { year = year })"
                class="year-card"
                role="listitem"
                aria-label="Ver resumen electoral del año @year">
@@ -67,7 +67,7 @@ else
         <p class="empty-state__desc">
             No existen años con procesos electorales registrados en el sistema.
         </p>
-        <a asp-controller="Admin" asp-action="Index" class="btn-primary-outline">
+        <a asp-controller="Election" asp-action="Index" class="btn-primary-outline">
             <i class="bi bi-arrow-left" aria-hidden="true"></i>
             Regresar al Dashboard
         </a>

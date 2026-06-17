@@ -26,7 +26,7 @@ namespace eVote360.Infraestructure.Shared.EmailServices
         {
             var emailMessage = new MimeMessage();
 
-            emailMessage.From.Add(new MailboxAddress(_emailSettings.SenderName, _emailSettings.SenderName));
+            emailMessage.From.Add(new MailboxAddress(_emailSettings.SenderName, _emailSettings.SenderEmail));
             emailMessage.To.Add(new MailboxAddress("", messageDto.ToEmail));
 
             emailMessage.Subject = messageDto.Subject;

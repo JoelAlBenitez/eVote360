@@ -36,7 +36,7 @@ namespace eVote360.Infraestructure.Persistence.Configurations.CandidateAssignmen
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasOne(x => x.ElectivePosition)
-                .WithMany()
+                .WithMany(e => e.CandidateAssignments)
                 .HasForeignKey(x => x.ElectivePositionId)
                 .OnDelete(DeleteBehavior.Restrict);
 

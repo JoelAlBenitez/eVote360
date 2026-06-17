@@ -51,6 +51,8 @@ using eVote360.Core.Application.Services.Elector.CommandHandler.Votes;
 using eVote360.Core.Domain.Contracts.Repositories.Elector.SelectPorcess;
 using eVote360.Core.Application.Services.Elector.Query;
 using eVote360.Core.Application.Contracts.Elector.Query;
+using eVote360.Core.Application.Contracts.LeaderDashboard.Query;
+using eVote360.Core.Application.Services.LeaderDashboard.Query;
 
 namespace eVote360.IOC.Dependencies
 {
@@ -130,6 +132,7 @@ namespace eVote360.IOC.Dependencies
             services.AddScoped<IElectionCreateCommand, ElectionCreate>();
             services.AddScoped<IElectionUpdateCommand, ElectionUpdate>();
             services.AddScoped<IElectionAlterStateCommand, ElectionAlterState>();
+            services.AddScoped<IElectionActivateCommand, ElectionActivate>();
 
             services.AddScoped<IElectionGetAllQuery, ElectionGetAll>();
             services.AddScoped<IElectionGetByIdQuery, ElectionGetById>();
@@ -141,6 +144,9 @@ namespace eVote360.IOC.Dependencies
             services.AddScoped<ILeaderAssignmentAlterStateCommand, LeaderAssignmentAlterState>();
             services.AddScoped<ILeaderAssignmentGetAllQuery, LeaderAssignmentGetAll>();
             services.AddScoped<ILeaderAssignmentGetByIdQuery, LeaderAssignmentGetById>();
+
+            //LeaderDashboard
+            services.AddScoped<ILeaderDashboardGetQuery, LeaderDashboardGetQueryHandler>();
 
             //Authentication
 

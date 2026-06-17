@@ -61,7 +61,7 @@ namespace eVote360.Infraestructure.Persistence.Repositories.PoliticalAlliances
         {
             return await _context.PoliticalAlliances
                 .AsNoTracking()
-                .Where(x => x.ReceivingPartyId == partyId && x.Status == AllianceStatus.Pending)
+                .Where(x => x.ReceivingPartyId == partyId && x.Status == AllianceStatus.Pendiente)
                 .ToListAsync();
         }
 
@@ -77,7 +77,7 @@ namespace eVote360.Infraestructure.Persistence.Repositories.PoliticalAlliances
         {
             return await _context.PoliticalAlliances
                 .AsNoTracking()
-                .Where(x => x.Status == AllianceStatus.Accepted && 
+                .Where(x => x.Status == AllianceStatus.Aceptado && 
                            (x.RequestingPartyId == partyId || x.ReceivingPartyId == partyId))
                 .ToListAsync();
         }

@@ -17,8 +17,8 @@ namespace eVote360.Infraestructure.Persistence.Configurations.Elector.CodeVerifi
             builder.Property(e => e.State).IsRequired();
          
 
-            builder.Property(e => e.CreateAt).HasColumnType("datetime2").HasDefaultValueSql("SYSUTCDATETIME()").IsRequired();
-            builder.Property(e => e.ExpirationDate).HasColumnType("datetime2").IsRequired();
+            builder.Property(e => e.CreateAt).HasColumnType("datetimeoffset").HasDefaultValueSql("SYSDATETIMEOFFSET()").IsRequired();
+            builder.Property(e => e.ExpirationDate).HasColumnType("datetimeoffset").IsRequired();
 
             builder.HasOne(el => el.election)
                 .WithMany()

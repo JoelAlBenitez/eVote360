@@ -2,6 +2,7 @@ using eVote360.Core.Application.Alliances.DTOs;
 using eVote360.Core.Application.Contracts.Alliance.Commands;
 using eVote360.Core.Application.Contracts.Alliance.Query;
 using eVote360.Core.Application.Contracts.Authentication.Command;
+using eVote360.Core.Application.Contracts.PoliticalParty.Query;
 using eVote360.Core.Application.ViewModels.PoliticalAlliances;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -25,6 +26,7 @@ namespace eVote360.Presentation.EVote360.Controllers.PoliticalAlliances
         private readonly IGetActiveAlliancesQuery _getActiveAlliancesQuery;
         private readonly IGetAllianceByIdQuery _getAllianceByIdQuery;
         private readonly ISessionUser _sessionUser;
+        private readonly IPoliticalPartyGetActiveQuery _partyGetActiveQuery;
 
         public PoliticalAlliancesController(
             ICreateAllianceCommand createAllianceCommand,
@@ -36,7 +38,8 @@ namespace eVote360.Presentation.EVote360.Controllers.PoliticalAlliances
             IGetSentAllianceRequestsQuery getSentRequestsQuery,
             IGetActiveAlliancesQuery getActiveAlliancesQuery,
             IGetAllianceByIdQuery getAllianceByIdQuery,
-            ISessionUser sessionUser)
+            ISessionUser sessionUser,
+            IPoliticalPartyGetActiveQuery partyGetActiveQuery)
         {
             _createAllianceCommand = createAllianceCommand;
             _acceptAllianceCommand = acceptAllianceCommand;
@@ -48,6 +51,7 @@ namespace eVote360.Presentation.EVote360.Controllers.PoliticalAlliances
             _getActiveAlliancesQuery = getActiveAlliancesQuery;
             _getAllianceByIdQuery = getAllianceByIdQuery;
             _sessionUser = sessionUser;
+            _partyGetActiveQuery = partyGetActiveQuery;
         }
 
         private int GetAuthenticatedPartyId() => _sessionUser.GetPoliticalParty(); 
@@ -98,7 +102,6 @@ namespace eVote360.Presentation.EVote360.Controllers.PoliticalAlliances
                 foreach (var err in sentResult.errors) ModelState.AddModelError(err.Code, err.Description);
             }
 
-            // 3. Obtener alianzas activas
             var activeResult = await _getActiveAlliancesQuery.ExecuteAsync(partyId);
             if (activeResult.IsValid)
             {
@@ -107,7 +110,6 @@ namespace eVote360.Presentation.EVote360.Controllers.PoliticalAlliances
                     Id = d.Id,
                     RequestingPartyId = d.RequestingPartyId,
                     ReceivingPartyId = d.ReceivingPartyId,
-                    // El partido contrario es el que NO es el nuestro
                     PartyName = (d.RequestingPartyId == partyId ? d.ReceivingPartyName : d.RequestingPartyName) ?? "N/A",
                     PartySiglas = (d.RequestingPartyId == partyId ? d.ReceivingPartySiglas : d.RequestingPartySiglas) ?? "N/A",
                     Status = d.Status.ToString(),
@@ -120,17 +122,16 @@ namespace eVote360.Presentation.EVote360.Controllers.PoliticalAlliances
                 foreach (var err in activeResult.errors) ModelState.AddModelError(err.Code, err.Description);
             }
 
-            // TODO: Integrar con servicio de elecciones para indexVm.HasActiveElection
             indexVm.HasActiveElection = false; 
 
             return View(indexVm);
         }
 
         [HttpGet]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
             var vm = new CreateAllianceViewModel();
-            // TODO: Poblar AvailableParties cuando exista el módulo de partidos
+            await PopulateAvailableParties(vm);
             return View(vm);
         }
 
@@ -139,6 +140,7 @@ namespace eVote360.Presentation.EVote360.Controllers.PoliticalAlliances
         {
             if (!ModelState.IsValid)
             {
+                await PopulateAvailableParties(vm);
                 return View(vm);
             }
 
@@ -295,6 +297,19 @@ namespace eVote360.Presentation.EVote360.Controllers.PoliticalAlliances
             TempData["Message"] = "Alianza eliminada exitosamente";
             TempData["TypeAlert"] = "success";
             return RedirectToAction(nameof(Index));
+        }
+
+        private async Task PopulateAvailableParties(CreateAllianceViewModel vm)
+        {
+            int myPartyId = GetAuthenticatedPartyId();
+            var parties = await _partyGetActiveQuery.ExecuteAsync();
+            vm.AvailableParties = parties
+                .Where(p => p.Id != myPartyId)
+                .Select(p => new SimpleSelectListItem
+                {
+                    Value = p.Id.ToString(),
+                    Text = $"{p.Name} ({p.PoliticalPartyAcronym})"
+                }).ToList();
         }
     }
 }

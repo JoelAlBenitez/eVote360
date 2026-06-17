@@ -22,7 +22,7 @@ namespace eVote360.Infraestructure.Persistence.ServicesValidators.PoliticalAllia
         {
             return await _context.Elections
                 .AsNoTracking()
-                .AnyAsync(x => x.ElectionState == ElectionState.Activa);
+                .AnyAsync(x => x.ElectionState == ElectionState.Activa && x.State == true);
         }
 
         public async Task<bool> IsPartyActive(int partyId)
@@ -36,7 +36,7 @@ namespace eVote360.Infraestructure.Persistence.ServicesValidators.PoliticalAllia
         {
             return await _context.PoliticalAlliances
                 .AsNoTracking()
-                .AnyAsync(x => x.Status == AllianceStatus.Accepted && 
+                .AnyAsync(x => x.Status == AllianceStatus.Aceptado && 
                                (x.RequestingPartyId == requestingPartyId && x.ReceivingPartyId == receivingPartyId ||
                                 x.RequestingPartyId == receivingPartyId && x.ReceivingPartyId == requestingPartyId));
         }
@@ -45,7 +45,7 @@ namespace eVote360.Infraestructure.Persistence.ServicesValidators.PoliticalAllia
         {
             return await _context.PoliticalAlliances
                 .AsNoTracking()
-                .AnyAsync(x => x.Status == AllianceStatus.Pending && 
+                .AnyAsync(x => x.Status == AllianceStatus.Pendiente && 
                                (x.RequestingPartyId == requestingPartyId && x.ReceivingPartyId == receivingPartyId ||
                                 x.RequestingPartyId == receivingPartyId && x.ReceivingPartyId == requestingPartyId));
         }

@@ -21,7 +21,7 @@ namespace eVote360.Core.Application.Services.Elector.CommandHandler.Identificati
             try
             {
                 var validate = await _identificationProcess.ValidateEnteredIdentification(identificiationDto.identification);
-                if (validate != null) return validate;
+                if (!validate.IsValid) return validate;
                 return ValidationResult.Success();
             }
             catch (Exception ex)

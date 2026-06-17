@@ -33,14 +33,22 @@ namespace eVote360.Infraestructure.Persistence.Configurations.User
                    .HasColumnType("nvarchar")
                    .IsRequired();
             
-                builder.Property(x => x.UserEmail.Value)
-                   .HasColumnName("Email")
-                   .HasMaxLength(100)
-                   .HasColumnType("nvarchar")
-                   .IsRequired();
+                builder.OwnsOne(x => x.UserEmail, email =>
+                {
+                    email.Property(e => e.Value)
+                       .HasColumnName("Email")
+                       .HasMaxLength(100)
+                       .HasColumnType("nvarchar")
+                       .IsRequired();
+                    email.HasIndex(e => e.Value).IsUnique();
+                });
 
-                builder.Property(x => x.UserPassword.HashValue)
-                   .IsRequired();
+                builder.OwnsOne(x => x.UserPassword, password =>
+                {
+                    password.Property(p => p.HashValue)
+                       .HasColumnName("PasswordHash")
+                       .IsRequired();
+                });
             
                  builder.Property(x => x.UserRole)
                    .HasConversion<string>() 
@@ -51,7 +59,6 @@ namespace eVote360.Infraestructure.Persistence.Configurations.User
                    .HasDefaultValue(true);
                 
                 builder.HasIndex(x => x.Name).IsUnique();
-                         builder.HasIndex(x => x.UserEmail.Value).IsUnique();
 
             builder.HasMany(x => x.PoliticalAssignments) 
                       .WithOne(x => x.PoliticalLeader)       

@@ -7,13 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Contracts\Validators\**" />
     <Compile Remove="Enums\**" />
+    <EmbeddedResource Remove="Contracts\Validators\**" />
     <EmbeddedResource Remove="Enums\**" />
+    <None Remove="Contracts\Validators\**" />
     <None Remove="Enums\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Contracts\Validators\" />
   </ItemGroup>
 
 </Project>

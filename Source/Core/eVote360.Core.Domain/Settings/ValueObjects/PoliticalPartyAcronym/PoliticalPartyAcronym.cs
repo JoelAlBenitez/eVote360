@@ -14,12 +14,7 @@ namespace eVote360.Core.Domain.Settings.ValueObjects.PoliticalPartyAcronym
         {
             if (string.IsNullOrWhiteSpace(value))
                 throw new ArgumentException("El acrónimo del partido político no puede estar vacío.");
-            if (value.Length > 3)
-                throw new ArgumentException("El acrónimo del partido político no puede tener más de 3 caracteres.");
-            Value = value;
-
-            Value = value.ToUpper();
-
-        }    
+            Value = value.Length > 3 ? value.Substring(0, 3).ToUpper() : value.ToUpper();
+        }
     }
 }

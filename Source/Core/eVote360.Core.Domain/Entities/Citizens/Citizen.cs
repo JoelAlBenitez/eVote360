@@ -11,8 +11,6 @@ namespace eVote360.Core.Domain.Entities.Citizens
         public required string LastName { get; set; }
         public required Email Email { get; set; }
         public required IdentificationN IdentificationNumber { get; set; }
-
-        public ICollection<Votes>? Vote { get; set; }
         public ICollection<AuditVotes>? AuditVote {  get; set; }
     }
 }

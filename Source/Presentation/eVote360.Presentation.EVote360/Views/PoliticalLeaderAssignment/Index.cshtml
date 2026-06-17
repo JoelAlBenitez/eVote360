@@ -96,13 +96,18 @@
                                    aria-label="Editar asignación @item.Id">
                                     <i class="bi bi-pencil-fill" aria-hidden="true"></i>
                                 </a>
-                                <a asp-action="AlterState" 
-                                   asp-route-Id="@item.Id" 
-                                   class="btn-table-action @(item.State ? "btn-table-action--deactivate" : "btn-table-action--activate")" 
-                                   title="@(item.State ? "Desactivar" : "Activar")"
-                                   aria-label="@(item.State ? "Desactivar" : "Activar") asignación @item.Id">
-                                    <i class="bi @(item.State ? "bi-toggle-on" : "bi-toggle-off")" aria-hidden="true"></i>
-                                </a>
+                                <form asp-action="AlterState" method="post" style="display:inline;">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="id" value="@item.Id" />
+                                    <input type="hidden" name="state" value="@item.State.ToString().ToLower()" />
+                                    <button type="submit"
+                                            class="btn-table-action @(item.State ? "btn-table-action--deactivate" : "btn-table-action--activate")"
+                                            title="@(item.State ? "Desactivar" : "Activar")"
+                                            aria-label="@(item.State ? "Desactivar" : "Activar") asignación @item.Id"
+                                            onclick="return confirm('¿Está seguro que desea @(item.State ? "desactivar" : "activar") esta asignación?');">
+                                        <i class="bi @(item.State ? "bi-toggle-on" : "bi-toggle-off")" aria-hidden="true"></i>
+                                    </button>
+                                </form>
                             </div>
                         </td>
                     </tr>

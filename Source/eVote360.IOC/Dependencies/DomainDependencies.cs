@@ -1,4 +1,5 @@
 ﻿using eVote360.Core.Domain.Contracts.ServiceValidates.Candidate;
+using eVote360.Core.Domain.Contracts.ServiceValidates.Elector.CodeVerifications;
 using eVote360.Core.Domain.Contracts.Validators.CandidateAssignment;
 using eVote360.Core.Domain.Validators.Admin;
 using eVote360.Core.Domain.Validators.AssignmentValidator;
@@ -6,16 +7,16 @@ using eVote360.Core.Domain.Validators.CandidateValidator;
 using eVote360.Core.Domain.Validators.CitizensValidator;
 using eVote360.Core.Domain.Validators.ElectionValidator;
 using eVote360.Core.Domain.Validators.ElectivePositionValidator;
-using eVote360.Core.Domain.Validators.PoliticalAlliancesValidator;
-using eVote360.Core.Domain.Validators.PoliticalPartyValidator;
-using eVote360.Core.Domain.Validators.UserValidator;
-using eVote360.Infraestructure.Persistence.ServicesValidators.Candidatess;
-using Microsoft.Extensions.DependencyInjection;
-using eVote360.Core.Domain.Contracts.ServiceValidates.Elector.CodeVerifications;
 using eVote360.Core.Domain.Validators.ElectorValidator.CodeVerifications;
 using eVote360.Core.Domain.Validators.ElectorValidator.IdentificationProcess;
 using eVote360.Core.Domain.Validators.ElectorValidator.ProcessVotesElector;
 using eVote360.Core.Domain.Validators.ElectorValidator.Vote;
+using eVote360.Core.Domain.Validators.PoliticalAlliancesValidator;
+using eVote360.Core.Domain.Validators.PoliticalAssignment;
+using eVote360.Core.Domain.Validators.PoliticalPartyValidator;
+using eVote360.Core.Domain.Validators.UserValidator;
+using eVote360.Infraestructure.Persistence.ServicesValidators.Candidatess;
+using Microsoft.Extensions.DependencyInjection;
 
 
 
@@ -59,6 +60,10 @@ namespace eVote360.IOC.Dependencies
             services.AddScoped<IIdentificationProcess, IdentificationProcess>();
             services.AddScoped<IProcessElector, ProcessElector>();
             services.AddScoped<IVoteValidator, VoteValidator>();
+
+            //politcal assigment
+
+            services.AddScoped<IPoliticalAssignmentValidator, PoliticalAssignmentValidator>();
 
             //
             return services;

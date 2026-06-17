@@ -44,7 +44,6 @@
 
         <div class="form-field">
             <label class="form-label" asp-for="PoliticalLeaderId">Dirigente Político</label>
-            @* En edición, solemos mostrar el líder actual preseleccionado y bloquearlo o permitir cambiarlo si las reglas lo permiten. ViewBag.Leaders debe contener las opciones válidas. *@
             <select asp-for="PoliticalLeaderId" class="form-input" asp-items="ViewBag.Leaders">
                 <option value="">-- Seleccione un Dirigente --</option>
             </select>

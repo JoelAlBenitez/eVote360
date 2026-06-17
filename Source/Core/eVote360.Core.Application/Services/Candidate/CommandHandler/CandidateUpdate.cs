@@ -1,3 +1,4 @@
+using eVote360.Core.Application.Contracts.Authentication.Command;
 using eVote360.Core.Application.Contracts.Candidate.Commands;
 using eVote360.Core.Application.Contracts.Services;
 using eVote360.Core.Application.DTOs.Candidates;
@@ -20,16 +21,20 @@ namespace eVote360.Core.Application.Services.Candidate.CommandHandler
         private readonly ICandidateRepository _candidateRepository;
         private readonly ICandidateValidator _candidateValidator;
         private readonly IFileStorageService _fileStorageService;
+        private readonly ISessionUser _sessionUser;
         public List<Domain.Common.Errors.Error> _errors = new List<Domain.Common.Errors.Error>();
 
         public CandidateUpdate(
             ICandidateRepository candidateRepository, 
             ICandidateValidator candidateValidator,
-            IFileStorageService fileStorageService)
+            IFileStorageService fileStorageService,
+            ISessionUser sessionUser
+            )
         {
             _candidateRepository = candidateRepository;
             _candidateValidator = candidateValidator;
             _fileStorageService = fileStorageService;
+            _sessionUser = sessionUser;
         }
 
         public async Task<ValidationResult> UpdateCandidateAsync(UpdateCandidateDto dto, int PartyId)
@@ -42,7 +47,7 @@ namespace eVote360.Core.Application.Services.Candidate.CommandHandler
                 if (candidateById == null)
                     return ValidationResult.Failure(CandidatesError.DataInvalid);
 
-                // SEGURIDAD: Validacion de pertenencia al partido (Multi-tenant isolation)
+                
                 if (candidateById.PoliticalPartyId != PartyId)
                     return ValidationResult.Failure(CandidatesError.CandidateNotBelongsToParty);
 
@@ -55,7 +60,6 @@ namespace eVote360.Core.Application.Services.Candidate.CommandHandler
                 {
                     string photoPath = await _fileStorageService.SaveFileAsync(dto.PhotoUrl, "candidates");
                     
-                    // ROBUSTEZ: Evitar excepcion en Value Object si el guardado falla
                     if (string.IsNullOrWhiteSpace(photoPath))
                         return ValidationResult.Failure(CandidatesError.PhotoInvalid);
 
@@ -63,7 +67,7 @@ namespace eVote360.Core.Application.Services.Candidate.CommandHandler
                 }
 
                 candidateById.UpdateAt = DateTimeOffset.UtcNow;
-                candidateById.UpdateUserId = 0; // TODO: Usar ID de sesion
+                candidateById.UpdateUserId = _sessionUser.GetUserId(); 
 
                 var update = await _candidateRepository.UpdateEntitieAsync(candidateById);
                 if (!update) 

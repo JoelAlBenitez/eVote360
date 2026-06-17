@@ -15,7 +15,7 @@ namespace eVote360.Core.Application.ViewModels.PoliticalParty
 
         [Display(Name = "Descripcion")]
         [Required(ErrorMessage = "Se requiere una descripcion valida")]
-        [StringLength(500, MinimumLength = 100, ErrorMessage = "Ingrese un una descripcion valida de minimo 100 y maximo 500 caracteres")]
+        [StringLength(500, MinimumLength = 10, ErrorMessage = "Ingrese un una descripcion valida de minimo 10 y maximo 500 caracteres")]
         public required string PoliticalPartyDescription { get; set; }
 
         [Display(Name = "Siglas")]
@@ -25,7 +25,6 @@ namespace eVote360.Core.Application.ViewModels.PoliticalParty
 
         [Display(Name = "Logo")]
         [Required(ErrorMessage = "Se requiere un Logo de partido valido")]
-        [StringLength(200, ErrorMessage = "Ingrese una imagen valida")]
         public required IFormFile? LogoFile { get; set; }
 
         [Display(Name = "Estado")]

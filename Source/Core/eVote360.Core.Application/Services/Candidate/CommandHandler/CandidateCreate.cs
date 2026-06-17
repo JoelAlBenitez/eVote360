@@ -1,3 +1,4 @@
+using eVote360.Core.Application.Contracts.Authentication.Command;
 using eVote360.Core.Application.Contracts.Candidate.Commands;
 using eVote360.Core.Application.Contracts.Services;
 using eVote360.Core.Application.DTOs.Candidates;
@@ -18,42 +19,41 @@ namespace eVote360.Core.Application.Services.Candidate.CommandHandler
         private readonly ICandidateRepository _candidateRepository;
         private readonly ICandidateValidator _candidateValidator;
         private readonly IFileStorageService _fileStorageService;
+        private readonly ISessionUser _sessionUser;
         public List<Domain.Common.Errors.Error> _errors = new List<Domain.Common.Errors.Error>();
 
         public CandidateCreate(
             ICandidateRepository candidateRepository, 
             ICandidateValidator candidateValidator,
-            IFileStorageService fileStorageService)
+            IFileStorageService fileStorageService,
+            ISessionUser sessionUser
+            )
         {
             _candidateRepository = candidateRepository;
             _candidateValidator = candidateValidator;
             _fileStorageService = fileStorageService;
+            _sessionUser = sessionUser;
         }
 
         public async Task<ValidationResult> CreateCandidateAsync(CreateCandidateDto dto, int PartyId)
         {
             try
             {
-                // 1. Validaciones rapidas del DTO
                 if (dto == null) 
                     return ValidationResult.Failure(CandidatesError.DataInvalid);
                 
                 if (dto.PhotoUrl == null || dto.PhotoUrl.Length == 0)
                     return ValidationResult.Failure(CandidatesError.PhotoInvalid);
 
-                // 2. Validaciones de Reglas de Negocio (Antes de tocar el disco duro)
                 var validation = await _candidateValidator.ValidateCreateAsync(PartyId);
                 if (!validation.IsValid) 
                     return validation;
 
-                // 3. Guardar el archivo fisico
                 string photoPath = await _fileStorageService.SaveFileAsync(dto.PhotoUrl, "candidates");
                 
-                // Si por alguna razon el servicio de archivos falla en devolver la ruta
                 if (string.IsNullOrWhiteSpace(photoPath))
                     return ValidationResult.Failure(CandidatesError.PhotoInvalid);
 
-                // 4. Armar la entidad
                 var candidate = new Candidates
                 {
                     Name = new FullName(dto.Name, dto.LastName),
@@ -62,10 +62,9 @@ namespace eVote360.Core.Application.Services.Candidate.CommandHandler
                     State = true,
                     HasParticipatedInElection = false,
                     CreateAt = DateTimeOffset.UtcNow,
-                    CreateUserId = 0 // TODO: Cambiar por el ID de la sesion
+                    CreateUserId = _sessionUser.GetUserId()
                 };
 
-                // 5. Guardar en Base de Datos
                 var create = await _candidateRepository.CreateEntiteAsync(candidate);
                 if (!create) 
                 {

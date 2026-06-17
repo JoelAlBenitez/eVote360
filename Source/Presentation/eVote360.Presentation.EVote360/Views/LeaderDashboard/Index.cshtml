@@ -6,99 +6,174 @@
     ViewData["Title"] = "Panel del Dirigente";
 }
 
-<div class="container-fluid px-4 mt-4 mb-5">
-    
-    <!-- 1. Encabezado del partido -->
-    <div class="d-flex align-items-center gap-3 mb-4">
-        @if (!string.IsNullOrEmpty(Model.PartyLogoUrl))
-        {
-            <img src="~/img/parties/@Model.PartyLogoUrl" style="height:70px; object-fit: cover;" class="rounded-circle shadow-sm" alt="Logo de @Model.PartyName" />
+@section Styles {
+    <link rel="stylesheet" href="~/css/admin-views.css" asp-append-version="true" />
+    <style>
+        .admin-hero__bg {
+            background: linear-gradient(135deg, #1f2937 0%, #374151 100%) !important;
         }
-        else
-        {
-            <img src="~/img/evote360-logo.png" style="height:70px; object-fit: cover;" class="rounded-circle shadow-sm" alt="Logo por defecto" />
-        }
-        <div>
-            <h2 class="fw-light text-secondary mb-0">@Model.PartyName</h2>
-            <span class="badge bg-primary rounded-pill">@Model.PartyAcronym</span>
+        .admin-hero__orb--1 { background: radial-gradient(circle at center, rgba(16, 185, 129, 0.15) 0%, transparent 70%) !important; }
+        .admin-hero__orb--2 { background: radial-gradient(circle at center, rgba(59, 130, 246, 0.15) 0%, transparent 70%) !important; }
+        .admin-hero__orb--3 { background: radial-gradient(circle at center, rgba(245, 158, 11, 0.15) 0%, transparent 70%) !important; }
+    </style>
+}
+
+
+
+<div class="admin-hero">
+    <div class="admin-hero__bg">
+        <div class="admin-hero__orb admin-hero__orb--1"></div>
+        <div class="admin-hero__orb admin-hero__orb--2"></div>
+        <div class="admin-hero__orb admin-hero__orb--3"></div>
+    </div>
+
+    <div class="admin-hero__content">
+        <div class="admin-hero__greeting">
+            <div class="d-flex align-items-center gap-3 mb-2">
+                @if (!string.IsNullOrEmpty(Model.PartyLogoUrl))
+                {
+                    <img src="@Model.PartyLogoUrl" style="height:70px; width:70px; object-fit: cover;" class="rounded-circle shadow-sm border border-2 border-white" alt="Logo de @Model.PartyName" />
+                }
+                else
+                {
+                    <div class="d-flex align-items-center justify-content-center bg-light text-dark rounded-circle shadow-sm border border-2 border-white" style="height:70px; width:70px; font-size: 2rem;">
+                        <i class="bi bi-flag-fill"></i>
+                    </div>
+                }
+                <div>
+                    <span class="admin-hero__salute d-block text-white-50" style="font-size: 0.9rem;">Dirigente Político</span>
+                    <h1 class="admin-hero__name mb-0" style="font-size: 1.8rem;">
+                        @Model.PartyName
+                    </h1>
+                </div>
+            </div>
+        </div>
+        <div class="admin-hero__meta mt-3">
+            <span class="admin-hero__badge" style="background: rgba(255,255,255,0.1); color: #fff;">
+                <i class="bi bi-tag-fill" aria-hidden="true"></i>
+                @Model.PartyAcronym
+            </span>
+            <span class="admin-hero__date" id="adminHeroDate" aria-live="off"></span>
         </div>
     </div>
 
-    <!-- 2. Alertas (usando el Notification parcial o el TempData directo según el layout) -->
-    @if (TempData["Message"] != null)
-    {
-        <div class="alert alert-success alert-dismissible fade show rounded-pill" role="alert">
-            @TempData["Message"]
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    <div class="admin-hero__emblem" aria-hidden="true">
+        <div class="admin-hero__emblem-ring"></div>
+        <i class="bi bi-diagram-3-fill"></i>
+    </div>
+</div>
+
+<div class="admin-stats-grid" aria-label="Resumen del sistema">
+
+    <div class="stat-card stat-card--citizens">
+        <div class="stat-card__icon-wrap">
+            <i class="bi bi-person-check-fill" aria-hidden="true"></i>
         </div>
-    }
-
-    <!-- Fallback a Notifications si se prefiere usar el Componente de Joel -->
-    <partial name="_Notifications" />
-
-    <hr class="text-muted opacity-25 mb-4">
-
-    <!-- 3. Fila de 5 tarjetas de indicadores -->
-    <h4 class="fw-light text-secondary mb-3">Resumen Electoral</h4>
-    <div class="row row-cols-1 row-cols-md-5 g-3">
-        
-        <div class="col">
-            <div class="card shadow-sm border-0 text-center p-3 h-100">
-                <div class="display-5 fw-bold text-success">@Model.ActiveCandidatesCount</div>
-                <div class="text-muted small mt-1">Candidatos Activos</div>
-            </div>
+        <div class="stat-card__body">
+            <span class="stat-card__value" data-count="@Model.ActiveCandidatesCount">0</span>
+            <span class="stat-card__label">Candidatos Activos</span>
         </div>
-
-        <div class="col">
-            <div class="card shadow-sm border-0 text-center p-3 h-100">
-                <div class="display-5 fw-bold text-secondary">@Model.InactiveCandidatesCount</div>
-                <div class="text-muted small mt-1">Candidatos Inactivos</div>
-            </div>
+        <div class="stat-card__footer">
+            <span class="stat-card__link" style="color: var(--stat-cz); pointer-events:none; gap:0;">
+                En el padrón
+            </span>
         </div>
-
-        <div class="col">
-            <div class="card shadow-sm border-0 text-center p-3 h-100">
-                <div class="display-5 fw-bold text-primary">@Model.ApprovedAlliancesCount</div>
-                <div class="text-muted small mt-1">Alianzas Aprobadas</div>
-            </div>
-        </div>
-
-        <div class="col">
-            <div class="card shadow-sm border-0 text-center p-3 h-100">
-                <div class="display-5 fw-bold text-warning">@Model.PendingAllianceRequestsCount</div>
-                <div class="text-muted small mt-1">Solicitudes Pendientes</div>
-            </div>
-        </div>
-
-        <div class="col">
-            <div class="card shadow-sm border-0 text-center p-3 h-100">
-                <div class="display-5 fw-bold text-info">@Model.AssignedCandidatesToPositionsCount</div>
-                <div class="text-muted small mt-1">Candidatos Asignados</div>
-            </div>
-        </div>
-
+        <div class="stat-card__glow" aria-hidden="true"></div>
     </div>
 
-    <hr class="text-muted opacity-25 mt-5 mb-4">
+    <div class="stat-card stat-card--parties">
+        <div class="stat-card__icon-wrap">
+            <i class="bi bi-person-x-fill" aria-hidden="true"></i>
+        </div>
+        <div class="stat-card__body">
+            <span class="stat-card__value" data-count="@Model.InactiveCandidatesCount">0</span>
+            <span class="stat-card__label">Candidatos Inactivos</span>
+        </div>
+        <div class="stat-card__footer">
+            <span class="stat-card__link" style="color: var(--stat-p); pointer-events:none; gap:0;">
+                Pendientes de revisión
+            </span>
+        </div>
+        <div class="stat-card__glow" aria-hidden="true"></div>
+    </div>
 
-    <!-- 4. Acceso rápido — 3 botones grandes -->
-    <h4 class="fw-light text-secondary mb-3">Accesos Rápidos</h4>
-    <div class="row g-3 mt-2">
-        <div class="col-md-4">
-            <a asp-controller="Candidate" asp-action="Index" class="btn btn-outline-primary w-100 py-3 rounded-pill fw-bold">
-                <i class="bi bi-people me-2"></i> Mis Candidatos
-            </a>
+    <div class="stat-card stat-card--elections">
+        <div class="stat-card__icon-wrap">
+            <i class="bi bi-diagram-3-fill" aria-hidden="true"></i>
         </div>
-        <div class="col-md-4">
-            <a asp-controller="PoliticalAlliances" asp-action="Index" class="btn btn-outline-success w-100 py-3 rounded-pill fw-bold">
-                <i class="bi bi-diagram-3 me-2"></i> Alianzas Políticas
-            </a>
+        <div class="stat-card__body">
+            <span class="stat-card__value" data-count="@Model.ApprovedAlliancesCount">0</span>
+            <span class="stat-card__label">Alianzas Aprobadas</span>
         </div>
-        <div class="col-md-4">
-            <a asp-controller="CandidateAssignment" asp-action="Index" class="btn btn-outline-info w-100 py-3 rounded-pill fw-bold">
-                <i class="bi bi-person-check me-2"></i> Asignar Candidatos
-            </a>
+        <div class="stat-card__footer">
+            <span class="stat-card__link" style="color: var(--stat-el); pointer-events:none; gap:0;">
+                Acuerdos vigentes
+            </span>
         </div>
+        <div class="stat-card__glow" aria-hidden="true"></div>
+    </div>
+
+    <div class="stat-card stat-card--candidates">
+        <div class="stat-card__icon-wrap">
+            <i class="bi bi-award-fill" aria-hidden="true"></i>
+        </div>
+        <div class="stat-card__body">
+            <span class="stat-card__value" data-count="@Model.AssignedCandidatesToPositionsCount">0</span>
+            <span class="stat-card__label">Asignaciones</span>
+        </div>
+        <div class="stat-card__footer">
+            <span class="stat-card__link" style="color: var(--stat-cd); pointer-events:none; gap:0;">
+                Candidatos en posiciones
+            </span>
+        </div>
+        <div class="stat-card__glow" aria-hidden="true"></div>
     </div>
 
 </div>
+
+<div class="admin-quick-access">
+    <h2 class="section-title">
+        <i class="bi bi-lightning-fill" aria-hidden="true"></i>
+        Acceso Rápido
+    </h2>
+    <div class="col-md-4">
+        <a asp-controller="Candidates" asp-action="Index" class="quick-card quick-card--elections">
+            <div class="quick-card__icon">
+                <i class="bi bi-people-fill" aria-hidden="true"></i>
+            </div>
+            <div class="quick-card__body">
+                <span class="quick-card__title">Mis Candidatos</span>
+                <span class="quick-card__desc">Gestiona tus candidatos</span>
+            </div>
+            <i class="bi bi-arrow-right-circle quick-card__arrow" aria-hidden="true"></i>
+        </a>
+    </div>
+
+        <a asp-controller="PoliticalAlliances" asp-action="Index" class="quick-card quick-card--positions">
+            <div class="quick-card__icon">
+                <i class="bi bi-diagram-3-fill" aria-hidden="true"></i>
+            </div>
+            <div class="quick-card__body">
+                <span class="quick-card__title">Alianzas Políticas</span>
+                <span class="quick-card__desc">Solicitudes y acuerdos</span>
+            </div>
+            <i class="bi bi-arrow-right-circle quick-card__arrow" aria-hidden="true"></i>
+        </a>
+
+        <a asp-controller="CandidateAssignment" asp-action="Index" class="quick-card quick-card--citizens">
+            <div class="quick-card__icon">
+                <i class="bi bi-person-check-fill" aria-hidden="true"></i>
+            </div>
+            <div class="quick-card__body">
+                <span class="quick-card__title">Asignar Candidatos</span>
+                <span class="quick-card__desc">A posiciones electivas</span>
+            </div>
+            <i class="bi bi-arrow-right-circle quick-card__arrow" aria-hidden="true"></i>
+        </a>
+
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/admin-views.js" asp-append-version="true"></script>
+}

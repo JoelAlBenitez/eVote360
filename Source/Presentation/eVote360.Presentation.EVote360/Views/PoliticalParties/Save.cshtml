@@ -7,7 +7,6 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<partial name="_Notifications" />
 
 <div class="container mt-4 admin_view">
     <div class="row justify-content-center">
@@ -24,8 +23,7 @@
                         @if (isEdit)
                         {
                             <input type="hidden" name="Id" value="@Model.Id" />
-                            // Ocultos para mantener el estado si tu controller lo requiere en el post, ajusta según necesidad
-                            <input type="hidden" name="State" value="@Model.State" />
+                            <input type="hidden" name="State" value="@((bool)Model.State ? "true" : "false")" />
                             @if(Model.GetType().GetProperty("PoliticalPartyLogo") != null)
                             {
                                 <input type="hidden" name="PoliticalPartyLogo" value="@Model.PoliticalPartyLogo" />

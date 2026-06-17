@@ -27,15 +27,24 @@ namespace eVote360.Infraestructure.Persistence.Repositories.Election
    
             public async Task<ElectionEntity> GetByIdEntitie(int tkey)
             {
-                return await _context.Elections
+                return (await _context.Elections
                     .AsNoTracking()
-                    .FirstOrDefaultAsync(x => x.Id == tkey);
+                    .FirstOrDefaultAsync(x => x.Id == tkey))!;
             }
 
             public async Task<bool> UpdateEntitieAsync(ElectionEntity entitie)
             {
-                 _context.Update(entitie);
-                 return await _context.SaveChangesAsync() > 0;
+                var existing = await _context.Elections.FindAsync(entitie.Id);
+                if (existing == null) return false;
+
+                existing.Name = entitie.Name;
+                existing.ElectionDate = entitie.ElectionDate;
+                existing.ElectionState = entitie.ElectionState;
+                existing.State = entitie.State;
+                existing.UpdateAt = entitie.UpdateAt;
+                existing.UpdateUserId = entitie.UpdateUserId;
+
+                return await _context.SaveChangesAsync() > 0;
             }
 
             public async Task<bool> AlterState(int tkey, bool state)
@@ -59,7 +68,8 @@ namespace eVote360.Infraestructure.Persistence.Repositories.Election
             {
                 return await _context.Elections
                    .AsNoTracking()
-                   .FirstOrDefaultAsync(x => x.ElectionState == ElectionState.Activa);
+                   .Include(x => x.ElectivePositions)
+                   .FirstOrDefaultAsync(x => x.ElectionState == ElectionState.Activa && x.State == true);
             }
 
         public async Task<bool> DeactivateElectionAsync(int id)
@@ -68,6 +78,18 @@ namespace eVote360.Infraestructure.Persistence.Repositories.Election
             if (election == null) return false;
 
             election.ElectionState = ElectionState.Finalizada;
+            election.State = false;
+            _context.Elections.Update(election);
+            return await _context.SaveChangesAsync() > 0;
+        }
+
+        public async Task<bool> ActivateElectionAsync(int id)
+        {
+            var election = await _context.Elections.FindAsync(id);
+            if (election == null) return false;
+
+            election.ElectionState = ElectionState.Activa;
+            election.State = true;
             _context.Elections.Update(election);
             return await _context.SaveChangesAsync() > 0;
         }

@@ -34,19 +34,19 @@ namespace eVote360.Core.Application.Services.Citizens.CommandHandler
                     return ValidationResult.Failure(_errors);
                 }
 
-                if (citizen.State)
+                if (citizen.State) // currently active → deactivate
                 {
-                    var validate = await _citizensValidator.ActiveCitizen(Id, citizen.IdentificationNumber.Value);
-                    if (validate != null) return validate;
-                    var active = await _citizenRepository.AlterState(Id, true);
+                    var validate = await _citizensValidator.DesactiveCitizen(Id, citizen.IdentificationNumber.Value);
+                    if (!validate.IsValid) return validate;
+                    var active = await _citizenRepository.AlterState(Id, false);
                     if (active) return ValidationResult.Success();
                     _errors.Add(new Error("Ha ocurrido un error inesperado", "Ha ocurrido un error en la alteración del registro, intente lo de nuevo"));
                     return ValidationResult.Failure(_errors);
                 }
-                else
+                else // currently inactive → activate
                 {
-                    var validate = await _citizensValidator.DesactiveCitizen(Id, citizen.IdentificationNumber.Value);
-                    if (validate != null) return validate;
+                    var validate = await _citizensValidator.ActiveCitizen(Id, citizen.IdentificationNumber.Value);
+                    if (!validate.IsValid) return validate;
                     var active = await _citizenRepository.AlterState(Id, true);
                     if (active) return ValidationResult.Success();
                     _errors.Add(new Error("Ha ocurrido un error inesperado", "Ha ocurrido un error en la alteración del registro, intente lo de nuevo"));

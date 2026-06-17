@@ -32,7 +32,7 @@ namespace eVote360.Infraestructure.Persistence.ServicesValidators.Election
 
         public async Task<bool> ExistActiveElection()
         {
-                return await _context.Elections.AnyAsync(x => x.ElectionState == ElectionState.Activa);
+                return await _context.Elections.AnyAsync(x => x.ElectionState == ElectionState.Activa && x.State == true);
         }
 
         public async Task<bool> ValidElectionDate(ElectionDate electionDate)

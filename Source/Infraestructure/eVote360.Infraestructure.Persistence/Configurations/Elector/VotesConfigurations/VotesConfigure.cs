@@ -15,7 +15,7 @@ namespace eVote360.Infraestructure.Persistence.Configurations.Elector.VotesConfi
 
             builder.Property(v => v.IdElection).IsRequired();
             builder.Property(v => v.IdElectivePosiction).IsRequired();
-            builder.Property(v => v.IdCandidate).IsRequired();
+            builder.Property(v => v.IdCandidate).IsRequired(false);
 
             // Relationships
             builder.HasOne(v => v.Elections)
@@ -24,14 +24,14 @@ namespace eVote360.Infraestructure.Persistence.Configurations.Elector.VotesConfi
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasOne(v => v.ElectivePosition)
-                .WithMany()
+                .WithMany(c => c.votes)
                 .HasForeignKey(v => v.IdElectivePosiction)
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasOne(v => v.Candidacte)
-                .WithMany()
-                .HasForeignKey(v => v.IdCandidate)
-                .OnDelete(DeleteBehavior.Restrict);
+              .WithMany(c => c.VotosRecibidos)
+              .HasForeignKey(v => v.IdCandidate)
+              .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

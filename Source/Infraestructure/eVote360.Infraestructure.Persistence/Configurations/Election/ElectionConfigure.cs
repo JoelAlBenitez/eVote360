@@ -51,6 +51,16 @@ namespace eVote360.Infraestructure.Persistence.Configurations.Election
             //    .HasForeignKey("ElecetionId")
             //    .OnDelete(DeleteBehavior.Restrict);
 
+            builder.HasOne(x => x.UserCreate)
+                .WithMany()
+                .HasForeignKey(x => x.CreateUserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasOne(x => x.UserUpdate)
+                .WithMany()
+                .HasForeignKey(x => x.UpdateUserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
         }
     }
 }
