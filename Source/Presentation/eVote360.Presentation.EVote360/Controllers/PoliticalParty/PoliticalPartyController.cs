@@ -52,11 +52,11 @@ using System.Xml.Linq;
                     State = item.State
                 }).ToList();
    
-                return View(viewModels);
+                return View("~/Views/PoliticalParties/Index.cshtml", viewModels);
             }
             public IActionResult Create()
             {
-                 return View("Save", new PoliticalPartyViewModelCreate
+                 return View("~/Views/PoliticalParties/Save.cshtml",new PoliticalPartyViewModelCreate
  
                  {
                          Name = "",
@@ -70,7 +70,7 @@ using System.Xml.Linq;
    [HttpPost]
             public async Task<IActionResult> Create(PoliticalPartyViewModelCreate vm)
             {
-                 if (!ModelState.IsValid) return View("Save", vm);
+                 if (!ModelState.IsValid) return View("~/Views/PoliticalParties/Save.cshtml",vm);
     
                 string logoPath = "/images/default-logo.png";
                  if (vm.LogoFile != null)
@@ -97,7 +97,7 @@ using System.Xml.Linq;
                 if (!result.IsValid)
                      {
                          foreach (var error in result.errors) ModelState.AddModelError(error.Code, error.Description);
-                         return View("Save", vm);
+                         return View("~/Views/PoliticalParties/Save.cshtml",vm);
                      }
     
                 TempData["Message"] = "Partido Político creado con éxito";
@@ -125,13 +125,13 @@ using System.Xml.Linq;
             LogoFile = null 
         };
 
-        return View("Save", vm);
+        return View("~/Views/PoliticalParties/Save.cshtml",vm);
  }
    
    [HttpPost]
     public async Task<IActionResult> Edit(PoliticalPartyViewModelEdit vm)
     {
-        if (!ModelState.IsValid) return View("Edit", vm);
+        if (!ModelState.IsValid) return View("~/Views/PoliticalParties/Save.cshtml", vm);
    
    
         string logoPath = vm.PoliticalPartyLogo;
@@ -160,7 +160,7 @@ using System.Xml.Linq;
         if (!result.IsValid)
              {
                  foreach (var error in result.errors) ModelState.AddModelError(error.Code, error.Description);
-                 return View("Save", vm);
+                 return View("~/Views/PoliticalParties/Save.cshtml",vm);
              }
     
         TempData["Message"] = "Partido Político actualizado con éxito";

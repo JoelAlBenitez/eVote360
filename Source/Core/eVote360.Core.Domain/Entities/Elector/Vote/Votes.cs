@@ -6,7 +6,7 @@ namespace eVote360.Core.Domain.Entities.Elector.Vote
 {
     public sealed class Votes
     {
-        public Guid Id { get; }
+        public Guid Id { get; init; }
         public required int IdElection { get; init; }
         public required int IdElectivePosiction { get; init; }
         public required int IdCandidate { get; init; }

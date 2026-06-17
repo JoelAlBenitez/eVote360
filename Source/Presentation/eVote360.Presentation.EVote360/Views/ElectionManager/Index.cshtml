@@ -11,8 +11,6 @@
     <link rel="stylesheet" href="~/css/admin-views.css" asp-append-version="true" />
 }
 
-@await Html.PartialAsync("_Notifications")
-
 <div class="page-header">
     <div class="page-header__left">
         <div class="page-header__icon" style="background-color: #e8f5e9; color: #2e7d32; padding: 12px; border-radius: 12px;">
@@ -110,13 +108,15 @@
                                    aria-label="Editar @item.Name">
                                     <i class="bi bi-pencil-fill" aria-hidden="true"></i>
                                 </a>
-                                <a asp-action="AlterState" 
-                                   asp-route-Id="@item.Id" 
-                                   class="btn-table-action @(item.State ? "btn-table-action--deactivate" : "btn-table-action--activate")" 
-                                   title="@(item.State ? "Desactivar" : "Activar")"
-                                   aria-label="@(item.State ? "Desactivar" : "Activar") @item.Name">
-                                    <i class="bi @(item.State ? "bi-toggle-on" : "bi-toggle-off")" aria-hidden="true"></i>
-                                </a>
+                                <form asp-action="AlterState" asp-route-id="@item.Id" method="post" class="d-inline">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit"
+                                            class="btn-table-action @(item.State ? "btn-table-action--deactivate" : "btn-table-action--activate")"
+                                            title="@(item.State ? "Finalizar" : "Activar")"
+                                            aria-label="@(item.State ? "Finalizar" : "Activar") @item.Name">
+                                        <i class="bi @(item.State ? "bi-toggle-on" : "bi-toggle-off")" aria-hidden="true"></i>
+                                    </button>
+                                </form>
                             </div>
                         </td>
                     </tr>

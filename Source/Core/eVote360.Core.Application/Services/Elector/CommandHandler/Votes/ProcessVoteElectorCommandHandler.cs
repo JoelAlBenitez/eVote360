@@ -70,6 +70,7 @@ namespace eVote360.Core.Application.Services.Elector.CommandHandler.Votes
 
                 var votes = selectedVotes.Select(v => new VotesEntity
                 {
+                    Id = Guid.NewGuid(),
                     IdElection = election!.Id,
                     IdElectivePosiction = v.IdElectivePosition,
                     IdCandidate = v.IdCandidate ?? 0

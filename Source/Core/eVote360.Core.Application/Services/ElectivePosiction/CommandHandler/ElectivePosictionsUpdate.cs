@@ -49,8 +49,11 @@ namespace eVote360.Core.Application.Services.ElectivePosiction.CommandHandler
                 if (!validate.IsValid) return validate;
 
                 var update = await _electivePositionsRepository.UpdateEntitieAsync(eleccion);
-                _errors.Add(new Error("Error inesperado", "Ha ocurrido un error inesperado en la modificación del registro, favor intente de nuevo mas tarde."));
-                if (!update) return ValidationResult.Failure(_errors);
+                if (!update)
+                {
+                    _errors.Add(new Error("Error inesperado", "Ha ocurrido un error inesperado en la modificación del registro, favor intente de nuevo mas tarde."));
+                    return ValidationResult.Failure(_errors);
+                }
 
                 return ValidationResult.Success();
 

@@ -10,7 +10,7 @@ namespace eVote360.Core.Domain.Settings.ValueObjects.Emails
         
             if(string.IsNullOrEmpty(value.Trim()) || value.Length > 254 ) 
                 throw new ArgumentNullException("Error : Email no valido ingresado.");
-            if (!Regex.IsMatch("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}", value.Trim()))
+            if (!Regex.IsMatch(value.Trim(), @"^[\w\-\.]+@([\w\-]+\.)+[\w\-]{2,4}$"))
                 throw new ArgumentException("Error: Email ingresado no tiene un formato valido.");
             Value = value;
         }

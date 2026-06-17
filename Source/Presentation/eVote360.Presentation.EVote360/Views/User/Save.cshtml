@@ -7,8 +7,6 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<partial name="_Notifications" />
-
 <div class="container mt-4 admin_view">
     <div class="row justify-content-center">
         <div class="col-lg-8 col-md-10">
@@ -71,8 +69,8 @@
                                 <label for="UserRole" class="form-label fw-bold">Rol en el Sistema</label>
                                 <select id="UserRole" name="UserRole" class="form-select" required>
                                     <option value="">-- Seleccione un rol --</option>
-                                    <!option value="0" @(Model?.UserRole?.ToString() == "Admin" || (int?)Model?.UserRole == 0 ? "selected" : "")>Administrador</!option>
-                                    <!option value="1" @(Model?.UserRole?.ToString() == "DirigentePolitico" || (int?)Model?.UserRole == 1 ? "selected" : "")>Dirigente Político</!option>
+                                    <option value="Admin" selected="@(Model?.UserRole?.ToString() == "Admin")">Administrador</option>
+                                    <option value="DirigentePolitico" selected="@(Model?.UserRole?.ToString() == "DirigentePolitico")">Dirigente Político</option>
                                 </select>
                                 <span class="text-danger field-validation-valid" data-valmsg-for="UserRole" data-valmsg-replace="true"></span>
                             </div>

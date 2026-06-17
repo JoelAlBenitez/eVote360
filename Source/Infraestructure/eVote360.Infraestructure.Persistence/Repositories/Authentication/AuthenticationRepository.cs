@@ -32,8 +32,7 @@ namespace eVote360.Infraestructure.Persistence.Repositories.Authentication
                 var party = await _context.PoliticalAssignments
                     .AsNoTracking()
                     .FirstOrDefaultAsync(p => p.PoliticalLeaderId == result.Id);
-                if (party == null) return null!;
-                partyId = party.Id;
+                partyId = party?.Id;
             }
 
             return new UserAuthenticate {
