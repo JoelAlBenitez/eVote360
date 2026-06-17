@@ -27,9 +27,9 @@ namespace eVote360.Infraestructure.Persistence.Repositories.Election
    
             public async Task<ElectionEntity> GetByIdEntitie(int tkey)
             {
-                return await _context.Elections
+                return (await _context.Elections
                     .AsNoTracking()
-                    .FirstOrDefaultAsync(x => x.Id == tkey);
+                    .FirstOrDefaultAsync(x => x.Id == tkey))!;
             }
 
             public async Task<bool> UpdateEntitieAsync(ElectionEntity entitie)
@@ -78,6 +78,18 @@ namespace eVote360.Infraestructure.Persistence.Repositories.Election
             if (election == null) return false;
 
             election.ElectionState = ElectionState.Finalizada;
+            election.State = false;
+            _context.Elections.Update(election);
+            return await _context.SaveChangesAsync() > 0;
+        }
+
+        public async Task<bool> ActivateElectionAsync(int id)
+        {
+            var election = await _context.Elections.FindAsync(id);
+            if (election == null) return false;
+
+            election.ElectionState = ElectionState.Activa;
+            election.State = true;
             _context.Elections.Update(election);
             return await _context.SaveChangesAsync() > 0;
         }

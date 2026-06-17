@@ -1,14 +1,14 @@
+using eVote360.Core.Application.Contracts.Admin.Query;
 using eVote360.Core.Application.Contracts.Election.Commands;
 using eVote360.Core.Application.Contracts.Election.Query;
 using eVote360.Core.Application.DTOs.Election;
+using eVote360.Core.Application.Services.Admin;
+using eVote360.Core.Application.ViewModels.Admin;
 using eVote360.Core.Application.ViewModels.Election;
 using eVote360.Core.Domain.Common.Enums;
-using eVote360.Core.Domain.Settings.ValueObjects.ElectionDate;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ViewEngines;
-using System.Reflection;
-using System.Xml.Linq;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+
 
 namespace eVote360.Presentation.EVote360.Controllers.Election
 {
@@ -18,28 +18,36 @@ namespace eVote360.Presentation.EVote360.Controllers.Election
         private readonly IElectionCreateCommand _createCommand;
         private readonly IElectionUpdateCommand _updateCommand;
         private readonly IElectionAlterStateCommand _alterStateCommand;
+        private readonly IElectionActivateCommand _activateCommand;
+        private readonly IAvailableYearsQuery _availableYearsQuery;
+
 
         private readonly IElectionGetAllQuery _getAllQuery;
         private readonly IElectionGetByIdQuery _getByIdQuery;
-        private readonly IElectionByYearQuery _getByYearQuery;
+        private readonly Core.Application.Contracts.Admin.Query.IElectionByYearQuery _getByYearQuery;
         private readonly IGetElectionReportQuery _reportQuery;
 
         public ElectionController(
             IElectionCreateCommand createCommand,
             IElectionUpdateCommand updateCommand,
             IElectionAlterStateCommand alterStateCommand,
+            IElectionActivateCommand activateCommand,
             IElectionGetAllQuery getAllQuery,
             IElectionGetByIdQuery getByIdQuery,
             IElectionByYearQuery getByYearQuery,
-            IGetElectionReportQuery reportQuery)
+            IGetElectionReportQuery reportQuery,
+            IAvailableYearsQuery availableYearsQuery    )
         {
             _createCommand = createCommand;
             _updateCommand = updateCommand;
             _alterStateCommand = alterStateCommand;
+            _activateCommand = activateCommand;
             _getAllQuery = getAllQuery;
             _getByIdQuery = getByIdQuery;
             _getByYearQuery = getByYearQuery;
             _reportQuery = reportQuery;
+            _availableYearsQuery = availableYearsQuery;
+
         }
 
         public async Task<IActionResult> Index()
@@ -61,27 +69,65 @@ namespace eVote360.Presentation.EVote360.Controllers.Election
             return View("~/Views/ElectionManager/Index.cshtml", views);
         }
 
-        [HttpGet]
-        public async Task<IActionResult> FilterByYear(int year)
+        [HttpPost]
+        public async Task<IActionResult> SelectYear(AdminSearchDateViewModel model)
         {
-            if (year <= 0) return RedirectToAction(nameof(Index));
 
-            var elections = await _getByYearQuery.ExecuteAsync(year);
-            var views = new List<ElectionViewModel>();
-
-            foreach (var item in elections)
+            if (!ModelState.IsValid)
             {
-                views.Add(new ElectionViewModel
-                {
-                    Id = item.Id,
-                    Name = item.Name,
-                    State = item.State,
-                    ElectionDate = item.ElectionDate,
-                    ElectionState = item.ElectionState
-                });
+                ModelState.AddModelError("", "Error debe seleccionar un año valido, fallo en el procesamiento de los datos.");
+                return RedirectToAction(nameof(Index));
             }
-            return View("~/Views/ElectionManager/Index.cshtml", views);
+            var validate = await _getByYearQuery.GetRegisterAsync(new DateTime(model.Year, 1, 1));
+            if (!validate.IsValid)
+            {
+                foreach (var item in validate.errors)
+                {
+                    ModelState.AddModelError(item.Code, item.Description);
+                }
+                return View("~/Views/ElectionManager/SelectYear.cshtml", model);
+            }
+
+            return RedirectToAction(nameof(SummayElection));
         }
+
+        public async Task<IActionResult> SummayElection(int year)
+        {
+
+            var list = await _getByYearQuery.GetRegisterAsync(new DateTime(year, 1, 1));
+            var view = new List<ElectoralSummaryViewModel>();
+            foreach (var item in list.Value!)
+            {
+
+                var e = new ElectoralSummaryViewModel
+                {
+                    DateRealized = item.DateRealized,
+                    NameElection = item.NameElection,
+                    NumberCandidactesParticipating = item.NumberCandidactesParticipating,
+                    NumberCitizenParticipating = item.NumberCitizenParticipating,
+                    NumberParticipatingMatches = item.NumberParticipatingMatches,
+                };
+                view.Add(e);
+            }
+
+            return View("~/Views/ElectionManager/SummayElection.cshtml", view); ;
+        }
+
+        public async Task<IActionResult> SelectYear()
+        {
+            var years = await _availableYearsQuery.AvailableYearAsync();
+            if (!years.IsValid)
+            {
+                foreach (var item in years.errors)
+                {
+                    ModelState.AddModelError(item.Code, item.Description);
+                    return View("~/Views/ElectionManager/SelectYear.cshtml");
+                }
+            }
+            return View("~/Views/ElectionManager/SelectYear.cshtml", new AdminSearchDateViewModel { Year = 0, YearAvaible = years.Value!.Select(x => x.YearElection).ToList() });
+
+        }
+
 
         [HttpGet]
         public async Task<IActionResult> GetActive()
@@ -176,6 +222,87 @@ namespace eVote360.Presentation.EVote360.Controllers.Election
 
             TempData["TypeAlert"] = "success";
             TempData["Message"] = "Elección actualizada con éxito";
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ConfirmActivate(int id)
+        {
+            var result = await _getByIdQuery.ExecuteAsync(id);
+            if (result == null || result.Value == null) return RedirectToAction(nameof(Index));
+            var election = result.Value;
+            if (election.ElectionState != ElectionState.Pendiente)
+            {
+                TempData["TypeAlert"] = "danger";
+                TempData["Message"] = "Solo se pueden activar elecciones en estado pendiente.";
+                return RedirectToAction(nameof(Index));
+            }
+            ViewBag.ElectionId = id;
+            ViewBag.ElectionName = election.Name;
+            return View("~/Views/ElectionManager/ConfirmActivate.cshtml");
+        }
+
+        [HttpPost]
+        [ActionName("ConfirmActivate")]
+        public async Task<IActionResult> ConfirmActivatePost(int id)
+        {
+            var elections = await _getAllQuery.ExecuteAsync();
+            bool alreadyActive = elections.Any(e => e.ElectionState == ElectionState.Activa);
+            if (alreadyActive)
+            {
+                TempData["TypeAlert"] = "danger";
+                TempData["Message"] = "No se puede activar: ya existe una elección activa.";
+                return RedirectToAction(nameof(Index));
+            }
+
+            var result = await _activateCommand.ExecuteAsync(id);
+            if (!result.IsValid)
+            {
+                var primerError = result.errors.FirstOrDefault();
+                TempData["TypeAlert"] = "danger";
+                TempData["Message"] = primerError?.Description ?? "Error al activar la elección.";
+            }
+            else
+            {
+                TempData["TypeAlert"] = "success";
+                TempData["Message"] = "Elección activada con éxito. Los ciudadanos pueden votar.";
+            }
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ConfirmFinalize(int id)
+        {
+            var result = await _getByIdQuery.ExecuteAsync(id);
+            if (result == null || result.Value == null) return RedirectToAction(nameof(Index));
+            var election = result.Value;
+            if (election.ElectionState != ElectionState.Activa)
+            {
+                TempData["TypeAlert"] = "danger";
+                TempData["Message"] = "Solo se pueden finalizar elecciones activas.";
+                return RedirectToAction(nameof(Index));
+            }
+            ViewBag.ElectionId = id;
+            ViewBag.ElectionName = election.Name;
+            return View("~/Views/ElectionManager/ConfirmFinalize.cshtml");
+        }
+
+        [HttpPost]
+        [ActionName("ConfirmFinalize")]
+        public async Task<IActionResult> ConfirmFinalizePost(int id)
+        {
+            var result = await _alterStateCommand.ExecuteAsync(id);
+            if (!result.IsValid)
+            {
+                var primerError = result.errors.FirstOrDefault();
+                TempData["TypeAlert"] = "danger";
+                TempData["Message"] = primerError?.Description ?? "Error al finalizar la elección.";
+            }
+            else
+            {
+                TempData["TypeAlert"] = "success";
+                TempData["Message"] = "Elección finalizada. Los resultados ya están disponibles.";
+            }
             return RedirectToAction(nameof(Index));
         }
 

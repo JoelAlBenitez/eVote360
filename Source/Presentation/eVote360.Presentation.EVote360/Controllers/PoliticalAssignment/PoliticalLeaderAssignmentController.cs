@@ -4,6 +4,7 @@ using eVote360.Core.Application.Contracts.PoliticalParty.Query;
 using eVote360.Core.Application.Contracts.Users.Query;
 using eVote360.Core.Application.DTOs.PoliticalLeaderAssignment;
 using eVote360.Core.Application.ViewModels.PoliticalLeaderAssignment;
+using eVote360.Core.Domain.Common.Enums;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Authorization;
@@ -197,11 +198,13 @@ namespace eVote360.Presentation.EVote360.Controllers.PoliticalLeaderAssignment
             }).ToList();
 
             var users = await _userGetActiveQuery.ExecuteAsync();
-            ViewBag.Leaders = users.Select(u => new SelectListItem
-            {
-                Value = u.Id.ToString(),
-                Text = $"{u.UserFirstName} {u.UserLastName}"
-            }).ToList();
+            ViewBag.Leaders = users
+                .Where(u => u.UserRole == UserRole.DirigentePolitico)
+                .Select(u => new SelectListItem
+                {
+                    Value = u.Id.ToString(),
+                    Text = $"{u.UserFirstName} {u.UserLastName}"
+                }).ToList();
         }
 
 

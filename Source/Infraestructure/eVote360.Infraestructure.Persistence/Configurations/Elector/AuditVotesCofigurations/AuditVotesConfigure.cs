@@ -19,12 +19,12 @@ namespace eVote360.Infraestructure.Persistence.Configurations.Elector.AuditVotes
                 HasDefaultValueSql("GETUTCDATE()");
 
             builder.HasOne(e => e.ElectionEntities)
-                .WithMany()
+                .WithMany(v => v.AuditVotes)
                 .HasForeignKey(e => e.IdElection)
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasOne(e => e.Citizens)
-                .WithMany()
+                .WithMany(v => v.AuditVote)
                 .HasForeignKey(e => e.IdCitizen)
                 .OnDelete(DeleteBehavior.Restrict);
         }

@@ -23,7 +23,7 @@
                         @if (isEdit)
                         {
                             <input type="hidden" name="Id" value="@Model.Id" />
-                            <input type="hidden" name="State" value="@Model.State" />
+                            <input type="hidden" name="State" value="@((bool)Model.State ? "true" : "false")" />
                         }
 
                         <h5 class="border-bottom pb-2 mb-3 text-secondary">Datos Personales</h5>

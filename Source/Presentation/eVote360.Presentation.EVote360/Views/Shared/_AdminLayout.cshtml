@@ -90,8 +90,8 @@
 
                 <li class="menu-section-label">Electoral</li>
 
-                <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Admin" && ViewContext.RouteData.Values["action"]?.ToString() == "SelectYear" ? "active" : "")">
-                    <a asp-controller="Admin" asp-action="SelectYear">
+                <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Election" && ViewContext.RouteData.Values["action"]?.ToString() == "Index" ? "active" : "")">
+                    <a asp-controller="Election" asp-action="Index">
                         <i class="bi bi-calendar-event-fill"></i>
                         <span>Elecciones</span>
                     </a>

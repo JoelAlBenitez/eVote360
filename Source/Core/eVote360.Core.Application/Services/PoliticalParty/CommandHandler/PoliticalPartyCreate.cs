@@ -41,7 +41,7 @@ namespace eVote360.Core.Application.Services.PoliticalParty.CommandHandler
                     Name = dto.Name!,
                     PoliticalPartyDescription = dto.PoliticalPartyDescription,
                     PoliticalPartyLogo = new PhotoValidator(dto.PoliticalPartyLogo),
-                    State = dto.State,
+                    State = true,
 
                     PoliticalPartyAcronym = new PoliticalPartyAcronym(dto.PoliticalPartyAcronym)
                 };

@@ -18,11 +18,12 @@ namespace eVote360.Core.Application.Services.PoliticalParty.Query
 
             return entities.Select(p => new PoliticalPartyDto
             {
+                Id = p.Id,
                 Name = p.Name,
                 State = p.State,
                 PoliticalPartyDescription = p.PoliticalPartyDescription,
-                PoliticalPartyAcronym = p.PoliticalPartyAcronym.Value,
-                PoliticalPartyLogo = p.PoliticalPartyLogo.PhotoUrl!,
+                PoliticalPartyAcronym = p.PoliticalPartyAcronym?.Value ?? "",
+                PoliticalPartyLogo = p.PoliticalPartyLogo?.PhotoUrl ?? "",
                 CreateAt = p.CreateAt,
                 CreateUserId = p.CreateUserId,
                 UpdateUserId = p.UpdateUserId,

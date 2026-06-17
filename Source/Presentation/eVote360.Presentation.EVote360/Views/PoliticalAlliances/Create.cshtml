@@ -6,32 +6,61 @@
     ViewData["Title"] = "Nueva Solicitud de Alianza";
 }
 
-<div class="container-fluid px-4 mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card shadow-sm border-0">
-                <div class="card-body p-5">
-                    <h3 class="fw-light text-secondary mb-4 text-center">Nueva Solicitud de Alianza</h3>
-                    
-                    <form method="post" asp-action="Create">
-                        <div class="mb-4">
-                            <label asp-for="ReceivingPartyId" class="form-label text-muted">Partido Político Destino</label>
-                            <select asp-for="ReceivingPartyId" class="form-select rounded-pill">
-                                <option value="">-- Seleccione un partido --</option>
-                                @foreach (var party in Model.AvailableParties)
-                                {
-                                    <option value="@party.Value">@party.Text</option>
-                                }
-                            </select>
-                            <span asp-validation-for="ReceivingPartyId" class="text-danger small mt-1 d-block"></span>
-                        </div>
+@section Styles {
+    <link rel="stylesheet" href="~/css/admin-views.css" asp-append-version="true" />
+}
 
-                        <div class="d-flex justify-content-center gap-3 mt-5">
-                            <a asp-action="Index" class="btn btn-secondary rounded-pill px-4">Cancelar</a>
-                            <button type="submit" class="btn btn-primary rounded-pill px-4">Enviar Solicitud</button>
-                        </div>
-                    </form>
-                </div>
+<div class="page-header">
+    <div class="page-header__left">
+        <div class="page-header__icon" style="background-color:#e3f2fd;color:#1565c0;padding:12px;border-radius:12px;">
+            <i class="bi bi-diagram-3-fill" style="font-size:1.5rem;" aria-hidden="true"></i>
+        </div>
+        <div>
+            <h1 class="page-header__title">Nueva Solicitud de Alianza</h1>
+            <p class="page-header__subtitle">Selecciona el partido con el que deseas aliarte</p>
+        </div>
+    </div>
+</div>
+
+<div class="row justify-content-center mt-4">
+    <div class="col-lg-6">
+        <div class="card shadow-sm border-0" style="border-radius:16px;">
+            <div class="card-body p-4">
+
+                <form method="post" asp-action="Create">
+                    @Html.AntiForgeryToken()
+
+                    <div class="mb-4">
+                        <label asp-for="ReceivingPartyId" class="form-label fw-semibold">
+                            <i class="bi bi-flag-fill me-1 text-primary" aria-hidden="true"></i>Partido Político Destino
+                        </label>
+                        <select asp-for="ReceivingPartyId" class="form-select">
+                            <option value="">-- Seleccione un partido --</option>
+                            @foreach (var party in Model.AvailableParties)
+                            {
+                                <option value="@party.Value">@party.Text</option>
+                            }
+                        </select>
+                        <span asp-validation-for="ReceivingPartyId" class="text-danger small mt-1 d-block"></span>
+                        @if (!Model.AvailableParties.Any())
+                        {
+                            <small class="text-muted mt-1 d-block">
+                                <i class="bi bi-info-circle me-1" aria-hidden="true"></i>
+                                No hay partidos disponibles para solicitar alianza.
+                            </small>
+                        }
+                    </div>
+
+                    <div class="d-flex justify-content-end gap-3 mt-4">
+                        <a asp-action="Index" class="btn btn-outline-secondary px-4">
+                            <i class="bi bi-x-lg me-1" aria-hidden="true"></i>Cancelar
+                        </a>
+                        <button type="submit" class="btn btn-primary px-4">
+                            <i class="bi bi-send-fill me-1" aria-hidden="true"></i>Enviar Solicitud
+                        </button>
+                    </div>
+                </form>
+
             </div>
         </div>
     </div>

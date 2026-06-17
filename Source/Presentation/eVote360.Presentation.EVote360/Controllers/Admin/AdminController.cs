@@ -38,65 +38,6 @@ namespace eVote360.Presentation.EVote360.Controllers.Admin
             return View(view);
         }
 
-        public async Task<IActionResult> SelectYear()
-        {
-            var years = await _availableYearsQuery.AvailableYearAsync();
-            if (!years.IsValid)
-            {
-                foreach(var item in years.errors)
-                {
-                    ModelState.AddModelError(item.Code, item.Description);
-                    return View("SelectYear");
-                }
-            }
-        
-            return View(new AdminSearchDateViewModel { Year = 0, YearAvaible = years.Value!.Select(x => x.YearElection).ToList()});
-        }
-
-        [HttpPost]
-        public  async Task<IActionResult> SelectYear(AdminSearchDateViewModel model)
-        {
-
-            if (!ModelState.IsValid) {
-                ModelState.AddModelError("", "Error debe seleccionar un año valido, falloe en el procesamiento de los datos.");
-                return RedirectToAction(nameof(Index));
-            }
-            var validate = await _electionByYearQuery.GetRegisterAsync(new DateTime(model.Year, 1,1));
-            if (!validate.IsValid)
-            {
-                foreach (var item in validate.errors)
-                {
-                    ModelState.AddModelError(item.Code, item.Description);
-                }
-                return View(nameof(SelectYear));
-            }
-
-            return RedirectToAction(nameof(SummayElection));
-        }
-
-        public async Task<IActionResult> SummayElection(int year)
-        {
-
-            var list = await _electionByYearQuery.GetRegisterAsync(new DateTime(year, 1, 1));
-            var view = new List<ElectoralSummaryViewModel>();
-            foreach (var item in list.Value!)
-            {
-
-                var e = new ElectoralSummaryViewModel
-                {
-                    DateRealized = item.DateRealized,
-                    NameElection = item.NameElection,
-                    NumberCandidactesParticipating = item.NumberCandidactesParticipating,
-                    NumberCitizenParticipating = item.NumberCitizenParticipating,
-                    NumberParticipatingMatches = item.NumberParticipatingMatches,
-                };
-                view.Add(e);
-            }
-
-            return View(view);
-        }
-
-       
 
     }
 }

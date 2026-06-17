@@ -29,21 +29,22 @@ namespace eVote360.Core.Application.Services.Citizens.Query
 
                 foreach (var item in citizens)
                 {
-                    var dto = new CitizensDto { 
+                    var dto = new CitizensDto {
                         Id = item.Id,
-                        Identification = item.IdentificationNumber.Value,
-                        Email = item.Email.Value,
+                        Identification = item.IdentificationNumber?.Value ?? "",
+                        Email = item.Email?.Value ?? "",
                         LastName = item.LastName,
                         Name = item.Name,
                         State = item.State,
-                    
-                    };    
+
+                    };
                     dtos.Add(dto);
                 }
                 return dtos;
             }
-            catch(Exception)
+            catch(Exception ex)
             {
+                _errors.Add(new Error("QUERY ERROR", ex.Message));
                 return new List<CitizensDto>();
             }
         }

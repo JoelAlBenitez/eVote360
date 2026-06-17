@@ -3,80 +3,101 @@
 @{
     Layout = "_LeaderLayout";
     ViewData["Title"] = "Candidatos";
+    var hasData = Model != null && Model.Any();
+    var count = Model?.Count() ?? 0;
 }
 
-<div class="container mt-4">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h2>Candidatos</h2>
-        <a asp-action="Create" class="btn btn-primary">Nuevo Candidato</a>
-    </div>
+@section Styles {
+    <link rel="stylesheet" href="~/css/admin-views.css" asp-append-version="true" />
+}
 
-    @if (TempData["Message"] != null)
-    {
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            @TempData["Message"]
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+<div class="page-header">
+    <div class="page-header__left">
+        <div class="page-header__icon" style="background-color:#e8f5e9;color:#2e7d32;padding:12px;border-radius:12px;">
+            <i class="bi bi-people-fill" style="font-size:1.5rem;" aria-hidden="true"></i>
         </div>
-    }
-
-    <div class="card shadow-sm">
-        <div class="card-body">
-            <table class="table table-striped table-hover align-middle">
-                <thead class="table-dark">
-                    <tr>
-                        <th>Foto</th>
-                        <th>Nombre</th>
-                        <th>Apellido</th>
-                        <th>Estado</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @if (Model != null && Model.Any())
-                    {
-                        foreach (var item in Model)
-                        {
-                            <tr>
-                                <td>
-                                    @if (!string.IsNullOrEmpty(item.PhotoUrl))
-                                    {
-                                        <img src="~/img/candidates/@item.PhotoUrl" alt="Foto de @item.Name" class="rounded-circle" style="width: 50px; height: 50px; object-fit: cover;" />
-                                    }
-                                    else
-                                    {
-                                        <img src="~/img/evote360-logo.png" alt="Sin foto" class="rounded-circle" style="width: 50px; height: 50px; object-fit: cover;" />
-                                    }
-                                </td>
-                                <td>@item.Name</td>
-                                <td>@item.LastName</td>
-                                <td>
-                                    @if (item.State)
-                                    {
-                                        <span class="badge bg-success">Activo</span>
-                                    }
-                                    else
-                                    {
-                                        <span class="badge bg-secondary">Inactivo</span>
-                                    }
-                                </td>
-                                <td>
-                                    <a asp-action="Edit" asp-route-Id="@item.Id" class="btn btn-warning btn-sm">Editar</a>
-                                    <a asp-action="AlterState" asp-route-Id="@item.Id"
-                                       class="btn btn-sm @(item.State ? "btn-danger" : "btn-success")">
-                                        @(item.State ? "Desactivar" : "Activar")
-                                    </a>
-                                </td>
-                            </tr>
-                        }
-                    }
-                    else
-                    {
-                        <tr>
-                            <td colspan="5" class="text-center">No hay candidatos registrados.</td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
+        <div>
+            <h1 class="page-header__title">Mis Candidatos</h1>
+            <p class="page-header__subtitle">
+                @count candidato@(count != 1 ? "s" : "") registrado@(count != 1 ? "s" : "") en tu partido
+            </p>
         </div>
     </div>
+    <a asp-action="Create" class="btn-add">
+        <i class="bi bi-plus-lg" aria-hidden="true"></i>
+        <span>Nuevo Candidato</span>
+    </a>
 </div>
+
+@if (hasData)
+{
+    <div class="data-table-wrap">
+        <table class="data-table" aria-label="Lista de candidatos">
+            <thead>
+                <tr>
+                    <th scope="col">Foto</th>
+                    <th scope="col"><i class="bi bi-person" aria-hidden="true"></i>Nombre</th>
+                    <th scope="col">Apellido</th>
+                    <th scope="col"><i class="bi bi-toggle-on" aria-hidden="true"></i>Estado</th>
+                    <th scope="col" class="text-center"><i class="bi bi-gear-fill" aria-hidden="true"></i>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model!)
+                {
+                    <tr>
+                        <td>
+                            @if (!string.IsNullOrEmpty(item.PhotoUrl))
+                            {
+                                <img src="@item.PhotoUrl" alt="Foto de @item.Name"
+                                     class="rounded-circle" style="width:48px;height:48px;object-fit:cover;" />
+                            }
+                            else
+                            {
+                                <div class="rounded-circle bg-light d-flex align-items-center justify-content-center"
+                                     style="width:48px;height:48px;font-size:1.4rem;">
+                                    <i class="bi bi-person-fill text-muted" aria-hidden="true"></i>
+                                </div>
+                            }
+                        </td>
+                        <td class="data-table__name">@item.Name</td>
+                        <td>@item.LastName</td>
+                        <td>
+                            <span class="data-badge @(item.State ? "data-badge--active" : "data-badge--inactive")">
+                                <i class="bi @(item.State ? "bi-check-circle-fill" : "bi-x-circle-fill")" aria-hidden="true"></i>
+                                @(item.State ? "Activo" : "Inactivo")
+                            </span>
+                        </td>
+                        <td>
+                            <div class="table-actions justify-content-center">
+                                <a asp-action="Edit" asp-route-Id="@item.Id"
+                                   class="btn-table-action btn-table-action--edit" title="Editar candidato">
+                                    <i class="bi bi-pencil-fill" aria-hidden="true"></i>
+                                </a>
+                                <a asp-action="AlterState" asp-route-Id="@item.Id"
+                                   class="btn-table-action @(item.State ? "btn-table-action--deactivate" : "btn-table-action--activate")"
+                                   title="@(item.State ? "Desactivar" : "Activar") candidato">
+                                    <i class="bi @(item.State ? "bi-toggle-on" : "bi-toggle-off")" aria-hidden="true"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <div class="empty-state" role="status">
+        <div class="empty-state__icon" aria-hidden="true">
+            <i class="bi bi-people"></i>
+        </div>
+        <h2 class="empty-state__title">No hay candidatos registrados</h2>
+        <p class="empty-state__desc">Agrega tu primer candidato para comenzar.</p>
+        <a asp-action="Create" class="btn-primary-outline">
+            <i class="bi bi-plus-lg" aria-hidden="true"></i>
+            Agregar Candidato
+        </a>
+    </div>
+}

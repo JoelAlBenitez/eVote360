@@ -177,7 +177,8 @@ using System.Xml.Linq;
         {
          foreach (var error in result.errors) ModelState.AddModelError(error.Code, error.Description);
          TempData["TypeAlert"] = "error";
-         TempData["Message"] = "Error al intentar cambiar el estado.";
+         var firstError = result.errors.FirstOrDefault();
+         TempData["Message"] = firstError != null ? firstError.Description : "Error al intentar cambiar el estado.";
         }
         else
         {

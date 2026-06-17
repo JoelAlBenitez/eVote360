@@ -13,7 +13,7 @@ namespace eVote360.Core.Application.ViewModels.PoliticalAlliances
 
     public class SimpleSelectListItem
     {
-        public string Value { get; set; } = string.Empty;
-        public string Text { get; set; } = string.Empty;
+        public  string? Value { get; set; } 
+        public string? Text { get; set; } 
     }
 }

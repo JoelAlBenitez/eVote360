@@ -26,20 +26,16 @@ namespace eVote360.Presentation.EVote360.Controllers.LeaderDashboard
         {
             var result = await _leaderDashboardGetQuery.GetDashboardDataAsync(GetUserId());
 
-            // Si falla (ej. el usuario no es dirigente o no tiene partido asignado)
             if (!result.IsValid)
             {
                 foreach (var item in result.errors)
                 {
-                    // Mostrar el error en la pantalla (Aviso de "Acceso Denegado" o similar)
                     ModelState.AddModelError(item.Code, item.Description);
                 }
                 
-                // Retornamos la vista vacia o podriamos redirigir a un "Home" general
                 return View(new LeaderDashboardViewModel()); 
             }
 
-            // Si es exitoso, mapeamos el DTO al ViewModel
             var vm = new LeaderDashboardViewModel
             {
                 PartyName = result.Value!.PartyName,

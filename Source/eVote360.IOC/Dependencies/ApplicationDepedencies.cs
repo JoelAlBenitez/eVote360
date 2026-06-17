@@ -132,6 +132,7 @@ namespace eVote360.IOC.Dependencies
             services.AddScoped<IElectionCreateCommand, ElectionCreate>();
             services.AddScoped<IElectionUpdateCommand, ElectionUpdate>();
             services.AddScoped<IElectionAlterStateCommand, ElectionAlterState>();
+            services.AddScoped<IElectionActivateCommand, ElectionActivate>();
 
             services.AddScoped<IElectionGetAllQuery, ElectionGetAll>();
             services.AddScoped<IElectionGetByIdQuery, ElectionGetById>();
