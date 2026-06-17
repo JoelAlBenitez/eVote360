@@ -1,0 +1,25 @@
+Joel Alberto Benitez Varela 2025-1049
+*Flujo y Control del Elector (Votación Principal):
+*Pantalla Inicial del Elector
+*Mantenimiento de Validación de Identidad por OCR
+*Módulo de Verificación por Correo Electrónico:
+*Boleta Electoral y Selección por PuestoFinalización y *Resumen de Votación
+*Posiciones electivas 
+*Ciudadanos
+
+
+Adrian Francisco Brito Nelkits 20205-1150
+Mantenimiento de Asignación de Dirigentes Políticos (Admin Side):
+*Home del Dirigente Político (Dashboard
+*Mantenimiento de Candidatos
+*Módulo de Alianzas Políticas
+*Mantenimiento de Asignar Candidato a Puesto
+
+
+
+Sebastian De Jesus Peguero Herrera 2025-1172
+Funcionalidad del Administrador
+*Mantenimiento de partidos políticos
+*Mantenimiento de usuarios
+*Asignación de dirigentes políticos
+*Elecciones

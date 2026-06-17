@@ -1,0 +1,161 @@
+@using eVote360.Core.Application.ViewModels.Admin
+@model List<ElectoralSummaryViewModel>
+@{
+    ViewData["Title"] = "Resumen Electoral";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    var yearParam = Context.Request.Query["year"].FirstOrDefault() ?? string.Empty;
+    var hasData   = Model != null && Model.Any();
+    var count     = Model?.Count ?? 0;
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/admin-views.css" asp-append-version="true" />
+}
+
+@await Html.PartialAsync("_Notifications")
+
+<div class="page-header">
+    <div class="page-header__left">
+        <div class="page-header__icon page-header__icon--elections">
+            <i class="bi bi-bar-chart-fill" aria-hidden="true"></i>
+        </div>
+        <div>
+            <h1 class="page-header__title">
+                Resumen Electoral
+                @if (!string.IsNullOrEmpty(yearParam))
+                {
+                    <span style="color: var(--accent);">@yearParam</span>
+                }
+            </h1>
+            <p class="page-header__subtitle">
+                @if (hasData)
+                {
+                    <span>@count elección@(count != 1 ? "es" : "") encontrada@(count != 1 ? "s" : "")</span>
+                }
+                else
+                {
+                    <span>Sin registros para este año</span>
+                }
+            </p>
+        </div>
+    </div>
+    <a asp-controller="Election" asp-action="SelectYear" class="btn-back">
+        <i class="bi bi-arrow-left" aria-hidden="true"></i>
+        <span>Cambiar año</span>
+    </a>
+</div>
+
+@if (hasData)
+{
+    <div class="data-table-wrap d-none d-md-block">
+        <table class="data-table" aria-label="Resumen de elecciones">
+            <thead>
+                <tr>
+                    <th scope="col">
+                        <i class="bi bi-calendar-check" aria-hidden="true"></i>Nombre
+                    </th>
+                    <th scope="col">
+                        <i class="bi bi-calendar-date" aria-hidden="true"></i>Fecha
+                    </th>
+                    <th scope="col">
+                        <i class="bi bi-flag-fill" aria-hidden="true"></i>Partidos
+                    </th>
+                    <th scope="col">
+                        <i class="bi bi-person-badge-fill" aria-hidden="true"></i>Candidatos
+                    </th>
+                    <th scope="col">
+                        <i class="bi bi-people-fill" aria-hidden="true"></i>Ciudadanos
+                    </th>
+                </tr>
+            </thead>
+            <tbody id="summaryTableBody">
+                @foreach (var item in Model!)
+                {
+                    <tr>
+                        <td class="data-table__name">@item.NameElection</td>
+                        <td>
+                            <span class="data-table__date">
+                                @item.DateRealized.ToString("dd 'de' MMMM 'de' yyyy",
+                                    new System.Globalization.CultureInfo("es-DO"))
+                            </span>
+                        </td>
+                        <td>
+                            <span class="data-badge data-badge--parties">
+                                @item.NumberParticipatingMatches
+                            </span>
+                        </td>
+                        <td>
+                            <span class="data-badge data-badge--candidates">
+                                @item.NumberCandidactesParticipating
+                            </span>
+                        </td>
+                        <td>
+                            <span class="data-badge data-badge--citizens">
+                                @item.NumberCitizenParticipating
+                            </span>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <div class="pagination-wrap" id="paginationWrap" aria-label="Paginación"></div>
+    </div>
+
+    <div class="summary-cards d-md-none" id="summaryCards" aria-label="Elecciones del año @yearParam">
+        @foreach (var item in Model!)
+        {
+            <article class="summary-card">
+                <div class="summary-card__header">
+                    <span class="summary-card__name">@item.NameElection</span>
+                    <span class="summary-card__date">
+                        @item.DateRealized.ToString("dd MMM yyyy",
+                            new System.Globalization.CultureInfo("es-DO"))
+                    </span>
+                </div>
+                <div class="summary-card__stats">
+                    <div class="summary-card__stat">
+                        <i class="bi bi-flag-fill" aria-hidden="true"></i>
+                        <span class="summary-card__stat-value">@item.NumberParticipatingMatches</span>
+                        <span class="summary-card__stat-label">Partidos</span>
+                    </div>
+                    <div class="summary-card__stat">
+                        <i class="bi bi-person-badge-fill" aria-hidden="true"></i>
+                        <span class="summary-card__stat-value">@item.NumberCandidactesParticipating</span>
+                        <span class="summary-card__stat-label">Candidatos</span>
+                    </div>
+                    <div class="summary-card__stat">
+                        <i class="bi bi-people-fill" aria-hidden="true"></i>
+                        <span class="summary-card__stat-value">@item.NumberCitizenParticipating</span>
+                        <span class="summary-card__stat-label">Ciudadanos</span>
+                    </div>
+                </div>
+            </article>
+        }
+        <div class="pagination-wrap" id="paginationWrapMobile" aria-label="Paginación móvil"></div>
+    </div>
+}
+else
+{
+    <div class="empty-state" role="status">
+        <div class="empty-state__icon" aria-hidden="true">
+            <i class="bi bi-inbox-fill"></i>
+        </div>
+        <h2 class="empty-state__title">Sin elecciones registradas</h2>
+        <p class="empty-state__desc">
+            No se encontraron procesos electorales
+            @if (!string.IsNullOrEmpty(yearParam))
+            {
+                <span>para el año <strong>@yearParam</strong>.</span>
+            }
+        </p>
+        <a asp-controller="Election" asp-action="SelectYear" class="btn-primary-outline">
+            <i class="bi bi-arrow-left" aria-hidden="true"></i>
+            Seleccionar otro año
+        </a>
+    </div>
+}
+
+@section Scripts {
+    <script>window.summaryPageSize = 10;</script>
+    <script src="~/js/admin-views.js" asp-append-version="true"></script>
+}

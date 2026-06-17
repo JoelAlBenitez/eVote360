@@ -1,0 +1,53 @@
+@{
+    ViewData["Title"] = "Finalizar Elección";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    var electionName = ViewBag.ElectionName as string ?? "esta elección";
+    var electionId = (int)(ViewBag.ElectionId ?? 0);
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/admin-views.css" asp-append-version="true" />
+}
+
+<div class="page-header">
+    <div class="page-header__left">
+        <div class="page-header__icon" style="background-color:#fce4ec;color:#c62828;padding:12px;border-radius:12px;">
+            <i class="bi bi-stop-circle-fill" style="font-size:1.5rem;" aria-hidden="true"></i>
+        </div>
+        <div>
+            <h1 class="page-header__title">Finalizar Proceso Electoral</h1>
+            <p class="page-header__subtitle">Esta acción es irreversible</p>
+        </div>
+    </div>
+</div>
+
+<div class="row justify-content-center mt-4">
+    <div class="col-lg-6">
+        <div class="card shadow-sm border-0" style="border-radius:16px;">
+            <div class="card-body p-4 text-center">
+                <div style="background:#fce4ec;border-radius:50%;width:72px;height:72px;display:flex;align-items:center;justify-content:center;margin:0 auto 1.5rem;">
+                    <i class="bi bi-stop-circle-fill text-danger" style="font-size:2rem;" aria-hidden="true"></i>
+                </div>
+                <h4 class="fw-bold mb-2">¿Finalizar esta elección?</h4>
+                <p class="text-muted mb-1">Está a punto de finalizar el proceso electoral:</p>
+                <p class="fw-semibold fs-5 mb-3 text-dark">"@electionName"</p>
+                <div class="alert alert-danger text-start mb-4" role="alert">
+                    <i class="bi bi-exclamation-octagon-fill me-2" aria-hidden="true"></i>
+                    <strong>Advertencia:</strong> Una vez finalizada, la votación quedará cerrada permanentemente
+                    y no se podrán registrar más votos. Los resultados quedarán disponibles.
+                </div>
+                <div class="d-flex justify-content-center gap-3">
+                    <a asp-action="Index" class="btn btn-outline-secondary px-4">
+                        <i class="bi bi-x-lg me-1" aria-hidden="true"></i>Cancelar
+                    </a>
+                    <form asp-action="ConfirmFinalize" asp-route-id="@electionId" method="post" class="d-inline">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="btn btn-danger px-4">
+                            <i class="bi bi-stop-circle-fill me-1" aria-hidden="true"></i>Sí, Finalizar Elección
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

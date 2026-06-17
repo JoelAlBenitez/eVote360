@@ -136,9 +136,8 @@
         <i class="bi bi-lightning-fill" aria-hidden="true"></i>
         Acceso Rápido
     </h2>
-    <div class="quick-cards-grid">
-
-        <a asp-controller="Candidate" asp-action="Index" class="quick-card quick-card--elections">
+    <div class="col-md-4">
+        <a asp-controller="Candidates" asp-action="Index" class="quick-card quick-card--elections">
             <div class="quick-card__icon">
                 <i class="bi bi-people-fill" aria-hidden="true"></i>
             </div>
@@ -148,6 +147,7 @@
             </div>
             <i class="bi bi-arrow-right-circle quick-card__arrow" aria-hidden="true"></i>
         </a>
+    </div>
 
         <a asp-controller="PoliticalAlliances" asp-action="Index" class="quick-card quick-card--positions">
             <div class="quick-card__icon">
