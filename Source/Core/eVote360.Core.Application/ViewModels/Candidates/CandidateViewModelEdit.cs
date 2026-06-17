@@ -17,12 +17,15 @@ namespace eVote360.Core.Application.ViewModels.Candidates
         [Required(ErrorMessage = "El apellido es requerido")]
         [StringLength(50, MinimumLength = 2, ErrorMessage = "El apellido debe tener entre 2 y 50 caracteres")]
         public required string LastName { get; set; }
+[Display(Name = "Foto")]
+public IFormFile? PhotoFile { get; set; }
 
-        [Display(Name = "Foto")]
-        public IFormFile? PhotoFile { get; set; }
-        
-        public string? CurrentPhotoUrl { get; set; }
-        
-        public bool HasParticipatedInElection { get; set; }
+public string? CurrentPhotoUrl { get; set; }
+
+public bool HasParticipatedInElection { get; set; }
+
+     
     }
 }
+  
+

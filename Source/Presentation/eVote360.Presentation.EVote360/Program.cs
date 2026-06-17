@@ -17,6 +17,7 @@ builder.Services.AddAuthentication("CookieAuth")
         options.ExpireTimeSpan = TimeSpan.FromHours(2);
     });
 
+
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddScoped<ISessionUser, UserSession>();
 builder.Services.AddScoped<IElectorSession, ElectorSessionService>();
