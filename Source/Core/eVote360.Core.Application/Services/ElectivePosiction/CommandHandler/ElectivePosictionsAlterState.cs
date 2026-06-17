@@ -34,9 +34,9 @@ namespace eVote360.Core.Application.Services.ElectivePosiction.CommandHandler
                 if (elective.State)
                 {
                     var validate = await _electivePositionsValidator.ValidateDesactiveElectivePositions(elective.Id, elective.Name);
-                    if (validate != null) return validate;
+                    if (!validate.IsValid) return validate;
 
-                    var alterState = await _electivePositionsRepository.AlterState(elective.Id, elective.State);
+                    var alterState = await _electivePositionsRepository.AlterState(elective.Id, !elective.State);
                     if (!alterState)
                     {
                         _errors.Add(new Error("Ha ocurrido un error", "Ha ocurrido un error inesperado en la alteración del registro. "));
@@ -46,9 +46,9 @@ namespace eVote360.Core.Application.Services.ElectivePosiction.CommandHandler
                 else
                 {
                     var validate = await _electivePositionsValidator.ValidateActiveElectivePostions(elective.Id, elective.Name);
-                    if (validate != null) return validate;
+                    if (!validate.IsValid) return validate;
 
-                    var alterState = await _electivePositionsRepository.AlterState(elective.Id, elective.State);
+                    var alterState = await _electivePositionsRepository.AlterState(elective.Id, !elective.State);
                     if (!alterState)
                     {
                         _errors.Add(new Error("Ha ocurrido un error", "Ha ocurrido un error inesperado en la alteración del registro. "));

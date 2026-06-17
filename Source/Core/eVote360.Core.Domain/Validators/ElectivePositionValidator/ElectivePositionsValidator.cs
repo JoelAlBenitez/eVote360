@@ -37,7 +37,7 @@ namespace eVote360.Core.Domain.Validators.ElectivePositionValidator
         {
             if (string.IsNullOrWhiteSpace(name)
                 || name.Trim().Length > 30 ||
-                !Regex.IsMatch(name.Trim(), "^[a-zA-Z\\s]+$"
+                !Regex.IsMatch(name.Trim(), @"^[\p{L}\s]+$"
                 )) return ElectivePosictionsError.NameInvalid;
 
             return null!;
@@ -48,7 +48,7 @@ namespace eVote360.Core.Domain.Validators.ElectivePositionValidator
             if (string.IsNullOrWhiteSpace(description) ||
                 description.Trim().Length > 100
                 ||
-                !Regex.IsMatch(description.Trim(), "^[a-zA-Z\\s]+$")
+                !Regex.IsMatch(description.Trim(), @"^[\p{L}\s]+$")
                 ) return ElectivePosictionsError.DescriptionInvalid;
 
             return null!;
@@ -105,11 +105,11 @@ namespace eVote360.Core.Domain.Validators.ElectivePositionValidator
             var validate = await  _votesValidate.ElectivePositionUsedInElections(electivePositions!.Id);
             if (validate) errors.Add(ElectivePosictionsError.NameCannotChange);
 
+            var exitsElectiveP = await _electivePositionDomainService.ExistById(electivePositions.Id);
+            if (!exitsElectiveP) errors.Add(ElectivePosictionsError.NonExistentElectivePosition);
+
             var validateName = await _electivePositionDomainService.ExistsAnotherElectivePositionWithName(electivePositions.Id, electivePositions.Name);
             if (validateName) errors.Add(ElectivePosictionsError.ExistsAnotherElectivePositionWithName);
-
-            var exitsElectiveP = await _electivePositionDomainService.ExistElectivePositionByName(electivePositions.Name.Trim());
-            if (!exitsElectiveP) errors.Add(ElectivePosictionsError.NonExistentElectivePosition);
 
             var vName = ValidateName(electivePositions.Name);
             if (vName != null) errors.Add(vName);

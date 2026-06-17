@@ -17,13 +17,13 @@ namespace eVote360.Core.Domain.Entities.PoliticalAlliances
 
         public void Accept()
         {
-            Status = AllianceStatus.Accepted;
+            Status = AllianceStatus.Aceptado;
             ResponseDate = DateTimeOffset.Now;
         }
 
         public void Reject()
         {
-            Status = AllianceStatus.Rejected;
+            Status = AllianceStatus.Rechazado;
             ResponseDate = DateTimeOffset.Now;
         }
 

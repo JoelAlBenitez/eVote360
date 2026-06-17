@@ -19,7 +19,7 @@ namespace eVote360.Infraestructure.Persistence.Configurations.PoliticalAlliances
             builder.Property(x => x.Status)
                 .HasConversion<string>()
                 .IsRequired()
-                .HasDefaultValue(AllianceStatus.Pending);
+                .HasDefaultValue(AllianceStatus.Pendiente);
 
             builder.Property(x => x.RequestDate)
                 .HasColumnType("datetimeoffset(0)")

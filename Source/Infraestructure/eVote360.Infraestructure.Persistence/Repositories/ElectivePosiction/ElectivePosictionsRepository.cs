@@ -63,7 +63,15 @@ namespace eVote360.Infraestructure.Persistence.Repositories.ElectivePosiction
 
         public async Task<bool> UpdateEntitieAsync(ElectivePositions entitie)
         {
-            _context.ElectivePosition.Update(entitie);
+            var existing = await _context.ElectivePosition.FindAsync(entitie.Id);
+            if (existing == null) return false;
+
+            existing.Name = entitie.Name;
+            existing.Description = entitie.Description;
+            existing.State = entitie.State;
+            existing.UpdateUserId = entitie.UpdateUserId;
+            existing.UpdateAt = entitie.UpdateAt;
+
             return await _context.SaveChangesAsync() > 0;
         }
     }
