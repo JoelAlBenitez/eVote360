@@ -4,33 +4,16 @@
     <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-<<<<<<< Updated upstream
-    <UserSecretsId>7a4a7937-843e-4032-bc58-8f064e7055b6</UserSecretsId>
-=======
-    <UserSecretsId>003144fa-b7eb-4586-8e3a-e35c34c4eefc</UserSecretsId>
->>>>>>> Stashed changes
+ <UserSecretsId>003144fa-b7eb-4586-8e3a-e35c34c4eefc</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\Core\eVote360.Core.Application\eVote360.Core.Application.csproj" />
-    <ProjectReference Include="..\..\eVote360.IOC\eVote360.IOC.csproj" />
+    <ProjectReference Include="..\..\Core\eVote360.Core.Domain\eVote360.Core.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="wwwroot\img\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.17">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Update="wwwroot\tessdata\spa.traineddata">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
 
 </Project>
