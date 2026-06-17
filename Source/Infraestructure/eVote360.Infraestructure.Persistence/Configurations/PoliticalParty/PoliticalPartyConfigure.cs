@@ -23,33 +23,49 @@ namespace eVote360.Infraestructure.Persistence.Configurations.PoliticalParty
                 .HasColumnType("nvarchar")
                 .IsRequired();
 
-            builder.Property(x => x.PoliticalPartyLogo.PhotoUrl)
+            builder.OwnsOne(x => x.PoliticalPartyLogo, logo =>
+            {
+                logo.Property(l => l.PhotoUrl)
                 .HasColumnName("PoliticalPartyLogo")
                 .IsRequired();
+            });
 
             builder.Property(x => x.State)
                 .IsRequired()
                 .HasDefaultValue(true);
 
-            builder.Property(x => x.PoliticalPartyAcronym.Value)
-                .HasColumnName("Acronym")
-                .HasColumnType("nvarchar")
-                .HasMaxLength(3)
+           
+            builder.OwnsOne(x => x.PoliticalPartyAcronym, acronym => {
+
+                acronym.Property(c => c.Value)
+                .HasColumnName("PoliticalPartyAcronym")
                 .IsRequired();
 
+                acronym.HasIndex(c => c.Value).IsUnique();
+            });
+
             builder.HasIndex(x => x.Name).IsUnique();
-            builder.HasIndex(x => x.PoliticalPartyAcronym.Value).IsUnique();
 
             
              builder.HasMany(x => x.RequestedAlliances)
-               .WithOne() 
+               .WithOne(x => x.RequestingParty) 
                .HasForeignKey(x => x.RequestingPartyId)
                .OnDelete(DeleteBehavior.Restrict);
             
                
                 builder.HasMany(x => x.ReceiveAlliances)
-                .WithOne()
+                .WithOne(x => x.ReceivingParty)
                 .HasForeignKey(x => x.ReceivingPartyId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasOne(x => x.UserCreate)
+                .WithMany()
+                .HasForeignKey(x => x.CreateUserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasOne(x => x.UserUpdate)
+                .WithMany()
+                .HasForeignKey(x => x.UpdateUserId)
                 .OnDelete(DeleteBehavior.Restrict);
 
 

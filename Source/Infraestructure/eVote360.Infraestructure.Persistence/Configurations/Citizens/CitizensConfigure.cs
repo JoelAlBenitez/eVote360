@@ -39,7 +39,7 @@ namespace eVote360.Infraestructure.Persistence.Configurations.Citizens
 
             builder.Property(x => x.State).IsRequired().HasDefaultValue(true);
 
-            builder.Property(x => x.CreateAt).HasDefaultValue("SYSDATETIMEOFFSET()");
+            builder.Property(x => x.CreateAt).HasDefaultValueSql("SYSDATETIMEOFFSET()");
 
           
             builder.HasOne(u => u.UserCreate)

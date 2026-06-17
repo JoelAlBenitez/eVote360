@@ -41,6 +41,16 @@ namespace eVote360.Infraestructure.Persistence.Configurations.PoliticalAssignmen
                    .WithMany(p => p.Assignments)
                    .HasForeignKey(x => x.PoliticalPartyId)
                    .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasOne(x => x.UserCreate)
+                .WithMany()
+                .HasForeignKey(x => x.CreateUserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasOne(x => x.UserUpdate)
+                .WithMany()
+                .HasForeignKey(x => x.UpdateUserId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }
